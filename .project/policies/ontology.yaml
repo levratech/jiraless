@@ -1,0 +1,16 @@
+# Jiraless Ontology (v0.2)
+# You control the nouns. "Types" are just labels with optional metadata.
+types:
+  feature: { icon: "💡", color: "#00aaff" }
+  bug: { icon: "🐛", color: "#ff4444" }
+  experiment: { icon: "🧪", color: "#8e44ad" }
+  ritual: { icon: "🔁", color: "#f39c12" }
+  doc: { icon: "📄", color: "#2ecc71" }
+
+# Suggested facet enums (optional; validator warns if out of band)
+facets:
+  intent: [change, defect, research, decision, doc, runbook]
+  scope: [unit, initiative, portfolio]
+  size: [xs, s, m, l, xl]
+  severity: [none, low, medium, high, critical]
+  priority: [p0, p1, p2, p3]
