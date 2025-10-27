@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 node_modules
 dist
 .DS_Store
+docs/ATLAS.md

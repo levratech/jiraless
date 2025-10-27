@@ -1,0 +1,10 @@
+{
+  "feature": [
+    {
+      "id": "WK-0001",
+      "title": "Implement ontology-driven work objects",
+      "status": "in_progress",
+      "file": "/srv/jiraless/.project/objects/issues/ISS-0001.sample.md"
+    }
+  ]
+}
