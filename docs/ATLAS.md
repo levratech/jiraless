@@ -1,9 +1,9 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-27T19:47:25.648Z
+_Generated:_ 2025-10-27T21:31:34.162Z
 
 ## Summary
 - Files: **35**
-- Total size: **53 KB**
+- Total size: **54 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
 
@@ -14,7 +14,7 @@ _Generated:_ 2025-10-27T19:47:25.648Z
 | package.json | 288 B | `07f791639fa4…` | no |
 | README.md | 8.9 KB | `d62cb2e9713a…` | yes |
 | tools/atlas.mjs | 7.8 KB | `2715e4c4f3a8…` | yes |
-| tools/materialize.mjs | 4.6 KB | `a979cf5221f0…` | yes |
+| tools/materialize.mjs | 5.2 KB | `7e289a0d8dc5…` | yes |
 | tools/schemas/adr.schema.json | 726 B | `05c78858158c…` | yes |
 | tools/schemas/doc.schema.json | 721 B | `9468287ecf9e…` | yes |
 | tools/schemas/epic.schema.json | 1.3 KB | `c82696cbc6f7…` | yes |
@@ -33,7 +33,7 @@ _Generated:_ 2025-10-27T19:47:25.648Z
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
 | ui/src/App.jsx | 1011 B | `835983ee2dcc…` | no |
 | ui/src/App.tsx | 1011 B | `835983ee2dcc…` | no |
-| ui/src/components/Board.tsx | 2.8 KB | `2dbc0fdfb9b0…` | no |
+| ui/src/components/Board.tsx | 3.3 KB | `e3ae84bb06d9…` | no |
 | ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no |
 | ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
 | ui/src/index.css | 632 B | `696b7714cc1f…` | no |
@@ -42,7 +42,7 @@ _Generated:_ 2025-10-27T19:47:25.648Z
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
 | ui/src/main.tsx | 326 B | `cfd0d979e84a…` | no |
 | ui/src/pages/NewWork.tsx | 2.1 KB | `38ceefaa38e3…` | no |
-| ui/src/pages/WorkDetail.tsx | 2.1 KB | `b8c2a3f83039…` | no |
+| ui/src/pages/WorkDetail.tsx | 2.3 KB | `aff6d9ae6317…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
 | ui/vite.config.ts | 154 B | `14cbdd502354…` | no |
 
@@ -657,41 +657,64 @@ main().catch((err) => { console.error(err); process.exit(1); });
 ```
 
 ### `tools/materialize.mjs`
-_Size:_ 4.6 KB  
-_Hash:_ `a979cf5221f0464e52a79b096091378e96d2733e9fac8c34a89e5bdf4e7c6eaa`
+_Size:_ 5.2 KB  
+_Hash:_ `7e289a0d8dc554ee5af97894ff8abe55d6a0d1ab7fe4d019f0505d312d907098`
 
 ```js
-// Jiraless v0.3 Materializer
-// Reads .project/objects/**/*.md and emits canonical JSON views:
-//  - .project/views/board.json         (grouped by status)
-//  - .project/views/by-type.json       (grouped by type facet(s))
-//  - .project/views/stats.json         (counts + facet tallies)
-// Also exports the ontology to JSON for the UI:
-//  - ui/public/ontology.json           (derived from .project/policies/ontology.yaml)
-// Optionally mirrors the views to ui/public/views/* for Pages to serve.
-//
-// Env:
-//  TARGET_PUBLIC=ui/public   (optional; if present, views are mirrored there)
+#!/usr/bin/env node
+/**
+ * Jiraless v0.4.2 Materializer
+ * - Emits repo-relative POSIX paths in views (never absolute runner paths)
+ * - Outputs: .project/views/{board.json,by-type.json,stats.json}
+ * - Optionally mirrors to ui/public/views and emits ui/public/ontology.json
+ */
 
 import fs from "fs/promises";
 import path from "path";
 import { globby } from "globby";
 import matter from "gray-matter";
 import yaml from "js-yaml";
-import { fileURLToPath } from 'url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = process.cwd();
+const POSIX_ROOT = REPO_ROOT.replace(/\\/g, "/");
 
-const OBJ_GLOB = path.join(__dirname, "../.project/objects/**/*.{md,markdown}");
-const VIEWS_DIR = path.join(__dirname, "../.project/views");
-const ONTOLOGY_YAML = path.join(__dirname, "../.project/policies/ontology.yaml");
-
-const TARGET_PUBLIC = process.env.TARGET_PUBLIC || "";        // e.g. "ui/public"
+const OBJ_GLOB = ".project/objects/**/*.{md,markdown}";
+const VIEWS_DIR = ".project/views";
+const ONTOLOGY_YAML = ".project/policies/ontology.yaml";
+const TARGET_PUBLIC = process.env.TARGET_PUBLIC || ""; // e.g. "ui/public"
 const PUBLIC_VIEWS_DIR = TARGET_PUBLIC ? path.join(TARGET_PUBLIC, "views") : "";
 
 /** ---------- helpers ---------- */
 async function ensureDir(p){ await fs.mkdir(p, { recursive: true }).catch(()=>{}); }
 function asArray(v){ return Array.isArray(v) ? v : v != null ? [v] : []; }
+
+// Normalize ANY path to a repo-relative POSIX path, e.g. ".project/objects/x.md"
+function toRepoRel(pth){
+  if (!pth) return "";
+  // decode percent-encoding just in case caller passed a URL param
+  try { pth = decodeURIComponent(pth); } catch {}
+  // normalize slashes
+  let s = pth.replace(/\\/g, "/");
+
+  // If it's absolute and contains the runner checkout prefix, strip it.
+  // Common prefixes:
+  //   /home/runner/work/<repo>/<repo>/
+  //   <REPO_ROOT> (local)
+  if (s.startsWith(POSIX_ROOT + "/")) s = s.slice(POSIX_ROOT.length + 1);
+
+  // strip common CI prefix pattern (/home/runner/work/<repo>/<repo>/...)
+  const parts = s.split("/");
+  const ix = parts.indexOf(".project");
+  if (ix >= 0) {
+    s = parts.slice(ix).join("/");
+  }
+
+  // remove leading "./"
+  if (s.startsWith("./")) s = s.slice(2);
+  // ensure we never escape repo
+  if (s.startsWith("/")) s = s.replace(/^\/+/, "");
+  return s;
+}
 
 async function writeJson(p, obj){
   await ensureDir(path.dirname(p));
@@ -709,7 +732,7 @@ async function mirrorToPublic(relName){
   console.log(`mirrored -> ${dst}`);
 }
 
-/** ---------- load ---------- */
+/** ---------- load objects ---------- */
 const files = await globby(OBJ_GLOB);
 const items = [];
 for (const f of files){
@@ -732,7 +755,7 @@ for (const f of files){
     created: data.created || null,
     updated: data.updated || null,
     links: data.links || [],
-    file: f,
+    file: toRepoRel(f),                // ✅ repo-relative
     excerpt: content.split("\n").slice(0, 12).join("\n")
   });
 }
@@ -740,8 +763,16 @@ for (const f of files){
 /** ---------- board.json (by status) ---------- */
 const board = {};
 for (const it of items){
-  if (!board[it.status]) board[it.status] = [];
-  board[it.status].push({ id: it.id, title: it.title, type: it.type, priority: it.priority, assignees: it.assignees, file: it.file });
+  const status = it.status;
+  if (!board[status]) board[status] = [];
+  board[status].push({
+    id: it.id,
+    title: it.title,
+    type: it.type,
+    priority: it.priority,
+    assignees: it.assignees,
+    file: toRepoRel(it.file)           // ✅ enforce repo-relative again
+  });
 }
 for (const col of Object.keys(board)){
   board[col].sort((a,b)=>a.id.localeCompare(b.id));
@@ -752,7 +783,7 @@ const byType = {};
 for (const it of items){
   for (const t of it.type){
     if (!byType[t]) byType[t] = [];
-    byType[t].push({ id: it.id, title: it.title, status: it.status, file: it.file });
+    byType[t].push({ id: it.id, title: it.title, status: it.status, file: toRepoRel(it.file) });
   }
 }
 for (const t of Object.keys(byType)){
@@ -783,11 +814,10 @@ if (TARGET_PUBLIC){
   await mirrorToPublic("board.json");
   await mirrorToPublic("by-type.json");
   await mirrorToPublic("stats.json");
-  // also emit ontology.json next to views for convenience
   await writeJson(path.join(TARGET_PUBLIC, "ontology.json"), ontology);
 }
 
-console.log(`materialized: ${items.length} items -> board.json, by-type.json, stats.json`);
+console.log(`materialized: ${items.length} items -> board.json, by-type.json, stats.json (repo-relative paths)`);
 ```
 
 ### `tools/schemas/adr.schema.json`
