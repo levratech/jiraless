@@ -1,9 +1,9 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-27T17:04:05.167Z
+_Generated:_ 2025-10-27T17:46:53.625Z
 
 ## Summary
-- Files: **21**
-- Total size: **34 KB**
+- Files: **22**
+- Total size: **38 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
 
@@ -21,7 +21,8 @@ _Generated:_ 2025-10-27T17:04:05.167Z
 | tools/schemas/issue.schema.json | 1.3 KB | `08bac8bb651a…` | yes |
 | tools/schemas/runlog.schema.json | 410 B | `4d898a0c53c3…` | yes |
 | tools/schemas/story.schema.json | 1.3 KB | `58bb8c140002…` | yes |
-| tools/validate.mjs | 1.2 KB | `787e573152f1…` | yes |
+| tools/schemas/work.schema.json | 1.3 KB | `e0f486065d9b…` | yes |
+| tools/validate.mjs | 4.2 KB | `1e514a2a1022…` | yes |
 | ui/index.html | 356 B | `34b42789489b…` | no |
 | ui/package.json | 843 B | `cdf3015ef965…` | no |
 | ui/public/404.html | 1.6 KB | `816f4a2db1b1…` | no |
@@ -36,7 +37,7 @@ _Generated:_ 2025-10-27T17:04:05.167Z
 ### By Type
 | Type | Count |
 | :-- | :-- |
-| issue | 1 |
+| feature | 1 |
 
 ### By Status
 | Status | Count |
@@ -46,7 +47,7 @@ _Generated:_ 2025-10-27T17:04:05.167Z
 ### Objects
 | ID | Type | Status | Title | File |
 | :-- | :-- | :-- | :-- | :-- |
-| ISS-0001 | issue | in_progress | Fix import graph for conductor | .project/objects/issues/ISS-0001.sample.md |
+| WK-0001 | feature | in_progress | Implement ontology-driven work objects | .project/objects/issues/ISS-0001.sample.md |
 
 ## GitHub Workflows
 | Workflow | Triggers | File |
@@ -920,54 +921,196 @@ _Hash:_ `58bb8c14000296fb6e02482f470e46553d506a6cd26136fd269f397bdd473dfe`
 }
 ```
 
+### `tools/schemas/work.schema.json`
+_Size:_ 1.3 KB  
+_Hash:_ `e0f486065d9be3b0dfcfcf3d0518d6fcde93429c55496d4c2e8ccb67c1e32343`
+
+```json
+{
+  "$id": "work",
+  "type": "object",
+  "required": ["id", "type", "title", "status", "created", "updated"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^WK-\\d{4,}$" },
+    "type": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        }
+      ],
+      "description": "types-as-labels — validated against ontology.types keys by validator"
+    },
+    "title": { "type": "string", "minLength": 3 },
+    "status": { "type": "string" },
+    "priority": { "type": "string" },
+    "severity": { "type": "string" },
+    "size": { "type": "string" },
+    "intent": { "type": "string" },
+    "scope": { "type": "string" },
+    "assignees": { "type": "array", "items": { "type": "string" } },
+    "labels": { "type": "array", "items": { "type": "string" } },
+    "aliases": { "type": "array", "items": { "type": "string" } },
+    "created": { "type": "string" },
+    "updated": { "type": "string" },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["target"],
+        "properties": {
+          "type": { "type": "string" },
+          "target": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": true
+}
+```
+
 ### `tools/validate.mjs`
-_Size:_ 1.2 KB  
-_Hash:_ `787e573152f1c96dfd0d553297df1afeb27b4939005363e4efb5b93f7fad0b1d`
+_Size:_ 4.2 KB  
+_Hash:_ `1e514a2a1022fbc281d0274e3d38078d8b4a2d4f3cfc445b0d86ae8d1b918980`
 
 ```js
-import { globby } from 'globby';
-import matter from 'gray-matter';
-import fs from 'fs/promises';
-import path from 'path';
-import Ajv from 'ajv';
-import addFormats from 'ajv-formats';
+#!/usr/bin/env node
+/**
+ * Jiraless v0.2 Validator
+ * - Loads ontology & state machine
+ * - Validates .project/objects/** front-matter against work.schema.json
+ * - Ensures `type` values exist in ontology.types (string or array of strings)
+ * - Ensures `status` is a known state
+ * - OPTIONAL (best-effort on PRs): checks status transition legality if base file is available
+ */
+
+import fs from "fs/promises";
+import path from "path";
+import { globby } from "globby";
+import matter from "gray-matter";
+import yaml from "js-yaml";
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
+import { execSync } from "node:child_process";
 
 const ajv = new Ajv({ allErrors: true, allowUnionTypes: true });
 addFormats(ajv);
-const schemas = ['issue','epic','story','doc','adr','runlog'];
 
-const loadSchema = async (name) =>
-  JSON.parse(await fs.readFile(`tools/schemas/${name}.schema.json`, 'utf8'));
-
-const schemaMap = Object.fromEntries(
-  await Promise.all(schemas.map(async s => [s, await loadSchema(s)]))
+const schema = JSON.parse(
+  await fs.readFile("tools/schemas/work.schema.json", "utf8")
 );
-Object.entries(schemaMap).forEach(([k,v]) => ajv.addSchema(v, k));
+ajv.addSchema(schema, "work");
 
-const files = await globby('.project/objects/**/*.{md,markdown}');
+const ONTOLOGY_PATH = ".project/policies/ontology.yaml";
+const STATE_MACHINE_PATH = ".project/policies/state-machine.yaml";
+
+function fail(msg) {
+  console.error(msg);
+  process.exitCode = 1;
+}
+
+const ontology = yaml.load(await fs.readFile(ONTOLOGY_PATH, "utf8"));
+const sm = yaml.load(await fs.readFile(STATE_MACHINE_PATH, "utf8"));
+
+const allowedTypes = new Set(Object.keys(ontology?.types || {}));
+const facetEnums = ontology?.facets || {};
+const states = new Set(sm?.states || []);
+const transitions = sm?.transitions || {};
+
+if (!allowedTypes.size) {
+  fail(`❌ ontology.types is empty. Define at least one type in ${ONTOLOGY_PATH}`);
+}
+if (!states.size) {
+  fail(`❌ state-machine.states is empty. Define states in ${STATE_MACHINE_PATH}`);
+}
+
+const files = await globby(".project/objects/**/*.{md,markdown}");
+
 let errors = 0;
+let checked = 0;
+
+function asArray(v) {
+  return Array.isArray(v) ? v : v != null ? [v] : [];
+}
+
+function getBaseStatusIfAvailable(filePath) {
+  // Best-effort: if running in PR context and base branch exists, diff status
+  const base = process.env.GITHUB_BASE_REF || "origin/main";
+  try {
+    execSync("git fetch --no-tags --depth=2 origin +refs/heads/*:refs/remotes/origin/*", { stdio: "ignore" });
+    const raw = execSync(`git show ${base}:${filePath}`, { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+    return fm.status || null;
+  } catch {
+    return null; // base not available; skip transition check
+  }
+}
 
 for (const f of files) {
-  const raw = await fs.readFile(f, 'utf8');
-  const fm = matter(raw).data;
-  const type = fm.type;
-  const validate = ajv.getSchema(type);
-  if (!validate) { console.log(`No schema for type '${type}' in ${f}`); errors++; continue; }
+  const raw = await fs.readFile(f, "utf8");
+  const parsed = matter(raw);
+  let fm = parsed.data || {};
+  fm = JSON.parse(JSON.stringify(fm)); // convert Dates to strings
+  const validate = ajv.getSchema("work");
+
+  checked++;
+
+  // 1) JSON schema
   const ok = validate(fm);
   if (!ok) {
-    console.log(`❌ ${f}`);
+    console.log(`❌ schema: ${f}`);
     console.log(validate.errors);
     errors++;
-  } else {
-    console.log(`✅ ${f}`);
+    continue;
+  }
+
+  // 2) type(s) exist in ontology
+  const types = asArray(fm.type);
+  const unknown = types.filter((t) => !allowedTypes.has(t));
+  if (unknown.length) {
+    console.log(`❌ type: ${f} — unknown type(s): ${unknown.join(", ")}. Allowed: ${[...allowedTypes].join(", ")}`);
+    errors++;
+  }
+
+  // 3) status in state machine
+  if (!states.has(fm.status)) {
+    console.log(`❌ status: ${f} — '${fm.status}' not in states: ${[...states].join(", ")}`);
+    errors++;
+  }
+
+  // 4) facet hints (warn-only)
+  const hints = [];
+  for (const facet of ["intent", "scope", "size", "severity", "priority"]) {
+    if (fm[facet] && facetEnums[facet] && !facetEnums[facet].includes(fm[facet])) {
+      hints.push(`- ${facet} '${fm[facet]}' not in ontology.facets.${facet}: [${facetEnums[facet].join(", ")}]`);
+    }
+  }
+  if (hints.length) {
+    console.log(`⚠︎ facet hints: ${f}\n${hints.join("\n")}`);
+  }
+
+  // 5) transition legality (best effort)
+  const prev = getBaseStatusIfAvailable(f);
+  if (prev && prev !== fm.status) {
+    const allowed = new Set(transitions[prev] || []);
+    if (!allowed.has(fm.status)) {
+      console.log(`❌ transition: ${f} — illegal '${prev}' → '${fm.status}'. Allowed: [${[...allowed].join(", ")}]`);
+      errors++;
+    }
+  }
+
+  if (errors === 0) {
+    // noisy per file logs are optional; keep quiet unless debugging
   }
 }
 
 if (errors) {
-  console.error(`Validation failed: ${errors} file(s).`);
+  console.error(`\nValidation failed: ${errors} error(s) across ${checked} file(s).`);
   process.exit(1);
 } else {
-  console.log('All good.');
+  console.log(`All good ✔ — ${checked} file(s) validated.`);
 }
 ```
 
