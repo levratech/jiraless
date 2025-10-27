@@ -1,5 +1,5 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-27T16:34:17.830Z
+_Generated:_ 2025-10-27T17:04:05.167Z
 
 ## Summary
 - Files: **21**
@@ -30,7 +30,7 @@ _Generated:_ 2025-10-27T16:34:17.830Z
 | ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
 | ui/src/index.css | 632 B | `696b7714cc1f…` | no |
 | ui/src/main.jsx | 234 B | `dfe7f7d0a5d8…` | no |
-| ui/vite.config.js | 162 B | `87ac60e37146…` | no |
+| ui/vite.config.js | 154 B | `14cbdd502354…` | no |
 
 ## .project Object Stats
 ### By Type
