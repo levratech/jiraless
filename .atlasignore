@@ -1,4 +1,6 @@
-# lockfiles
+# ------------------------------------------------------------
+# Lockfiles (always ignore)
+# ------------------------------------------------------------
 package-lock.json
 **/package-lock.json
 pnpm-lock.yaml
@@ -6,11 +8,48 @@ pnpm-lock.yaml
 yarn.lock
 **/yarn.lock
 
-# builds
+# ------------------------------------------------------------
+# Build outputs and dependencies
+# ------------------------------------------------------------
+node_modules/
+**/node_modules/
 dist/
 **/dist/
-node_modules/
+ui/.vite/
 **/.vite/
+.next/
+coverage/
+tmp/
+temp/
+*.log
 
-# generated views
+# ------------------------------------------------------------
+# Generated content (Atlas, views, etc.)
+# ------------------------------------------------------------
+# Never include Atlas output or recursion artifacts
+docs/ATLAS.md
+**/ATLAS.md
+
+# Jiraless generated JSONs and build artifacts
+.project/views/**
 .project/views/*.json
+.project/runs/**
+.project/tmp/**
+
+# ------------------------------------------------------------
+# Editor/system noise
+# ------------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+.env
+.env.*
+
+# ------------------------------------------------------------
+# Optional — you can uncomment to shrink inline code noise
+# (if you find UI source getting too large)
+# ui/src/**
+# ui/public/**
