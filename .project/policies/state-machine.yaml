@@ -1,0 +1,9 @@
+states: [backlog, selected, in_progress, in_review, done, archived, blocked, on_hold, failed]
+transitions:
+  backlog: [selected]
+  selected: [in_progress, on_hold]
+  in_progress: [in_review, blocked, failed]
+  in_review: [done, in_progress]
+  done: [archived]
+guards:
+  - rule: "close.p1.requires(human: maintainer|owner)"

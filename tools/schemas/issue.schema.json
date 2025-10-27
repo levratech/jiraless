@@ -1,0 +1,45 @@
+{
+  "$id": "issue",
+  "type": "object",
+  "required": ["id","type","title","status","created","updated"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^ISS-\\d{4,}$" },
+    "type": { "const": "issue" },
+    "title": { "type": "string", "minLength": 3 },
+    "status": { "type": "string" },
+    "priority": { "type": "string", "enum": ["p0","p1","p2","p3"] },
+    "assignees": { "type": "array", "items": { "type": "string" } },
+    "labels": { "type": "array", "items": { "type": "string" } },
+    "created": { "type": "string", "format": "date-time" },
+    "updated": { "type": "string", "format": "date-time" },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["target"],
+        "properties": {
+          "type": { "type": "string" },
+          "target": { "type": "string" }
+        }
+      }
+    },
+    "acceptance": { "type": "array", "items": { "type": "string" } },
+    "code": {
+      "type": "object",
+      "properties": {
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": { "type": "string" },
+              "lines": { "type": "string" }
+            },
+            "required": ["path"]
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,14 @@
+{
+  "$id": "runlog",
+  "type": "object",
+  "required": ["id","type","action","timestamp"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^RUN-\\d{4,}$" },
+    "type": { "const": "runlog" },
+    "action": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "agent": { "type": "string" },
+    "details": { "type": "object" }
+  },
+  "additionalProperties": true
+}

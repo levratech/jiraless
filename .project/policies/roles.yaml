@@ -1,0 +1,6 @@
+roles:
+  owner:       { members: ["github:repo:admins"], permissions: ["*"] }
+  maintainer:  { members: ["github:team:platform"], permissions: ["issue.*","transition.*","policy.*"] }
+  contributor: { members: ["github:repo:writers"],  permissions: ["issue.create","comment.create","transition.to:in_review"] }
+  reporter:    { members: ["github:repo:triagers"], permissions: ["comment.create","link.create"] }
+  agent:       { members: ["bot:jiraless[bot]"],    permissions: ["proposal.create","runlog.write"] }

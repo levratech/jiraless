@@ -1,0 +1,20 @@
+name: Validate Jiraless Objects
+on:
+  pull_request:
+    paths:
+      - ".project/**"
+  push:
+    paths:
+      - ".project/**"
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm i gray-matter js-yaml ajv ajv-formats globby
+      - run: node tools/validate.mjs

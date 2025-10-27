@@ -1,0 +1,25 @@
+name: Materialize Boards & Backlinks
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - ".project/**"
+  workflow_dispatch:
+jobs:
+  build_views:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm i gray-matter js-yaml globby marked
+      - run: node tools/materialize.mjs
+      - name: Commit view updates
+        run: |
+          git config user.name "jiraless-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add .project/views
+          git diff --cached --quiet || git commit -m "materialize: boards/backlinks"
+          git push

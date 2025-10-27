@@ -1,0 +1,25 @@
+{
+  "$id": "doc",
+  "type": "object",
+  "required": ["id","type","title","created","updated"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^DOC-\\d{4,}$" },
+    "type": { "const": "doc" },
+    "title": { "type": "string", "minLength": 3 },
+    "created": { "type": "string", "format": "date-time" },
+    "updated": { "type": "string", "format": "date-time" },
+    "labels": { "type": "array", "items": { "type": "string" } },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["target"],
+        "properties": {
+          "type": { "type": "string" },
+          "target": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}
