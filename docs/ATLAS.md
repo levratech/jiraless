@@ -1,9 +1,9 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-27T18:40:56.284Z
+_Generated:_ 2025-10-27T19:47:25.648Z
 
 ## Summary
 - Files: **35**
-- Total size: **52 KB**
+- Total size: **53 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
 
@@ -23,7 +23,7 @@ _Generated:_ 2025-10-27T18:40:56.284Z
 | tools/schemas/story.schema.json | 1.3 KB | `58bb8c140002…` | yes |
 | tools/schemas/work.schema.json | 1.3 KB | `e0f486065d9b…` | yes |
 | tools/validate.mjs | 4.2 KB | `1e514a2a1022…` | yes |
-| ui/index.html | 356 B | `33440e48d7f2…` | no |
+| ui/index.html | 451 B | `f5485df9f6b4…` | no |
 | ui/package.json | 844 B | `8ea391ca9718…` | no |
 | ui/public/404.html | 1.6 KB | `816f4a2db1b1…` | no |
 | ui/public/config.js | 149 B | `113826305d74…` | no |
@@ -33,7 +33,7 @@ _Generated:_ 2025-10-27T18:40:56.284Z
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
 | ui/src/App.jsx | 1011 B | `835983ee2dcc…` | no |
 | ui/src/App.tsx | 1011 B | `835983ee2dcc…` | no |
-| ui/src/components/Board.tsx | 2.7 KB | `704c1925bccb…` | no |
+| ui/src/components/Board.tsx | 2.8 KB | `2dbc0fdfb9b0…` | no |
 | ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no |
 | ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
 | ui/src/index.css | 632 B | `696b7714cc1f…` | no |
@@ -42,7 +42,7 @@ _Generated:_ 2025-10-27T18:40:56.284Z
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
 | ui/src/main.tsx | 326 B | `cfd0d979e84a…` | no |
 | ui/src/pages/NewWork.tsx | 2.1 KB | `38ceefaa38e3…` | no |
-| ui/src/pages/WorkDetail.tsx | 1.3 KB | `6ca8264398da…` | no |
+| ui/src/pages/WorkDetail.tsx | 2.1 KB | `b8c2a3f83039…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
 | ui/vite.config.ts | 154 B | `14cbdd502354…` | no |
 
@@ -68,6 +68,7 @@ _Generated:_ 2025-10-27T18:40:56.284Z
 | Build Atlas | push, workflow_dispatch | .github/workflows/atlas.yml |
 | Materialize Boards & Backlinks | push, workflow_dispatch | .github/workflows/materialize.yml |
 | Deploy UI to Pages | push, workflow_dispatch | .github/workflows/pages.yml |
+| Propose Work (repository_dispatch → draft PR) | repository_dispatch | .github/workflows/propose-intent.yml |
 | Validate Jiraless Objects | pull_request, push | .github/workflows/validate.yml |
 
 ## Inline Source (key files)
