@@ -5,12 +5,12 @@
  * - File inventory (size, sha256)
  * - .project object stats (by type/status)
  * - Workflows summary (name, triggers)
- * - Inline source (for selected types) with size cap
+ * - Inline source (whitelisted dirs only) with size cap
  *
  * Env:
  *  ATLAS_OUT=docs/ATLAS.md
  *  ATLAS_MAX_INLINE=200000
- *  ATLAS_DEBUG_IGNORE=1 (prints which files/patterns were ignored)
+ *  ATLAS_DEBUG_IGNORE=1
  */
 
 import fs from "fs/promises";
@@ -21,10 +21,18 @@ import matter from "gray-matter";
 import yaml from "js-yaml";
 import ignore from "ignore";
 
-const REPO_ROOT = process.cwd();
 const OUT = process.env.ATLAS_OUT || "docs/ATLAS.md";
 const MAX_INLINE_BYTES = Number(process.env.ATLAS_MAX_INLINE || 200_000);
 const DEBUG_IGNORE = !!process.env.ATLAS_DEBUG_IGNORE;
+
+// Only inline from these locations (keeps Atlas tight)
+const INLINE_ALLOW_DIRS = [
+  "tools/",
+  "tools/schemas/",
+  ".github/workflows/",
+  ".project/policies/",
+];
+const INLINE_ALLOW_FILES = new Set(["README.md"]); // single files allowed anywhere
 
 const INLINE_EXTS = new Set([
   ".md", ".markdown", ".yml", ".yaml", ".json",
@@ -40,6 +48,10 @@ const DEFAULT_IGNORES = [
   ".next/**",
   "coverage/**",
   "**/.DS_Store",
+  OUT,                 // never include the atlas itself
+  `**/${path.basename(OUT)}`,
+  ".project/views/**", // generated; usually noisy
+  "ui/dist/**",        // build output
 ];
 
 function normalizeAtlasIgnoreLines(text) {
@@ -47,7 +59,6 @@ function normalizeAtlasIgnoreLines(text) {
     .split(/\r?\n/)
     .map((l) => l.trim())
     .filter((l) => l && !l.startsWith("#"))
-    // If a bare filename is provided, also ignore it anywhere with **/name
     .flatMap((p) => {
       const hasSlash = p.includes("/");
       const hasGlob = /[*?[\]{}()!]/.test(p);
@@ -67,7 +78,7 @@ try {
 
 const ig = ignore().add([...DEFAULT_IGNORES, ...userIgnores]);
 
-// tiny helpers
+// helpers
 const ext = (p) => path.extname(p).toLowerCase();
 const sha256 = (b) => crypto.createHash("sha256").update(b).digest("hex");
 const prettyBytes = (n) => {
@@ -76,9 +87,7 @@ const prettyBytes = (n) => {
   return `${v.toFixed(v < 10 && i > 0 ? 1 : 0)} ${u[i]}`;
 };
 
-async function readSafe(p) {
-  try { return await fs.readFile(p); } catch { return null; }
-}
+async function readSafe(p) { try { return await fs.readFile(p); } catch { return null; } }
 
 function codeFenceForExt(e) {
   if (e === ".md" || e === ".markdown") return "markdown";
@@ -127,11 +136,16 @@ async function collectFiles() {
       path: f,
       size,
       sha256: buf ? sha256(buf) : "",
-      inline: INLINE_EXTS.has(ext(f)) && size <= MAX_INLINE_BYTES,
+      inline: shouldInline(f) && size <= MAX_INLINE_BYTES && INLINE_EXTS.has(ext(f)),
     });
   }
   entries.sort((a, b) => a.path.localeCompare(b.path));
   return entries;
+}
+
+function shouldInline(p) {
+  if (INLINE_ALLOW_FILES.has(p)) return true;
+  return INLINE_ALLOW_DIRS.some((prefix) => p.startsWith(prefix));
 }
 
 async function projectStats() {
@@ -221,6 +235,7 @@ _Generated:_ ${now}
 - Files: **${entries.length}**
 - Total size: **${prettyBytes(totalSize)}**
 - Inlined source cap: **${prettyBytes(MAX_INLINE_BYTES)}** per file
+- Inline allow: ${["README.md", ...INLINE_ALLOW_DIRS].join(", ")}
 
 ## File Inventory
 ${filesTable}
