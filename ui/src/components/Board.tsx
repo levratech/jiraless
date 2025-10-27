@@ -6,6 +6,17 @@ import { getTypeMeta } from '../lib/ontology'
 type CardT = { id:string; title:string; type:string[]; priority?:string; assignees?:string[]; file?:string }
 type BoardData = Record<string, CardT[]>
 
+function norm(p?: string){
+  if(!p) return undefined
+  let s = decodeURIComponent(p).replace(/\\/g, '/')
+  // strip any absolute CI prefix to be safe
+  const ix = s.indexOf('.project/')
+  if (ix >= 0) s = s.slice(ix)
+  if (s.startsWith('./')) s = s.slice(2)
+  if (s.startsWith('/')) s = s.replace(/^\/+/, '')
+  return s
+}
+
 export function Board() {
   const [board, setBoard] = useState<BoardData | null>(null)
   const [statuses, setStatuses] = useState<string[]>([])
@@ -15,6 +26,10 @@ export function Board() {
     ;(async () => {
       const data = await fetchJson<BoardData>('./views/board.json')
       if (!alive) return
+      // sanitize any legacy absolute paths
+      for (const col of Object.keys(data)) {
+        data[col] = data[col].map(c => ({ ...c, file: norm(c.file) }))
+      }
       setBoard(data)
       setStatuses(Object.keys(data).sort())
     })()
@@ -24,11 +39,11 @@ export function Board() {
   if (!board) return <div>Loading board…</div>
 
   return (
-    <div style={{ display:'grid', gridTemplateColumns:`repeat(${Math.max(statuses.length,1)}, minmax(280px, 1fr))`, gap:16 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.max(statuses.length,1)}, minmax(280px, 1fr))`, gap: 16 }}>
       {statuses.map((status) => (
-        <div key={status} style={{ background:'#fafafa', border:'1px solid #eee', borderRadius:12, padding:12 }}>
-          <div style={{ fontWeight:700, marginBottom:8 }}>{status}</div>
-          <div style={{ display:'grid', gap:8 }}>
+        <div key={status} style={{ background: '#fafafa', border: '1px solid #eee', borderRadius: 12, padding: 12 }}>
+          <div style={{ fontWeight: 700, marginBottom: 8 }}>{status}</div>
+          <div style={{ display: 'grid', gap: 8 }}>
             {board[status]?.map(card => <Card key={card.id} {...card} />)}
           </div>
         </div>
@@ -38,7 +53,8 @@ export function Board() {
 }
 
 function Card({ id, title, type, priority, assignees, file }: CardT) {
-  const qs = file ? `?file=${encodeURIComponent(file)}` : ''
+  const rel = norm(file)
+  const qs = rel ? `?file=${encodeURIComponent(rel)}` : ''
   return (
     <Link to={`/work/${encodeURIComponent(id)}${qs}`} style={{ textDecoration:'none', color:'inherit' }}>
       <div style={{ background:'white', border:'1px solid #e5e7eb', borderRadius:10, padding:10, boxShadow:'0 1px 2px rgba(0,0,0,0.04)' }}>
