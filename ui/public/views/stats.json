@@ -1,0 +1,12 @@
+{
+  "count": 1,
+  "byStatus": {
+    "in_progress": 1
+  },
+  "byType": {
+    "feature": 1
+  },
+  "byAssignee": {
+    "adam": 1
+  }
+}

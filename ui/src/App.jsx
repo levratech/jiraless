@@ -1,21 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import IssuesList from './components/IssuesList';
-import IssueDetail from './components/IssueDetail';
+import React from 'react'
+import { Board } from './components/Board'
 
-const config = window.__JIRALESS__ || { owner: 'levratech', repo: 'jiraless', branch: 'main' };
-
-function App() {
+export function App() {
   return (
-    <Router>
-      <div className="container">
-        <h1>Jiraless</h1>
-        <Routes>
-          <Route path="/issues" element={<IssuesList config={config} />} />
-          <Route path="/issues/:id" element={<IssueDetail config={config} />} />
-        </Routes>
-      </div>
-    </Router>
-  );
+    <div style={{ fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif', padding: '16px' }}>
+      <h1 style={{ marginBottom: 8 }}>Jiraless</h1>
+      <p style={{ color: '#666', marginTop: 0 }}>Repo-native board (v0.3)</p>
+      <Board />
+    </div>
+  )
 }
-
-export default App;
