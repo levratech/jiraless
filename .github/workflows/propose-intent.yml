@@ -1,0 +1,79 @@
+name: Propose Work (repository_dispatch → draft PR)
+on:
+  repository_dispatch:
+    types: [jiraless.propose_work]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare payload
+        id: prep
+        run: |
+          echo "PAYLOAD<<EOF" >> $GITHUB_OUTPUT
+          echo '${{ toJson(github.event.client_payload) }}' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create branch + file
+        id: create
+        run: |
+          PAYLOAD='${{ steps.prep.outputs.PAYLOAD }}'
+          node -e "
+          const fs=require('fs');
+          const p=JSON.parse(process.env.PAYLOAD||'{}');
+          const now=new Date().toISOString().replace(/[-:T.Z]/g,'').slice(0,14);
+          const id = p.id || ('WK-' + now);
+          const fname = p.file || \`.project/objects/\${id}.md\`;
+          const status = p.status || 'backlog';
+          const type = Array.isArray(p.type)? p.type : (p.type?[p.type]:['feature']);
+          const title = p.title || 'Untitled work item';
+          const labels = p.labels||[];
+          const assignees = p.assignees||[];
+          const priority = p.priority || 'p3';
+          const severity = p.severity || undefined;
+
+          const front = {
+            id, type, title, status, priority,
+            ...(p.intent?{intent:p.intent}:{}) ,
+            ...(p.scope?{scope:p.scope}:{}) ,
+            ...(severity?{severity}:{}) ,
+            ...(assignees.length?{assignees}:{}) ,
+            ...(labels.length?{labels}:{}) ,
+            created: new Date().toISOString(),
+            updated: new Date().toISOString()
+          };
+          const body = (p.body || '## Context\\n\\nDescribe context...\\n\\n## Plan\\n- [ ] step 1\\n\\n## Acceptance\\n- [ ] criteria');
+
+          const fm = '---\\n'+Object.entries(front).map(([k,v])=>{
+            return k+': '+(Array.isArray(v)? ('['+v.map(x=>JSON.stringify(x)).join(', ')+']') : JSON.stringify(v));
+          }).join('\\n')+'\\n---\\n\\n'+body+'\\n';
+
+          fs.mkdirSync(require('path').dirname(fname),{recursive:true});
+          fs.writeFileSync(fname,fm);
+          fs.writeFileSync('.__new_id', id);
+          "
+          echo "ID=$(cat .__new_id)" >> $GITHUB_OUTPUT
+          echo "FNAME=$(ls .project/objects/*.md -t | head -n1)" >> $GITHUB_OUTPUT
+
+      - name: Commit & push branch
+        env:
+          ID: ${{ steps.create.outputs.ID }}
+        run: |
+          BR="proposed/${ID}"
+          git checkout -b "$BR"
+          git add -A
+          git -c user.name='jiraless-bot' -c user.email='bot@users.noreply.github.com' commit -m "feat: propose ${ID}"
+          git push --set-upstream origin "$BR"
+
+      - name: Open draft PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ID: ${{ steps.create.outputs.ID }}
+        run: |
+          gh pr create --fill --draft --title "${ID}: proposed work item" --body "Created via repository_dispatch jiraless.propose_work"

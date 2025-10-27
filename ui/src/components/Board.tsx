@@ -37,9 +37,10 @@ export function Board() {
   )
 }
 
-function Card({ id, title, type, priority, assignees }: CardT) {
+function Card({ id, title, type, priority, assignees, file }: CardT) {
+  const qs = file ? `?file=${encodeURIComponent(file)}` : ''
   return (
-    <Link to={`/work/${encodeURIComponent(id)}`} style={{ textDecoration:'none', color:'inherit' }}>
+    <Link to={`/work/${encodeURIComponent(id)}${qs}`} style={{ textDecoration:'none', color:'inherit' }}>
       <div style={{ background:'white', border:'1px solid #e5e7eb', borderRadius:10, padding:10, boxShadow:'0 1px 2px rgba(0,0,0,0.04)' }}>
         <div style={{ fontSize:12, color:'#6b7280', marginBottom:4 }}>{id}</div>
         <div style={{ fontWeight:600, marginBottom:6 }}>{title}</div>
