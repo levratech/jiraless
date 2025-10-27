@@ -1,5 +1,5 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-27T15:09:23.099Z
+_Generated:_ 2025-10-27T16:34:17.830Z
 
 ## Summary
 - Files: **21**
@@ -53,6 +53,7 @@ _Generated:_ 2025-10-27T15:09:23.099Z
 | :-- | :-- | :-- |
 | Build Atlas | push, workflow_dispatch | .github/workflows/atlas.yml |
 | Materialize Boards & Backlinks | push, workflow_dispatch | .github/workflows/materialize.yml |
+| Deploy UI to Pages | push, workflow_dispatch | .github/workflows/pages.yml |
 | Validate Jiraless Objects | pull_request, push | .github/workflows/validate.yml |
 
 ## Inline Source (key files)
