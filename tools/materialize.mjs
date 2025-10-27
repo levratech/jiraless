@@ -18,6 +18,7 @@ const POSIX_ROOT = REPO_ROOT.replace(/\\/g, "/");
 const OBJ_GLOB = ".project/objects/**/*.{md,markdown}";
 const VIEWS_DIR = ".project/views";
 const ONTOLOGY_YAML = ".project/policies/ontology.yaml";
+const SM_YAML = ".project/policies/state-machine.yaml";
 const TARGET_PUBLIC = process.env.TARGET_PUBLIC || ""; // e.g. "ui/public"
 const PUBLIC_VIEWS_DIR = TARGET_PUBLIC ? path.join(TARGET_PUBLIC, "views") : "";
 
@@ -140,6 +141,10 @@ let ontology = { types: {}, facets: {} };
 try { ontology = yaml.load(await fs.readFile(ONTOLOGY_YAML, "utf8")) || ontology; }
 catch { console.warn(`[warn] ontology not found at ${ONTOLOGY_YAML}`); }
 
+let sm = {};
+try { sm = yaml.load(await fs.readFile(SM_YAML, "utf8")) || {}; }
+catch { console.warn(`[warn] state-machine not found at ${SM_YAML}`); }
+
 /** ---------- write ---------- */
 await ensureDir(VIEWS_DIR);
 await writeJson(path.join(VIEWS_DIR, "board.json"), board);
@@ -152,6 +157,7 @@ if (TARGET_PUBLIC){
   await mirrorToPublic("by-type.json");
   await mirrorToPublic("stats.json");
   await writeJson(path.join(TARGET_PUBLIC, "ontology.json"), ontology);
+  await writeJson(path.join(TARGET_PUBLIC, "state-machine.json"), sm);
 }
 
 console.log(`materialized: ${items.length} items -> board.json, by-type.json, stats.json (repo-relative paths)`);

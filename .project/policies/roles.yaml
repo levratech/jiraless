@@ -1,6 +1,22 @@
+# Who can do what (human+agent). Usernames are GitHub handles.
 roles:
-  owner:       { members: ["github:repo:admins"], permissions: ["*"] }
-  maintainer:  { members: ["github:team:platform"], permissions: ["issue.*","transition.*","policy.*"] }
-  contributor: { members: ["github:repo:writers"],  permissions: ["issue.create","comment.create","transition.to:in_review"] }
-  reporter:    { members: ["github:repo:triagers"], permissions: ["comment.create","link.create"] }
-  agent:       { members: ["bot:jiraless[bot]"],    permissions: ["proposal.create","runlog.write"] }
+  owner:
+    users: [keen5336]           # 👈 adjust
+    can_transition: ["*"]       # all transitions
+  maintainer:
+    users: []
+    can_transition:
+      - backlog->in_progress
+      - in_progress->review
+      - review->done
+      - backlog->discarded
+  agent:
+    users: [jiraless-bot]       # CI or bot identities you’ll use
+    can_transition:
+      - backlog->in_progress
+      - in_progress->review
+  viewer:
+    users: []
+    can_transition: []
+# Optional severity gate: these must include a human owner/maintainer on the PR.
+human_review_required_for_severity: [high, critical]

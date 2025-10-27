@@ -1,20 +1,7 @@
-# Jiraless State Machine (v0.2)
-states: [backlog, selected, in_progress, in_review, done, archived, blocked, on_hold, failed]
-
+states: [backlog, in_progress, review, done, discarded]
 transitions:
-  backlog: [selected]
-  selected: [in_progress, on_hold]
-  in_progress: [in_review, blocked, failed]
-  in_review: [done, in_progress]
-  done: [archived]
-  blocked: [in_progress, on_hold]
-  on_hold: [selected, in_progress]
-  failed: [selected]
-
-# Optional lightweight policy hooks (informational in v0.2)
-policies:
-  - if:
-      type: bug
-      severity: [high, critical]
-    require:
-      human_approver: true
+  backlog:      [in_progress, discarded]
+  in_progress:  [review, discarded]
+  review:       [done, in_progress]
+  done:         []
+  discarded:    []

@@ -1,0 +1,51 @@
+name: Propose Transition (repository_dispatch → draft PR)
+on:
+  repository_dispatch:
+    types: [jiraless.transition]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  tx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Transition
+        id: step
+        run: |
+          PAYLOAD='${{ toJson(github.event.client_payload) }}'
+          node -e "
+          const fs=require('fs'); const path=require('path');
+          const p=JSON.parse(process.env.PAYLOAD||'{}');
+          const id = p.id; const next = p.nextStatus;
+          if(!id||!next){ console.error('missing id/nextStatus'); process.exit(1); }
+          const glob=require('glob');
+          const files = glob.sync('.project/objects/**/*.{md,markdown}');
+          const f = files.find(x=>fs.readFileSync(x,'utf8').includes('\\nid: '+id));
+          if(!f){ console.error('id not found'); process.exit(1); }
+          let txt = fs.readFileSync(f,'utf8');
+          // naive YAML front-matter status rewrite
+          txt = txt.replace(/(\\nstatus:\\s*)(\\S+)/, (m,a)=> a + next);
+          fs.writeFileSync(f, txt);
+          fs.writeFileSync('.__work_file', f);
+          "
+          echo "FILE=$(cat .__work_file)" >> $GITHUB_OUTPUT
+
+      - name: Commit & push
+        env:
+          FILE: ${{ steps.step.outputs.FILE }}
+        run: |
+          BR="transition/${{ github.event.client_payload.id }}-to-${{ github.event.client_payload.nextStatus }}"
+          git checkout -b "$BR"
+          git add "$FILE"
+          git -c user.name='jiraless-bot' -c user.email='bot@users.noreply.github.com' commit -m "transition: ${{ github.event.client_payload.id }} -> ${{ github.event.client_payload.nextStatus }}"
+          git push --set-upstream origin "$BR"
+
+      - name: Open draft PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create --fill --draft --title "Transition ${{ github.event.client_payload.id }} → ${{ github.event.client_payload.nextStatus }}" --body "Proposed by jiraless.transition"
