@@ -1,15 +1,4 @@
 {
-  "updated": "2025-10-28T20:07:05.731Z",
-  "manifests": [
-    {
-      "repo": "levratech/jiraless",
-      "url": "https://levratech.github.io/jiraless/",
-      "views": {
-        "board": "views/board.json",
-        "ontology": "ontology.json",
-        "state_machine": "state-machine.json"
-      },
-      "updated": "2025-10-28T11:34:15.305Z"
-    }
-  ]
+  "updated": "2025-10-28T23:11:52.000Z",
+  "manifests": []
 }
