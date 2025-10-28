@@ -1,0 +1,10 @@
+{
+  "repo": "levratech/jiraless",
+  "url": "https://levratech.github.io/jiraless/",
+  "views": {
+    "board": "views/board.json",
+    "ontology": "ontology.json",
+    "state_machine": "state-machine.json"
+  },
+  "updated": "2025-10-28T11:34:14.716Z"
+}
