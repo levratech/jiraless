@@ -1,9 +1,9 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-28T23:12:11.852Z
+_Generated:_ 2025-10-28T23:17:20.352Z
 
 ## Summary
-- Files: **44**
-- Total size: **65 KB**
+- Files: **46**
+- Total size: **80 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
 
@@ -15,7 +15,7 @@ _Generated:_ 2025-10-28T23:12:11.852Z
 | README.md | 8.9 KB | `d62cb2e9713a…` | yes |
 | tools/atlas.mjs | 7.8 KB | `2715e4c4f3a8…` | yes |
 | tools/federate.mjs | 1.2 KB | `be57091c23e0…` | yes |
-| tools/materialize.mjs | 6.1 KB | `fe7f9bd71b96…` | yes |
+| tools/materialize.mjs | 7.1 KB | `56a3ae81ac71…` | yes |
 | tools/schemas/adr.schema.json | 726 B | `05c78858158c…` | yes |
 | tools/schemas/doc.schema.json | 721 B | `9468287ecf9e…` | yes |
 | tools/schemas/epic.schema.json | 1.3 KB | `c82696cbc6f7…` | yes |
@@ -32,6 +32,7 @@ _Generated:_ 2025-10-28T23:12:11.852Z
 | ui/public/config.js | 149 B | `113826305d74…` | no |
 | ui/public/health.json | 187 B | `3c53e6ae2458…` | no |
 | ui/public/health.txt | 118 B | `fa3aee057fbc…` | no |
+| ui/public/manifest.json | 248 B | `e30382d8dd6d…` | no |
 | ui/public/ontology.json | 828 B | `250b630dfbda…` | no |
 | ui/public/version.json | 169 B | `1088fbe08e49…` | no |
 | ui/public/views/board.json | 303 B | `f9a6f6cbe393…` | no |
@@ -39,18 +40,19 @@ _Generated:_ 2025-10-28T23:12:11.852Z
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
 | ui/src/App.jsx | 1011 B | `835983ee2dcc…` | no |
 | ui/src/App.tsx | 1.5 KB | `eee68f8545da…` | no |
-| ui/src/components/Board.tsx | 3.3 KB | `52c5eff116c0…` | no |
+| ui/src/components/Board.tsx | 9.5 KB | `cd5c09d60be7…` | no |
 | ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no |
 | ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
 | ui/src/index.css | 632 B | `696b7714cc1f…` | no |
 | ui/src/lib/asset.ts | 125 B | `56fce3b8694c…` | no |
 | ui/src/lib/fetch.ts | 242 B | `94eb0ae77c98…` | no |
 | ui/src/lib/ontology.ts | 501 B | `fb5e681d8ed3…` | no |
+| ui/src/lib/search.ts | 2.4 KB | `2640c79f07e6…` | no |
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
 | ui/src/main.tsx | 471 B | `84491d401f5d…` | no |
 | ui/src/pages/Cortex.tsx | 1.0 KB | `ab789897c40e…` | no |
-| ui/src/pages/NewWork.tsx | 2.1 KB | `38ceefaa38e3…` | no |
-| ui/src/pages/WorkDetail.tsx | 4.6 KB | `b0a5a176dd34…` | no |
+| ui/src/pages/NewWork.tsx | 4.6 KB | `96c7a885883c…` | no |
+| ui/src/pages/WorkDetail.tsx | 7.9 KB | `a0cd85874772…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
 | ui/src/version.ts | 203 B | `1143eece62e6…` | no |
 | ui/vite.config.ts | 289 B | `7f0078405011…` | no |
@@ -725,8 +727,8 @@ main().catch(err => {
 ```
 
 ### `tools/materialize.mjs`
-_Size:_ 6.1 KB  
-_Hash:_ `fe7f9bd71b96a360d1a07ecdbcb9a0b69c53267980dcbdbe890d461846d878da`
+_Size:_ 7.1 KB  
+_Hash:_ `56a3ae81ac71bec755863961591d9c43f253ab718bbf3172694f39d19a9857c9`
 
 ```js
 #!/usr/bin/env node
@@ -785,6 +787,21 @@ function toRepoRel(pth){
   return s;
 }
 
+// Strip markdown formatting for plain text search
+function stripMarkdown(text) {
+  return text
+    .replace(/#{1,6}\s+/g, '') // headers
+    .replace(/\*\*(.*?)\*\*/g, '$1') // bold
+    .replace(/\*(.*?)\*/g, '$1') // italic
+    .replace(/`(.*?)`/g, '$1') // inline code
+    .replace(/```[\s\S]*?```/g, '') // code blocks
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // links
+    .replace(/^\s*[-*+]\s+/gm, '') // list items
+    .replace(/^\s*\d+\.\s+/gm, '') // numbered lists
+    .replace(/\n+/g, ' ') // multiple newlines to space
+    .trim();
+}
+
 async function writeIfChanged(file, contents) {
   try {
     const prev = await fs.readFile(file, 'utf8');
@@ -793,6 +810,11 @@ async function writeIfChanged(file, contents) {
   await fs.mkdir(path.dirname(file), { recursive: true });
   await fs.writeFile(file, contents, 'utf8');
   return true;
+}
+
+async function writeJson(file, obj) {
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  await fs.writeFile(file, JSON.stringify(obj, null, 2), 'utf8');
 }
 
 async function mirrorToPublic(relName){
@@ -827,6 +849,7 @@ for (const f of files){
     created: data.created || null,
     updated: data.updated || null,
     links: data.links || [],
+    content: content,                    // store full content for search
     file: toRepoRel(f),                // ✅ repo-relative
     excerpt: content.split("\n").slice(0, 12).join("\n")
   });
@@ -837,12 +860,16 @@ const board = {};
 for (const it of items){
   const status = it.status;
   if (!board[status]) board[status] = [];
+  const plainContent = stripMarkdown(it.title + ' ' + it.content);
+  const searchBlob = plainContent.slice(0, 200);
   board[status].push({
     id: it.id,
     title: it.title,
     type: it.type,
     priority: it.priority,
     assignees: it.assignees,
+    labels: it.labels,
+    search_blob: searchBlob,
     file: toRepoRel(it.file)           // ✅ enforce repo-relative again
   });
 }
