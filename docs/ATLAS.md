@@ -1,9 +1,9 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-28T23:17:20.352Z
+_Generated:_ 2025-10-28T23:37:15.594Z
 
 ## Summary
-- Files: **46**
-- Total size: **80 KB**
+- Files: **48**
+- Total size: **81 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
 
@@ -15,7 +15,7 @@ _Generated:_ 2025-10-28T23:17:20.352Z
 | README.md | 8.9 KB | `d62cb2e9713a…` | yes |
 | tools/atlas.mjs | 7.8 KB | `2715e4c4f3a8…` | yes |
 | tools/federate.mjs | 1.2 KB | `be57091c23e0…` | yes |
-| tools/materialize.mjs | 7.1 KB | `56a3ae81ac71…` | yes |
+| tools/materialize.mjs | 7.3 KB | `e8be4cd15fbf…` | yes |
 | tools/schemas/adr.schema.json | 726 B | `05c78858158c…` | yes |
 | tools/schemas/doc.schema.json | 721 B | `9468287ecf9e…` | yes |
 | tools/schemas/epic.schema.json | 1.3 KB | `c82696cbc6f7…` | yes |
@@ -26,15 +26,17 @@ _Generated:_ 2025-10-28T23:17:20.352Z
 | tools/validate.mjs | 4.3 KB | `79a712057cb9…` | yes |
 | tools/version.mjs | 3.2 KB | `954abd451387…` | yes |
 | ui/index.html | 491 B | `9983dbc240f8…` | no |
-| ui/package.json | 844 B | `15776fc5bff8…` | no |
+| ui/package.json | 844 B | `3e1bfbd276db…` | no |
 | ui/public/404.html | 1.6 KB | `816f4a2db1b1…` | no |
 | ui/public/CNAME | 22 B | `3909faef9656…` | no |
 | ui/public/config.js | 149 B | `113826305d74…` | no |
-| ui/public/health.json | 187 B | `3c53e6ae2458…` | no |
-| ui/public/health.txt | 118 B | `fa3aee057fbc…` | no |
-| ui/public/manifest.json | 248 B | `e30382d8dd6d…` | no |
+| ui/public/health-lite.json | 89 B | `691cecefd6d4…` | no |
+| ui/public/health.json | 187 B | `d732dda86a92…` | no |
+| ui/public/health.txt | 118 B | `e1048d04ac18…` | no |
+| ui/public/manifest.json | 248 B | `4b5a0944255b…` | no |
 | ui/public/ontology.json | 828 B | `250b630dfbda…` | no |
-| ui/public/version.json | 169 B | `1088fbe08e49…` | no |
+| ui/public/state-machine.json | 339 B | `eeb76afa0cff…` | no |
+| ui/public/version.json | 169 B | `c076ad6b5d43…` | no |
 | ui/public/views/board.json | 303 B | `f9a6f6cbe393…` | no |
 | ui/public/views/by-type.json | 218 B | `f5ca03a1e86d…` | no |
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
@@ -45,16 +47,16 @@ _Generated:_ 2025-10-28T23:17:20.352Z
 | ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
 | ui/src/index.css | 632 B | `696b7714cc1f…` | no |
 | ui/src/lib/asset.ts | 125 B | `56fce3b8694c…` | no |
-| ui/src/lib/fetch.ts | 242 B | `94eb0ae77c98…` | no |
+| ui/src/lib/fetch.ts | 537 B | `dcdfe1212d67…` | no |
 | ui/src/lib/ontology.ts | 501 B | `fb5e681d8ed3…` | no |
 | ui/src/lib/search.ts | 2.4 KB | `2640c79f07e6…` | no |
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
 | ui/src/main.tsx | 471 B | `84491d401f5d…` | no |
 | ui/src/pages/Cortex.tsx | 1.0 KB | `ab789897c40e…` | no |
 | ui/src/pages/NewWork.tsx | 4.6 KB | `96c7a885883c…` | no |
-| ui/src/pages/WorkDetail.tsx | 7.9 KB | `a0cd85874772…` | no |
+| ui/src/pages/WorkDetail.tsx | 8.0 KB | `0974833159b3…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
-| ui/src/version.ts | 203 B | `1143eece62e6…` | no |
+| ui/src/version.ts | 203 B | `a62d6d40cbc6…` | no |
 | ui/vite.config.ts | 289 B | `7f0078405011…` | no |
 
 ## .project Object Stats
@@ -727,8 +729,8 @@ main().catch(err => {
 ```
 
 ### `tools/materialize.mjs`
-_Size:_ 7.1 KB  
-_Hash:_ `56a3ae81ac71bec755863961591d9c43f253ab718bbf3172694f39d19a9857c9`
+_Size:_ 7.3 KB  
+_Hash:_ `e8be4cd15fbf71b6cb03afa6db3f5d6785467d53f6af6439460d6e250fd30229`
 
 ```js
 #!/usr/bin/env node
@@ -906,6 +908,12 @@ let sm = {};
 try { sm = yaml.load(await fs.readFile(SM_YAML, "utf8")) || {}; }
 catch { console.warn(`[warn] state-machine not found at ${SM_YAML}`); }
 
+// Write state-machine.json to both views and ui/public for Pages deployment
+const smJson = JSON.stringify(sm, null, 2);
+await writeIfChanged(".project/views/state-machine.json", smJson);
+await writeIfChanged("ui/public/state-machine.json", smJson);
+console.log("state-machine.json materialized to views/ and ui/public/");
+
 /** ---------- write ---------- */
 await ensureDir(VIEWS_DIR);
 await writeJson(path.join(VIEWS_DIR, "board.json"), board);
@@ -918,7 +926,6 @@ if (TARGET_PUBLIC){
   await mirrorToPublic("by-type.json");
   await mirrorToPublic("stats.json");
   await writeJson(path.join(TARGET_PUBLIC, "ontology.json"), ontology);
-  await writeJson(path.join(TARGET_PUBLIC, "state-machine.json"), sm);
 }
 
 const MANIFEST = {
