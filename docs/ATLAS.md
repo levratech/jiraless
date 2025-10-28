@@ -1,8 +1,8 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-28T19:31:47.262Z
+_Generated:_ 2025-10-28T19:51:32.493Z
 
 ## Summary
-- Files: **43**
+- Files: **44**
 - Total size: **65 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
@@ -26,13 +26,14 @@ _Generated:_ 2025-10-28T19:31:47.262Z
 | tools/validate.mjs | 4.3 KB | `79a712057cb9…` | yes |
 | tools/version.mjs | 3.2 KB | `954abd451387…` | yes |
 | ui/index.html | 491 B | `9983dbc240f8…` | no |
-| ui/package.json | 844 B | `281ae9d17500…` | no |
+| ui/package.json | 844 B | `a55967ba4043…` | no |
 | ui/public/404.html | 1.6 KB | `816f4a2db1b1…` | no |
+| ui/public/CNAME | 22 B | `3909faef9656…` | no |
 | ui/public/config.js | 149 B | `113826305d74…` | no |
-| ui/public/health.json | 187 B | `523571eeb706…` | no |
-| ui/public/health.txt | 118 B | `3007a992d5bd…` | no |
+| ui/public/health.json | 187 B | `fd2609e3aae9…` | no |
+| ui/public/health.txt | 118 B | `3b0fb4547be9…` | no |
 | ui/public/ontology.json | 828 B | `250b630dfbda…` | no |
-| ui/public/version.json | 169 B | `fadb9157088f…` | no |
+| ui/public/version.json | 169 B | `e84a4d3da49f…` | no |
 | ui/public/views/board.json | 303 B | `f9a6f6cbe393…` | no |
 | ui/public/views/by-type.json | 218 B | `f5ca03a1e86d…` | no |
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
@@ -51,7 +52,7 @@ _Generated:_ 2025-10-28T19:31:47.262Z
 | ui/src/pages/NewWork.tsx | 2.1 KB | `38ceefaa38e3…` | no |
 | ui/src/pages/WorkDetail.tsx | 4.6 KB | `b0a5a176dd34…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
-| ui/src/version.ts | 203 B | `6bf4bd533d56…` | no |
+| ui/src/version.ts | 203 B | `cd740a2b20ef…` | no |
 | ui/vite.config.ts | 304 B | `13e9043047cf…` | no |
 
 ## .project Object Stats
@@ -76,7 +77,8 @@ _Generated:_ 2025-10-28T19:31:47.262Z
 | Build Atlas | push, workflow_dispatch, workflow_run | .github/workflows/atlas.yml |
 | Federate Cortex | schedule, workflow_dispatch, push | .github/workflows/federate.yml |
 | Materialize Boards & Backlinks | push, workflow_dispatch | .github/workflows/materialize.yml |
-| Deploy UI to Pages | push, workflow_dispatch | .github/workflows/pages.yml |
+| Pages Watchdog | schedule, workflow_dispatch | .github/workflows/pages-watchdog.yml |
+| Deploy UI to Pages | push, workflow_dispatch, repository_dispatch | .github/workflows/pages.yml |
 | Propose Work (repository_dispatch → draft PR) | repository_dispatch | .github/workflows/propose-intent.yml |
 | Propose Transition (repository_dispatch → draft PR) | repository_dispatch | .github/workflows/transition-intent.yml |
 | Validate Jiraless Objects | pull_request, push | .github/workflows/validate.yml |
