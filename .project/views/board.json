@@ -10,6 +10,11 @@
       "assignees": [
         "adam"
       ],
+      "labels": [
+        "v0.2",
+        "ontology"
+      ],
+      "search_blob": "Implement ontology-driven work objects Context Move from rigid types to flexible ontology. Plan Define ontology.yaml Update schema to work Replace validator Notes Types as labels State machine validat",
       "file": ".project/objects/issues/ISS-0001.sample.md"
     }
   ]

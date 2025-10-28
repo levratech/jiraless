@@ -54,6 +54,21 @@ function toRepoRel(pth){
   return s;
 }
 
+// Strip markdown formatting for plain text search
+function stripMarkdown(text) {
+  return text
+    .replace(/#{1,6}\s+/g, '') // headers
+    .replace(/\*\*(.*?)\*\*/g, '$1') // bold
+    .replace(/\*(.*?)\*/g, '$1') // italic
+    .replace(/`(.*?)`/g, '$1') // inline code
+    .replace(/```[\s\S]*?```/g, '') // code blocks
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // links
+    .replace(/^\s*[-*+]\s+/gm, '') // list items
+    .replace(/^\s*\d+\.\s+/gm, '') // numbered lists
+    .replace(/\n+/g, ' ') // multiple newlines to space
+    .trim();
+}
+
 async function writeIfChanged(file, contents) {
   try {
     const prev = await fs.readFile(file, 'utf8');
@@ -62,6 +77,11 @@ async function writeIfChanged(file, contents) {
   await fs.mkdir(path.dirname(file), { recursive: true });
   await fs.writeFile(file, contents, 'utf8');
   return true;
+}
+
+async function writeJson(file, obj) {
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  await fs.writeFile(file, JSON.stringify(obj, null, 2), 'utf8');
 }
 
 async function mirrorToPublic(relName){
@@ -96,6 +116,7 @@ for (const f of files){
     created: data.created || null,
     updated: data.updated || null,
     links: data.links || [],
+    content: content,                    // store full content for search
     file: toRepoRel(f),                // ✅ repo-relative
     excerpt: content.split("\n").slice(0, 12).join("\n")
   });
@@ -106,12 +127,16 @@ const board = {};
 for (const it of items){
   const status = it.status;
   if (!board[status]) board[status] = [];
+  const plainContent = stripMarkdown(it.title + ' ' + it.content);
+  const searchBlob = plainContent.slice(0, 200);
   board[status].push({
     id: it.id,
     title: it.title,
     type: it.type,
     priority: it.priority,
     assignees: it.assignees,
+    labels: it.labels,
+    search_blob: searchBlob,
     file: toRepoRel(it.file)           // ✅ enforce repo-relative again
   });
 }

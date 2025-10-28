@@ -96,13 +96,45 @@ export function WorkDetail(){
     setMsg(ok.ok ? 'Draft PR opened.' : `Error ${ok.status}: ${ok.text}`)
   }
 
+  const [fm, setFm] = useState<any>({})
+
+  const copyLink = () => {
+    const url = `${window.location.origin}/work/${encodeURIComponent(id || '')}${location.search}`
+    navigator.clipboard.writeText(url)
+  }
+
   return (
-    <div>
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12 }}>
-        <a href={blobUrl} target="_blank" rel="noreferrer">Open in GitHub ↗</a>
-        <div style={{ display:'flex', gap:8, alignItems:'center' }}>
-          <span>current: <b>{currentStatus || 'unknown'}</b></span>
-          <select value={next} onChange={e=>setNext(e.target.value)}>
+    <div style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
+      {/* Top Bar */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, padding: 16, background: '#f8fafc', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>{id}</h1>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <span style={{ fontSize: 14, color: '#6b7280' }}>Status:</span>
+            <span style={{ padding: '4px 12px', background: '#e5e7eb', borderRadius: 16, fontSize: 14, fontWeight: 500 }}>{currentStatus || 'unknown'}</span>
+            {fm.priority && <PriorityBadge priority={fm.priority} />}
+            {fm.assignees && fm.assignees.length > 0 && (
+              <span style={{ fontSize: 14, color: '#6b7280' }}>
+                👥 {Array.isArray(fm.assignees) ? fm.assignees.join(', ') : fm.assignees}
+              </span>
+            )}
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={copyLink} style={{ padding: '8px 12px', background: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: 6, cursor: 'pointer' }}>
+            🔗 Copy Link
+          </button>
+          <a href={blobUrl} target="_blank" rel="noopener noreferrer" style={{ padding: '8px 12px', background: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: 6, textDecoration: 'none', color: '#374151' }}>
+            Open in GitHub ↗
+          </a>
+        </div>
+      </div>
+
+      {/* Transition Controls */}
+      <div style={{ marginBottom: 20, padding: 16, background: '#fefefe', borderRadius: 8, border: '1px solid #e5e7eb' }}>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <span style={{ fontWeight: 500 }}>Transition to:</span>
+          <select value={next} onChange={e=>setNext(e.target.value)} style={{ padding: '6px 12px', border: '1px solid #d1d5db', borderRadius: 4 }}>
             <option value="">— choose next —</option>
             <option value="backlog">backlog</option>
             <option value="in_progress">in_progress</option>
@@ -110,16 +142,53 @@ export function WorkDetail(){
             <option value="done">done</option>
             <option value="discarded">discarded</option>
           </select>
-          <button onClick={proposeTransition}>Propose Transition</button>
+          <button onClick={proposeTransition} style={{ padding: '6px 16px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+            Propose Transition
+          </button>
+          {msg && <span style={{ color: msg.includes('Error') ? '#dc2626' : '#059669' }}>{msg}</span>}
         </div>
       </div>
 
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      {/* Content */}
+      <div style={{ padding: 20, background: 'white', borderRadius: 8, border: '1px solid #e5e7eb' }}>
+        <div dangerouslySetInnerHTML={{ __html: html }} />
+      </div>
 
-      <div style={{ marginTop:12 }}>
-        <label>GitHub PAT <input type="password" value={pat} onChange={e=>setPat(e.target.value)} /></label>
-        <div>{msg}</div>
+      {/* PAT Input */}
+      <div style={{ marginTop: 20, padding: 16, background: '#f8fafc', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+        <label style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>
+          GitHub PAT (for transitions)
+          <input
+            type="password"
+            value={pat}
+            onChange={e=>setPat(e.target.value)}
+            style={{ display: 'block', width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 4, marginTop: 4 }}
+          />
+        </label>
       </div>
     </div>
+  )
+}
+
+function PriorityBadge({ priority }: { priority: string }) {
+  const colors = {
+    p1: { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' },
+    p2: { bg: '#fef3c7', border: '#fde68a', text: '#d97706' },
+    p3: { bg: '#ecfdf5', border: '#a7f3d0', text: '#059669' },
+    p4: { bg: '#f3f4f6', border: '#d1d5db', text: '#6b7280' }
+  }
+  const color = colors[priority as keyof typeof colors] || colors.p4
+  return (
+    <span style={{
+      padding: '2px 8px',
+      borderRadius: 12,
+      background: color.bg,
+      border: `1px solid ${color.border}`,
+      color: color.text,
+      fontSize: 12,
+      fontWeight: 500
+    }}>
+      {priority.toUpperCase()}
+    </span>
   )
 }
