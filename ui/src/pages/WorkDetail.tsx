@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import { marked } from 'marked'
 import { ghDispatch } from '../util/gh'
+import { asset } from '../lib/asset'
 
 function cfg(){ return (window as any).__JIRALESS__ || { owner:'', repo:'', branch:'main' } }
 function qsToObj(s:string){ const p=new URLSearchParams(s); return Object.fromEntries(p.entries()) as Record<string,string> }
@@ -50,7 +51,7 @@ export function WorkDetail(){
     async function resolveRel(): Promise<string> {
       if (q.file) return toRepoRel(q.file)
       try {
-        const res = await fetch('./views/board.json', { cache:'no-store' })
+        const res = await fetch(asset('views/board.json') + '?_=' + Date.now())
         if (res.ok) {
           const board = await res.json() as Record<string, {id:string, file?:string}[]>
           for (const col of Object.values(board)) {
@@ -77,11 +78,15 @@ export function WorkDetail(){
       setHtml(marked.parse(content) as string)
 
       // fetch state machine to compute allowed next states
-      const smRes = await fetch('./views/state-machine.json', { cache:'no-store' }).catch(()=>null)
+      const smRes = await fetch(asset('state-machine.json') + '?_=' + Date.now()).catch(()=>null)
       if (smRes && smRes.ok) {
         const sm = await smRes.json()
         const options = (sm.transitions?.[fm.status] || []) as string[]
         if (options.length) setNext(options[0])
+      } else {
+        // fallback: manual nextStates
+        const fallbackOptions = ['review', 'done', 'in_progress', 'discarded']
+        setNext(fallbackOptions[0])
       }
     })()
   }, [id, location.search])

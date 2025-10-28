@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { asset } from "../lib/asset";
 
 type Manifest = {
   repo: string;
@@ -12,7 +13,7 @@ export default function Cortex() {
   const [repos, setRepos] = useState<Manifest[]>([]);
 
   useEffect(() => {
-    fetch("views/federated.json?_=" + Date.now())
+    fetch(asset("views/federated.json") + "?_=" + Date.now())
       .then(res => res.json())
       .then(data => setRepos(data.manifests || []))
       .catch(() => setRepos([]));
