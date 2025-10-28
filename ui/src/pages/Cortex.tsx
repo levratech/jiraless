@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { asset } from "../lib/asset";
+import { fetchJson, assertBasePath } from "../lib/fetch";
 
 type Manifest = {
   repo: string;
@@ -13,10 +13,8 @@ export default function Cortex() {
   const [repos, setRepos] = useState<Manifest[]>([]);
 
   useEffect(() => {
-    fetch(asset("views/federated.json") + "?_=" + Date.now())
-      .then(res => res.json())
-      .then(data => setRepos(data.manifests || []))
-      .catch(() => setRepos([]));
+    assertBasePath("views/federated.json");
+    fetchJson("views/federated.json").then(data => setRepos(data.manifests || [])).catch(() => setRepos([]));
   }, []);
 
   if (!repos.length) return <p className="p-4 text-sm text-gray-500">No federated manifests found.</p>;

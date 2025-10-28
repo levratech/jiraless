@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import { marked } from 'marked'
 import { ghDispatch } from '../util/gh'
-import { asset } from '../lib/asset'
+import { fetchJson } from '../lib/fetch'
 
 function cfg(){ return (window as any).__JIRALESS__ || { owner:'', repo:'', branch:'main' } }
 function qsToObj(s:string){ const p=new URLSearchParams(s); return Object.fromEntries(p.entries()) as Record<string,string> }
@@ -51,13 +51,10 @@ export function WorkDetail(){
     async function resolveRel(): Promise<string> {
       if (q.file) return toRepoRel(q.file)
       try {
-        const res = await fetch(asset('views/board.json') + '?_=' + Date.now())
-        if (res.ok) {
-          const board = await res.json() as Record<string, {id:string, file?:string}[]>
-          for (const col of Object.values(board)) {
-            const hit = col.find(x => x.id === id && x.file)
-            if (hit?.file) return toRepoRel(hit.file)
-          }
+        const board = await fetchJson("views/board.json")
+        for (const col of Object.values(board as any)) {
+          const hit = col.find((x: any) => x.id === id && x.file)
+          if (hit?.file) return toRepoRel(hit.file)
         }
       } catch {}
       return `.project/objects/${id}.md`
@@ -78,16 +75,17 @@ export function WorkDetail(){
       setHtml(marked.parse(content) as string)
 
       // fetch state machine to compute allowed next states
-      const smRes = await fetch(asset('state-machine.json') + '?_=' + Date.now()).catch(()=>null)
-      if (smRes && smRes.ok) {
-        const sm = await smRes.json()
-        const options = (sm.transitions?.[fm.status] || []) as string[]
-        if (options.length) setNext(options[0])
-      } else {
-        // fallback: manual nextStates
-        const fallbackOptions = ['review', 'done', 'in_progress', 'discarded']
-        setNext(fallbackOptions[0])
+      let sm: any = null;
+      try {
+        sm = await fetchJson("state-machine.json");
+      } catch {
+        sm = null; // fallback below
       }
+
+      // Fallback when state machine is missing
+      const defaultNext = ["review","done","in_progress","discarded"];
+      const nextStates = sm?.transitions?.[fm.status] ?? defaultNext;
+      if (nextStates.length) setNext(nextStates[0])
     })()
   }, [id, location.search])
 

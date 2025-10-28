@@ -1,8 +1,16 @@
-import { asset } from './asset'
+// ui/src/lib/fetch.ts
+import { asset } from "./asset";
 
-export async function fetchJson<T = any>(path: string): Promise<T> {
-  const url = asset(path) + (/\?/.test(path) ? '&' : '?') + '_=' + Date.now()
-  const res = await fetch(url, { cache: 'no-store' })
-  if (!res.ok) throw new Error(`Failed to fetch ${path}: ${res.status}`)
-  return res.json() as Promise<T>
+export async function fetchJson(pathFromBase: string) {
+  const url = asset(pathFromBase) + (pathFromBase.includes("?") ? "" : `?_=${Date.now()}`);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Fetch failed ${res.status} for ${url}`);
+  return res.json();
+}
+
+// DEV-only assertion to catch wrong paths early
+export function assertBasePath(p: string) {
+  if (p.startsWith("work/") || p.startsWith("views/") && location.pathname.includes("/work/")) {
+    console.warn("[jiraless] suspect route-relative path:", p, " at ", location.pathname);
+  }
 }
