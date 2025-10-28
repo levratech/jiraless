@@ -173,6 +173,12 @@ let sm = {};
 try { sm = yaml.load(await fs.readFile(SM_YAML, "utf8")) || {}; }
 catch { console.warn(`[warn] state-machine not found at ${SM_YAML}`); }
 
+// Write state-machine.json to both views and ui/public for Pages deployment
+const smJson = JSON.stringify(sm, null, 2);
+await writeIfChanged(".project/views/state-machine.json", smJson);
+await writeIfChanged("ui/public/state-machine.json", smJson);
+console.log("state-machine.json materialized to views/ and ui/public/");
+
 /** ---------- write ---------- */
 await ensureDir(VIEWS_DIR);
 await writeJson(path.join(VIEWS_DIR, "board.json"), board);
@@ -185,7 +191,6 @@ if (TARGET_PUBLIC){
   await mirrorToPublic("by-type.json");
   await mirrorToPublic("stats.json");
   await writeJson(path.join(TARGET_PUBLIC, "ontology.json"), ontology);
-  await writeJson(path.join(TARGET_PUBLIC, "state-machine.json"), sm);
 }
 
 const MANIFEST = {

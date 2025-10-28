@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import { marked } from 'marked'
 import { ghDispatch } from '../util/gh'
-import { fetchJson } from '../lib/fetch'
+import { fetchJson, fetchJsonRoot } from '../lib/fetch'
 
 function cfg(){ return (window as any).__JIRALESS__ || { owner:'', repo:'', branch:'main' } }
 function qsToObj(s:string){ const p=new URLSearchParams(s); return Object.fromEntries(p.entries()) as Record<string,string> }
@@ -75,17 +75,18 @@ export function WorkDetail(){
       setHtml(marked.parse(content) as string)
 
       // fetch state machine to compute allowed next states
-      let sm: any = null;
+      let nexts: string[] = [];
       try {
-        sm = await fetchJson("state-machine.json");
-      } catch {
-        sm = null; // fallback below
+        const sm = await fetchJsonRoot("/state-machine.json");
+        // derive next options from sm if schema matches; else fallback
+        nexts = Array.isArray(sm?.states) ? sm.states : [];
+      } catch (e) {
+        console.warn("state-machine.json missing; using fallback", e);
+        nexts = ["review","done","in_progress","discarded"];
       }
 
-      // Fallback when state machine is missing
-      const defaultNext = ["review","done","in_progress","discarded"];
-      const nextStates = sm?.transitions?.[fm.status] ?? defaultNext;
-      if (nextStates.length) setNext(nextStates[0])
+      // Use first available next state
+      if (nexts.length) setNext(nexts[0])
     })()
   }, [id, location.search])
 

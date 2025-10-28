@@ -1,0 +1,25 @@
+{
+  "states": [
+    "backlog",
+    "in_progress",
+    "review",
+    "done",
+    "discarded"
+  ],
+  "transitions": {
+    "backlog": [
+      "in_progress",
+      "discarded"
+    ],
+    "in_progress": [
+      "review",
+      "discarded"
+    ],
+    "review": [
+      "done",
+      "in_progress"
+    ],
+    "done": [],
+    "discarded": []
+  }
+}

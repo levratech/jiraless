@@ -49,6 +49,14 @@ jobs:
           cd ui
           npm ci || true
 
+      - name: Materialize views (boards, backlinks, state-machine)
+        run: node tools/materialize.mjs
+
+      - name: Assert state-machine present
+        run: |
+          test -f ui/public/state-machine.json || (echo "ui/public/state-machine.json missing" && exit 1)
+          test -f .project/views/state-machine.json || (echo ".project/views/state-machine.json missing" && exit 1)
+
       - name: Build UI (root base)
         env:
           VITE_BASE: /
