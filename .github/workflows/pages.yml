@@ -1,76 +1,84 @@
 name: Deploy UI to Pages
+
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'docs/ATLAS.md'
   workflow_dispatch:
-  repository_dispatch:
-    types: [ jiraless.deploy ]
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      # DIAGNOSTICS: print event + changed files
-      - name: Event + Diff
-        run: |
-          echo "EVENT: ${{ github.event_name }}"
-          echo "REF:    ${{ github.ref }}"
-          echo "SHA:    ${{ github.sha }}"
-          git --no-pager log --oneline -n 5
-          echo "--- changed files vs parent ---"
-          (git diff --name-only HEAD^ || true) | sed 's/^/CHANGED: /'
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
-      - name: Materialize views
-        run: node tools/materialize.mjs
+      - name: Install
+        run: npm ci
 
-      - name: Version stamp
-        run: node tools/version.mjs
-
-      - name: Build UI
-        working-directory: ui
+      # If UI is in a subfolder with its own package.json, install & build there
+      - name: Detect UI dir
+        id: detect
         run: |
-          npm ci
-          npm run build
-
-      - name: Assert no stale base
-        working-directory: ui/dist
-        run: |
-          if grep -R "/jiraless/" -n .; then
-            echo "❌ Found hardcoded /jiraless/ in built files"
-            exit 1
+          if [ -f ui/package.json ]; then
+            echo "ui_dir=ui" >> $GITHUB_OUTPUT
+          else
+            echo "ui_dir=." >> $GITHUB_OUTPUT
           fi
+
+      - name: Install UI deps (if any)
+        if: steps.detect.outputs.ui_dir == 'ui'
+        run: |
+          set -euxo pipefail
+          cd ui
+          npm ci || true
+
+      - name: Build UI (root base)
+        env:
+          VITE_BASE: /
+        run: |
+          set -euxo pipefail
+          cd ${{ steps.detect.outputs.ui_dir }}
+          npm run build
+          echo "Built files:"
+          ls -lah dist || true
+
+      - name: Assert dist exists
+        run: |
+          test -d ${{ steps.detect.outputs.ui_dir }}/dist || (echo "::error::dist not found" && exit 1)
+
+      - name: Add CNAME
+        run: |
+          echo "jiraless.levratech.com" > ${{ steps.detect.outputs.ui_dir }}/dist/CNAME
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ui/dist
+          path: ${{ steps.detect.outputs.ui_dir }}/dist
 
   deploy:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: Verify live version (best-effort)
-        continue-on-error: true
-        run: |
-          sleep 8
-          curl -fsSL https://jiraless.levratech.com/version.json || (echo "version.json not reachable yet" && exit 0)

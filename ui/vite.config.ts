@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 
 // Build for subdomain root: https://jiraless.levratech.com/
 export default defineConfig({
-  base: "/",                 // <-- was "/jiraless/"
+  base: process.env.VITE_BASE ?? "/",
   plugins: [react()],
   build: {
     outDir: "dist",

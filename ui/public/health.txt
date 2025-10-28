@@ -1,5 +1,5 @@
 ok
-version=0.0.6+20251028.1950
-package=0.0.6
-built_utc=20251028.1950
-git_sha=2cf8518d2aa09659648b6e7e6bce85bdccca5a56
+version=0.0.7+20251028.2005
+package=0.0.7
+built_utc=20251028.2005
+git_sha=758c3fe9146bb62108338b9a5b6d8b8f5d592779
