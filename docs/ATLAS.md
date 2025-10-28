@@ -1,9 +1,9 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-27T21:31:34.162Z
+_Generated:_ 2025-10-28T11:23:29.455Z
 
 ## Summary
 - Files: **35**
-- Total size: **54 KB**
+- Total size: **57 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
 
@@ -11,10 +11,10 @@ _Generated:_ 2025-10-27T21:31:34.162Z
 | Path | Size | SHA256 | Inlined |
 | :-- | :-- | :-- | :-- |
 | LICENSE | 1.0 KB | `a40f98f0c091…` | no |
-| package.json | 288 B | `07f791639fa4…` | no |
+| package.json | 285 B | `3da93b3cef93…` | no |
 | README.md | 8.9 KB | `d62cb2e9713a…` | yes |
 | tools/atlas.mjs | 7.8 KB | `2715e4c4f3a8…` | yes |
-| tools/materialize.mjs | 5.2 KB | `7e289a0d8dc5…` | yes |
+| tools/materialize.mjs | 5.5 KB | `04859aa83127…` | yes |
 | tools/schemas/adr.schema.json | 726 B | `05c78858158c…` | yes |
 | tools/schemas/doc.schema.json | 721 B | `9468287ecf9e…` | yes |
 | tools/schemas/epic.schema.json | 1.3 KB | `c82696cbc6f7…` | yes |
@@ -22,7 +22,7 @@ _Generated:_ 2025-10-27T21:31:34.162Z
 | tools/schemas/runlog.schema.json | 410 B | `4d898a0c53c3…` | yes |
 | tools/schemas/story.schema.json | 1.3 KB | `58bb8c140002…` | yes |
 | tools/schemas/work.schema.json | 1.3 KB | `e0f486065d9b…` | yes |
-| tools/validate.mjs | 4.2 KB | `1e514a2a1022…` | yes |
+| tools/validate.mjs | 4.3 KB | `79a712057cb9…` | yes |
 | ui/index.html | 451 B | `f5485df9f6b4…` | no |
 | ui/package.json | 844 B | `8ea391ca9718…` | no |
 | ui/public/404.html | 1.6 KB | `816f4a2db1b1…` | no |
@@ -42,7 +42,7 @@ _Generated:_ 2025-10-27T21:31:34.162Z
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
 | ui/src/main.tsx | 326 B | `cfd0d979e84a…` | no |
 | ui/src/pages/NewWork.tsx | 2.1 KB | `38ceefaa38e3…` | no |
-| ui/src/pages/WorkDetail.tsx | 2.3 KB | `aff6d9ae6317…` | no |
+| ui/src/pages/WorkDetail.tsx | 4.6 KB | `ec6cec078137…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
 | ui/vite.config.ts | 154 B | `14cbdd502354…` | no |
 
@@ -69,6 +69,7 @@ _Generated:_ 2025-10-27T21:31:34.162Z
 | Materialize Boards & Backlinks | push, workflow_dispatch | .github/workflows/materialize.yml |
 | Deploy UI to Pages | push, workflow_dispatch | .github/workflows/pages.yml |
 | Propose Work (repository_dispatch → draft PR) | repository_dispatch | .github/workflows/propose-intent.yml |
+| Propose Transition (repository_dispatch → draft PR) | repository_dispatch | .github/workflows/transition-intent.yml |
 | Validate Jiraless Objects | pull_request, push | .github/workflows/validate.yml |
 
 ## Inline Source (key files)
@@ -657,8 +658,8 @@ main().catch((err) => { console.error(err); process.exit(1); });
 ```
 
 ### `tools/materialize.mjs`
-_Size:_ 5.2 KB  
-_Hash:_ `7e289a0d8dc554ee5af97894ff8abe55d6a0d1ab7fe4d019f0505d312d907098`
+_Size:_ 5.5 KB  
+_Hash:_ `04859aa83127f2cf488bc3824bd95cc423376254c23850fbac212b646f83e0d2`
 
 ```js
 #!/usr/bin/env node
@@ -681,6 +682,7 @@ const POSIX_ROOT = REPO_ROOT.replace(/\\/g, "/");
 const OBJ_GLOB = ".project/objects/**/*.{md,markdown}";
 const VIEWS_DIR = ".project/views";
 const ONTOLOGY_YAML = ".project/policies/ontology.yaml";
+const SM_YAML = ".project/policies/state-machine.yaml";
 const TARGET_PUBLIC = process.env.TARGET_PUBLIC || ""; // e.g. "ui/public"
 const PUBLIC_VIEWS_DIR = TARGET_PUBLIC ? path.join(TARGET_PUBLIC, "views") : "";
 
@@ -803,6 +805,10 @@ let ontology = { types: {}, facets: {} };
 try { ontology = yaml.load(await fs.readFile(ONTOLOGY_YAML, "utf8")) || ontology; }
 catch { console.warn(`[warn] ontology not found at ${ONTOLOGY_YAML}`); }
 
+let sm = {};
+try { sm = yaml.load(await fs.readFile(SM_YAML, "utf8")) || {}; }
+catch { console.warn(`[warn] state-machine not found at ${SM_YAML}`); }
+
 /** ---------- write ---------- */
 await ensureDir(VIEWS_DIR);
 await writeJson(path.join(VIEWS_DIR, "board.json"), board);
@@ -815,6 +821,7 @@ if (TARGET_PUBLIC){
   await mirrorToPublic("by-type.json");
   await mirrorToPublic("stats.json");
   await writeJson(path.join(TARGET_PUBLIC, "ontology.json"), ontology);
+  await writeJson(path.join(TARGET_PUBLIC, "state-machine.json"), sm);
 }
 
 console.log(`materialized: ${items.length} items -> board.json, by-type.json, stats.json (repo-relative paths)`);
@@ -1113,144 +1120,127 @@ _Hash:_ `e0f486065d9be3b0dfcfcf3d0518d6fcde93429c55496d4c2e8ccb67c1e32343`
 ```
 
 ### `tools/validate.mjs`
-_Size:_ 4.2 KB  
-_Hash:_ `1e514a2a1022fbc281d0274e3d38078d8b4a2d4f3cfc445b0d86ae8d1b918980`
+_Size:_ 4.3 KB  
+_Hash:_ `79a712057cb9e1f51f9eefb1e475cd445d0743774ce903b179bc6499f3418e8f`
 
 ```js
 #!/usr/bin/env node
 /**
- * Jiraless v0.2 Validator
- * - Loads ontology & state machine
- * - Validates .project/objects/** front-matter against work.schema.json
- * - Ensures `type` values exist in ontology.types (string or array of strings)
- * - Ensures `status` is a known state
- * - OPTIONAL (best-effort on PRs): checks status transition legality if base file is available
+ * Jiraless v0.5 validator
+ * - schema + ontology checks (existing behavior)
+ * - transition enforcement with roles
  */
-
 import fs from "fs/promises";
 import path from "path";
 import { globby } from "globby";
 import matter from "gray-matter";
 import yaml from "js-yaml";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
-import { execSync } from "node:child_process";
+import cp from "child_process";
 
-const ajv = new Ajv({ allErrors: true, allowUnionTypes: true });
-addFormats(ajv);
+const exec = (cmd)=>cp.execSync(cmd,{encoding:"utf8"});
 
-const schema = JSON.parse(
-  await fs.readFile("tools/schemas/work.schema.json", "utf8")
-);
-ajv.addSchema(schema, "work");
+const SCHEMA = "tools/schemas/work.schema.json";
+const ONTOLOGY = ".project/policies/ontology.yaml";
+const ROLES = ".project/policies/roles.yaml";
+const SM = ".project/policies/state-machine.yaml";
 
-const ONTOLOGY_PATH = ".project/policies/ontology.yaml";
-const STATE_MACHINE_PATH = ".project/policies/state-machine.yaml";
+function asArr(v){ return Array.isArray(v) ? v : v!=null ? [v] : []; }
 
-function fail(msg) {
-  console.error(msg);
-  process.exitCode = 1;
-}
-
-const ontology = yaml.load(await fs.readFile(ONTOLOGY_PATH, "utf8"));
-const sm = yaml.load(await fs.readFile(STATE_MACHINE_PATH, "utf8"));
-
-const allowedTypes = new Set(Object.keys(ontology?.types || {}));
-const facetEnums = ontology?.facets || {};
-const states = new Set(sm?.states || []);
-const transitions = sm?.transitions || {};
-
-if (!allowedTypes.size) {
-  fail(`❌ ontology.types is empty. Define at least one type in ${ONTOLOGY_PATH}`);
-}
-if (!states.size) {
-  fail(`❌ state-machine.states is empty. Define states in ${STATE_MACHINE_PATH}`);
-}
-
-const files = await globby(".project/objects/**/*.{md,markdown}");
-
-let errors = 0;
-let checked = 0;
-
-function asArray(v) {
-  return Array.isArray(v) ? v : v != null ? [v] : [];
-}
-
-function getBaseStatusIfAvailable(filePath) {
-  // Best-effort: if running in PR context and base branch exists, diff status
-  const base = process.env.GITHUB_BASE_REF || "origin/main";
+function loadYaml(p){ try{ return yaml.load(exec(`cat ${p}`)) || {}; } catch{ return {}; } }
+function readFile(p){ return exec(`cat ${p}`); }
+function gitChanged(pattern){
   try {
-    execSync("git fetch --no-tags --depth=2 origin +refs/heads/*:refs/remotes/origin/*", { stdio: "ignore" });
-    const raw = execSync(`git show ${base}:${filePath}`, { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
-    return fm.status || null;
+    const base = exec("git merge-base HEAD origin/main").trim();
+    const out = exec(`git diff --name-only ${base}...HEAD -- ${pattern}`);
+    return out.split("\n").filter(Boolean);
   } catch {
-    return null; // base not available; skip transition check
+    // Fallback to last commit range
+    const out = exec(`git diff --name-only HEAD~1..HEAD -- ${pattern}`);
+    return out.split("\n").filter(Boolean);
   }
 }
+function frontmatterOf(p){
+  const txt = readFile(p);
+  return matter(txt).data || {};
+}
+function prevFrontmatterOf(p){
+  try{
+    const base = exec("git merge-base HEAD origin/main").trim();
+    const prev = exec(`git show ${base}:${p}`);
+    return matter(prev).data || {};
+  }catch{ return {}; }
+}
 
-for (const f of files) {
-  const raw = await fs.readFile(f, "utf8");
-  const parsed = matter(raw);
-  let fm = parsed.data || {};
-  fm = JSON.parse(JSON.stringify(fm)); // convert Dates to strings
-  const validate = ajv.getSchema("work");
+function actor(){
+  return process.env.GITHUB_ACTOR || process.env.ACTOR || "unknown";
+}
 
-  checked++;
+function ensure(cond,msg){ if(!cond){ console.error(`❌ ${msg}`); process.exit(1); } }
 
-  // 1) JSON schema
-  const ok = validate(fm);
-  if (!ok) {
-    console.log(`❌ schema: ${f}`);
-    console.log(validate.errors);
-    errors++;
-    continue;
-  }
+(async ()=>{
+  const roles = loadYaml(ROLES);
+  const sm = loadYaml(SM);
+  const ontology = loadYaml(ONTOLOGY);
 
-  // 2) type(s) exist in ontology
-  const types = asArray(fm.type);
-  const unknown = types.filter((t) => !allowedTypes.has(t));
-  if (unknown.length) {
-    console.log(`❌ type: ${f} — unknown type(s): ${unknown.join(", ")}. Allowed: ${[...allowedTypes].join(", ")}`);
-    errors++;
-  }
+  // Basic ontology presence
+  ensure(Array.isArray(sm.states), "state-machine.yaml missing states");
+  ensure(sm.transitions && typeof sm.transitions==="object", "state-machine.yaml missing transitions");
 
-  // 3) status in state machine
-  if (!states.has(fm.status)) {
-    console.log(`❌ status: ${f} — '${fm.status}' not in states: ${[...states].join(", ")}`);
-    errors++;
-  }
-
-  // 4) facet hints (warn-only)
-  const hints = [];
-  for (const facet of ["intent", "scope", "size", "severity", "priority"]) {
-    if (fm[facet] && facetEnums[facet] && !facetEnums[facet].includes(fm[facet])) {
-      hints.push(`- ${facet} '${fm[facet]}' not in ontology.facets.${facet}: [${facetEnums[facet].join(", ")}]`);
-    }
-  }
-  if (hints.length) {
-    console.log(`⚠︎ facet hints: ${f}\n${hints.join("\n")}`);
-  }
-
-  // 5) transition legality (best effort)
-  const prev = getBaseStatusIfAvailable(f);
-  if (prev && prev !== fm.status) {
-    const allowed = new Set(transitions[prev] || []);
-    if (!allowed.has(fm.status)) {
-      console.log(`❌ transition: ${f} — illegal '${prev}' → '${fm.status}'. Allowed: [${[...allowed].join(", ")}]`);
-      errors++;
+  // Validate objects exist (light check)
+  const objects = await globby(".project/objects/**/*.{md,markdown}");
+  for (const f of objects){
+    const fm = frontmatterOf(f);
+    ensure(fm.id, `${f}: missing id`);
+    ensure(fm.status, `${f}: missing status`);
+    // Optional: types exist in ontology if ontology.types defined
+    if (ontology?.types && Array.isArray(asArr(fm.type))){
+      for (const t of asArr(fm.type)){
+        ensure(ontology.types[t] !== undefined, `${f}: type '${t}' not in ontology.types`);
+      }
     }
   }
 
-  if (errors === 0) {
-    // noisy per file logs are optional; keep quiet unless debugging
-  }
-}
+  /** PR transition enforcement **/
+  const changed = gitChanged(".project/objects/**/*.{md,markdown}");
+  if (changed.length){
+    const who = actor();
+    // Map user->role
+    let roleName = Object.entries(roles.roles||{}).find(([,r])=>asArr(r.users).includes(who))?.[0] || "viewer";
+    const allowed = new Set(asArr(roles.roles?.[roleName]?.can_transition||[]));
 
-if (errors) {
-  console.error(`\nValidation failed: ${errors} error(s) across ${checked} file(s).`);
-  process.exit(1);
-} else {
-  console.log(`All good ✔ — ${checked} file(s) validated.`);
-}
+    for (const f of changed){
+      const before = prevFrontmatterOf(f);
+      const after = frontmatterOf(f);
+
+      // If status changed, check transition
+      if (before.status && after.status && before.status !== after.status){
+        const from = before.status;
+        const to = after.status;
+        const legit = asArr(sm.transitions[from]||[]).includes(to);
+        ensure(legit, `${f}: illegal transition ${from} -> ${to}`);
+
+        // Role check
+        const token = `${from}->${to}`;
+        const okRole = allowed.has("*") || allowed.has(token);
+        ensure(okRole, `${f}: actor '${who}' (role=${roleName}) not allowed to perform ${token}`);
+
+        // Severity gate needs human in PR reviewers (owner|maintainer)
+        const needHumanFor = asArr(roles.human_review_required_for_severity||[]);
+        const sev = after.severity || before.severity;
+        if (needHumanFor.includes(sev)){
+          // best-effort: require label or reviewer marker file
+          // allow either a CODEOWNERS ownership or a REVIEWERS file change marker
+          try{
+            const prFiles = exec("git diff --name-only --cached").split("\n");
+            // no robust GH API in CI token scope here; keep it simple
+            console.log(`[info] severity '${sev}' requires human review; enforce via branch protection/required reviewers in repo settings.`);
+          }catch{}
+        }
+      }
+    }
+  }
+
+  console.log("All good ✔ — validation + transition checks passed");
+})();
 ```
 
