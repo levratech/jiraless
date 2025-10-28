@@ -1,5 +1,5 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-28T19:51:32.493Z
+_Generated:_ 2025-10-28T20:07:27.631Z
 
 ## Summary
 - Files: **44**
@@ -26,14 +26,14 @@ _Generated:_ 2025-10-28T19:51:32.493Z
 | tools/validate.mjs | 4.3 KB | `79a712057cb9…` | yes |
 | tools/version.mjs | 3.2 KB | `954abd451387…` | yes |
 | ui/index.html | 491 B | `9983dbc240f8…` | no |
-| ui/package.json | 844 B | `a55967ba4043…` | no |
+| ui/package.json | 844 B | `15776fc5bff8…` | no |
 | ui/public/404.html | 1.6 KB | `816f4a2db1b1…` | no |
 | ui/public/CNAME | 22 B | `3909faef9656…` | no |
 | ui/public/config.js | 149 B | `113826305d74…` | no |
-| ui/public/health.json | 187 B | `fd2609e3aae9…` | no |
-| ui/public/health.txt | 118 B | `3b0fb4547be9…` | no |
+| ui/public/health.json | 187 B | `3c53e6ae2458…` | no |
+| ui/public/health.txt | 118 B | `fa3aee057fbc…` | no |
 | ui/public/ontology.json | 828 B | `250b630dfbda…` | no |
-| ui/public/version.json | 169 B | `e84a4d3da49f…` | no |
+| ui/public/version.json | 169 B | `1088fbe08e49…` | no |
 | ui/public/views/board.json | 303 B | `f9a6f6cbe393…` | no |
 | ui/public/views/by-type.json | 218 B | `f5ca03a1e86d…` | no |
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
@@ -43,17 +43,17 @@ _Generated:_ 2025-10-28T19:51:32.493Z
 | ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no |
 | ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
 | ui/src/index.css | 632 B | `696b7714cc1f…` | no |
-| ui/src/lib/asset.ts | 219 B | `f2398730412d…` | no |
-| ui/src/lib/fetch.ts | 505 B | `7576db65dd37…` | no |
+| ui/src/lib/asset.ts | 125 B | `56fce3b8694c…` | no |
+| ui/src/lib/fetch.ts | 242 B | `94eb0ae77c98…` | no |
 | ui/src/lib/ontology.ts | 501 B | `fb5e681d8ed3…` | no |
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
-| ui/src/main.tsx | 507 B | `8f2d5f64105b…` | no |
+| ui/src/main.tsx | 471 B | `84491d401f5d…` | no |
 | ui/src/pages/Cortex.tsx | 1.0 KB | `ab789897c40e…` | no |
 | ui/src/pages/NewWork.tsx | 2.1 KB | `38ceefaa38e3…` | no |
 | ui/src/pages/WorkDetail.tsx | 4.6 KB | `b0a5a176dd34…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
-| ui/src/version.ts | 203 B | `cd740a2b20ef…` | no |
-| ui/vite.config.ts | 304 B | `13e9043047cf…` | no |
+| ui/src/version.ts | 203 B | `1143eece62e6…` | no |
+| ui/vite.config.ts | 289 B | `7f0078405011…` | no |
 
 ## .project Object Stats
 ### By Type
@@ -78,7 +78,7 @@ _Generated:_ 2025-10-28T19:51:32.493Z
 | Federate Cortex | schedule, workflow_dispatch, push | .github/workflows/federate.yml |
 | Materialize Boards & Backlinks | push, workflow_dispatch | .github/workflows/materialize.yml |
 | Pages Watchdog | schedule, workflow_dispatch | .github/workflows/pages-watchdog.yml |
-| Deploy UI to Pages | push, workflow_dispatch, repository_dispatch | .github/workflows/pages.yml |
+| Deploy UI to Pages | push, workflow_dispatch | .github/workflows/pages.yml |
 | Propose Work (repository_dispatch → draft PR) | repository_dispatch | .github/workflows/propose-intent.yml |
 | Propose Transition (repository_dispatch → draft PR) | repository_dispatch | .github/workflows/transition-intent.yml |
 | Validate Jiraless Objects | pull_request, push | .github/workflows/validate.yml |
