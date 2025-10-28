@@ -1,9 +1,9 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-28T12:25:28.106Z
+_Generated:_ 2025-10-28T12:37:55.188Z
 
 ## Summary
-- Files: **38**
-- Total size: **61 KB**
+- Files: **41**
+- Total size: **64 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
 
@@ -24,29 +24,32 @@ _Generated:_ 2025-10-28T12:25:28.106Z
 | tools/schemas/story.schema.json | 1.3 KB | `58bb8c140002…` | yes |
 | tools/schemas/work.schema.json | 1.3 KB | `e0f486065d9b…` | yes |
 | tools/validate.mjs | 4.3 KB | `79a712057cb9…` | yes |
+| tools/version.mjs | 2.6 KB | `fc7c3ef62d7c…` | yes |
 | ui/index.html | 502 B | `ad2d7b6169c9…` | no |
-| ui/package.json | 844 B | `8ea391ca9718…` | no |
+| ui/package.json | 844 B | `cd3993d34465…` | no |
 | ui/public/404.html | 1.6 KB | `816f4a2db1b1…` | no |
 | ui/public/config.js | 149 B | `113826305d74…` | no |
 | ui/public/ontology.json | 828 B | `250b630dfbda…` | no |
+| ui/public/version.json | 92 B | `c977b6850598…` | no |
 | ui/public/views/board.json | 303 B | `f9a6f6cbe393…` | no |
 | ui/public/views/by-type.json | 218 B | `f5ca03a1e86d…` | no |
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
 | ui/src/App.jsx | 1011 B | `835983ee2dcc…` | no |
-| ui/src/App.tsx | 1.3 KB | `9687a343d710…` | no |
-| ui/src/components/Board.tsx | 3.3 KB | `fccf9d8865ed…` | no |
+| ui/src/App.tsx | 1.5 KB | `eee68f8545da…` | no |
+| ui/src/components/Board.tsx | 3.3 KB | `52c5eff116c0…` | no |
 | ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no |
 | ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
 | ui/src/index.css | 632 B | `696b7714cc1f…` | no |
-| ui/src/lib/asset.ts | 431 B | `27e7e963e15d…` | no |
-| ui/src/lib/fetch.ts | 620 B | `e2389b39b12c…` | no |
+| ui/src/lib/asset.ts | 219 B | `f2398730412d…` | no |
+| ui/src/lib/fetch.ts | 505 B | `7576db65dd37…` | no |
 | ui/src/lib/ontology.ts | 501 B | `fb5e681d8ed3…` | no |
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
-| ui/src/main.tsx | 326 B | `cfd0d979e84a…` | no |
-| ui/src/pages/Cortex.tsx | 1.1 KB | `d8de283d73a7…` | no |
+| ui/src/main.tsx | 424 B | `383e227389db…` | no |
+| ui/src/pages/Cortex.tsx | 1.0 KB | `ab789897c40e…` | no |
 | ui/src/pages/NewWork.tsx | 2.1 KB | `38ceefaa38e3…` | no |
 | ui/src/pages/WorkDetail.tsx | 4.6 KB | `b0a5a176dd34…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
+| ui/src/version.ts | 136 B | `df1dc51bc37e…` | no |
 | ui/vite.config.ts | 154 B | `14cbdd502354…` | no |
 
 ## .project Object Stats
@@ -1320,5 +1323,102 @@ function ensure(cond,msg){ if(!cond){ console.error(`❌ ${msg}`); process.exit(
 
   console.log("All good ✔ — validation + transition checks passed");
 })();
+```
+
+### `tools/version.mjs`
+_Size:_ 2.6 KB  
+_Hash:_ `fc7c3ef62d7cc44f2ccb809f4dde44226b4b1dd0ca745e14083a72f170b302f1`
+
+```js
+#!/usr/bin/env node
+/**
+ * Jiraless - UI Version Bumper
+ * - Increments patch version in ui/package.json
+ * - Generates ui/src/version.ts with APP_VERSION and BUILD_TIME
+ * - Writes ui/public/version.json
+ *
+ * Behavior:
+ * - Bumps PATCH by default (major.minor.PATCH+stamp)
+ * - Stamp = UTC YYYYMMDD.HHmm
+ * - If VERSION_BUMP=none, do not bump package.json; still generate version.ts
+ */
+import fs from "fs/promises";
+import path from "path";
+
+const UI_DIR = "ui";
+const PKG = path.join(UI_DIR, "package.json");
+const VERSION_TS = path.join(UI_DIR, "src/version.ts");
+const VERSION_JSON = path.join(UI_DIR, "public/version.json");
+
+function stampUTC() {
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  return (
+    d.getUTCFullYear() +
+    pad(d.getUTCMonth() + 1) +
+    pad(d.getUTCDate()) +
+    "." +
+    pad(d.getUTCHours()) +
+    pad(d.getUTCMinutes())
+  );
+}
+
+function bumpPatch(v) {
+  // semver-ish: a.b.c[-prerelease][+meta] -> bump c
+  const core = v.split("-")[0].split("+")[0];
+  const [maj, min, pat] = core.split(".").map((x) => parseInt(x, 10) || 0);
+  return `${maj}.${min}.${(pat ?? 0) + 1}`;
+}
+
+async function writeIfChanged(file, content) {
+  try {
+    const prev = await fs.readFile(file, "utf8");
+    if (prev === content) return false;
+  } catch {}
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  await fs.writeFile(file, content, "utf8");
+  return true;
+}
+
+async function main() {
+  const bumpMode = process.env.VERSION_BUMP || "patch"; // 'patch' | 'none'
+  const pkgRaw = await fs.readFile(PKG, "utf8");
+  const pkg = JSON.parse(pkgRaw);
+
+  let newVersion = pkg.version || "0.0.0";
+  if (bumpMode !== "none") {
+    newVersion = bumpPatch(newVersion);
+    pkg.version = newVersion;
+    await fs.writeFile(PKG, JSON.stringify(pkg, null, 2) + "\n", "utf8");
+    console.log("Bumped ui/package.json version to", newVersion);
+  } else {
+    console.log("VERSION_BUMP=none → not bumping ui/package.json; using", newVersion);
+  }
+
+  const stamp = stampUTC();
+  const appVersion = `${newVersion}+${stamp}`;
+
+  // version.ts for import in UI
+  const ts = `// Auto-generated by tools/version.mjs
+export const APP_VERSION = ${JSON.stringify(appVersion)};
+export const BUILD_TIME_UTC = ${JSON.stringify(stamp)};
+`;
+  await writeIfChanged(VERSION_TS, ts);
+
+  // version.json for external checks
+  const vjson = JSON.stringify(
+    { version: appVersion, package: newVersion, built_utc: stamp },
+    null,
+    2
+  );
+  await writeIfChanged(VERSION_JSON, vjson);
+
+  console.log("Wrote", VERSION_TS, "and", VERSION_JSON);
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
 
