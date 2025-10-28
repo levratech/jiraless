@@ -4,14 +4,18 @@ import { Board } from './components/Board'
 import { WorkDetail } from './pages/WorkDetail'
 import { NewWork } from './pages/NewWork'
 import Cortex from './pages/Cortex'
+import { APP_VERSION } from "./version";
 
 export function App() {
   return (
     <div style={{ fontFamily: 'system-ui, Segoe UI, Inter, sans-serif', padding: 16 }}>
+      <header className="px-4 py-3">
+        <h1 className="text-2xl font-bold">Jiraless</h1>
+        <div className="text-xs text-gray-500">Repo-native board (v{APP_VERSION})</div>
+      </header>
       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
         <div>
-          <h1 style={{ margin:0 }}>Jiraless</h1>
-          <div style={{ color:'#666' }}>Repo-native board (v0.6)</div>
+          {/* moved to header */}
         </div>
         <div style={{ display:'flex', gap:8 }}>
           <Link to="/cortex" style={{

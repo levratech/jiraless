@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { fetchJson, assertBasePath } from '../lib/fetch'
+import { fetchJson } from '../lib/fetch'
 import { getTypeMeta } from '../lib/ontology'
 
 type CardT = { id:string; title:string; type:string[]; priority?:string; assignees?:string[]; file?:string }
@@ -24,7 +24,6 @@ export function Board() {
   useEffect(() => {
     let alive = true
     ;(async () => {
-      assertBasePath("views/board.json");
       const data = await fetchJson("views/board.json")
       if (!alive) return
       // sanitize any legacy absolute paths

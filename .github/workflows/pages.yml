@@ -30,7 +30,13 @@ jobs:
           npm i -D globby gray-matter js-yaml
           TARGET_PUBLIC=ui/public node tools/materialize.mjs
 
-      # 2) Build the UI (includes ui/public/views/* + ontology.json)
+      # 2) Bump version + stamp and emit version.ts/version.json
+      - name: Version UI (patch bump)
+        run: node tools/version.mjs
+        env:
+          VERSION_BUMP: patch
+
+      # 3) Build the UI (includes ui/public/views/* + ontology.json)
       - name: Build UI
         working-directory: ui
         run: |

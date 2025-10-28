@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchJson, assertBasePath } from "../lib/fetch";
+import { fetchJson } from "../lib/fetch";
 
 type Manifest = {
   repo: string;
@@ -13,7 +13,6 @@ export default function Cortex() {
   const [repos, setRepos] = useState<Manifest[]>([]);
 
   useEffect(() => {
-    assertBasePath("views/federated.json");
     fetchJson("views/federated.json").then(data => setRepos(data.manifests || [])).catch(() => setRepos([]));
   }, []);
 
