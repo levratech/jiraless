@@ -1,5 +1,5 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-28T15:14:56.416Z
+_Generated:_ 2025-10-28T15:32:06.729Z
 
 ## Summary
 - Files: **43**
@@ -25,14 +25,14 @@ _Generated:_ 2025-10-28T15:14:56.416Z
 | tools/schemas/work.schema.json | 1.3 KB | `e0f486065d9b…` | yes |
 | tools/validate.mjs | 4.3 KB | `79a712057cb9…` | yes |
 | tools/version.mjs | 3.2 KB | `954abd451387…` | yes |
-| ui/index.html | 502 B | `ad2d7b6169c9…` | no |
-| ui/package.json | 844 B | `94f4557e72c1…` | no |
+| ui/index.html | 488 B | `e57e417cfc04…` | no |
+| ui/package.json | 844 B | `84b3d7e67b9e…` | no |
 | ui/public/404.html | 1.6 KB | `816f4a2db1b1…` | no |
 | ui/public/config.js | 149 B | `113826305d74…` | no |
-| ui/public/health.json | 187 B | `fae110acfd99…` | no |
-| ui/public/health.txt | 118 B | `ff4784bcf7ee…` | no |
+| ui/public/health.json | 187 B | `87499aec9d4d…` | no |
+| ui/public/health.txt | 118 B | `b3e43aef9cf0…` | no |
 | ui/public/ontology.json | 828 B | `250b630dfbda…` | no |
-| ui/public/version.json | 169 B | `10e002e3bec2…` | no |
+| ui/public/version.json | 169 B | `666e36d4c2d7…` | no |
 | ui/public/views/board.json | 303 B | `f9a6f6cbe393…` | no |
 | ui/public/views/by-type.json | 218 B | `f5ca03a1e86d…` | no |
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
@@ -46,13 +46,13 @@ _Generated:_ 2025-10-28T15:14:56.416Z
 | ui/src/lib/fetch.ts | 505 B | `7576db65dd37…` | no |
 | ui/src/lib/ontology.ts | 501 B | `fb5e681d8ed3…` | no |
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
-| ui/src/main.tsx | 424 B | `383e227389db…` | no |
+| ui/src/main.tsx | 439 B | `4f609c9eada6…` | no |
 | ui/src/pages/Cortex.tsx | 1.0 KB | `ab789897c40e…` | no |
 | ui/src/pages/NewWork.tsx | 2.1 KB | `38ceefaa38e3…` | no |
 | ui/src/pages/WorkDetail.tsx | 4.6 KB | `b0a5a176dd34…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
-| ui/src/version.ts | 203 B | `f92ca9dd3f88…` | no |
-| ui/vite.config.ts | 154 B | `14cbdd502354…` | no |
+| ui/src/version.ts | 203 B | `6c33ac597f20…` | no |
+| ui/vite.config.ts | 304 B | `13e9043047cf…` | no |
 
 ## .project Object Stats
 ### By Type
