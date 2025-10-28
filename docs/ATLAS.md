@@ -1,9 +1,9 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-28T11:23:29.455Z
+_Generated:_ 2025-10-28T11:42:18.885Z
 
 ## Summary
-- Files: **35**
-- Total size: **57 KB**
+- Files: **37**
+- Total size: **60 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
 
@@ -14,7 +14,8 @@ _Generated:_ 2025-10-28T11:23:29.455Z
 | package.json | 285 B | `3da93b3cef93…` | no |
 | README.md | 8.9 KB | `d62cb2e9713a…` | yes |
 | tools/atlas.mjs | 7.8 KB | `2715e4c4f3a8…` | yes |
-| tools/materialize.mjs | 5.5 KB | `04859aa83127…` | yes |
+| tools/federate.mjs | 1.2 KB | `be57091c23e0…` | yes |
+| tools/materialize.mjs | 6.1 KB | `fe7f9bd71b96…` | yes |
 | tools/schemas/adr.schema.json | 726 B | `05c78858158c…` | yes |
 | tools/schemas/doc.schema.json | 721 B | `9468287ecf9e…` | yes |
 | tools/schemas/epic.schema.json | 1.3 KB | `c82696cbc6f7…` | yes |
@@ -32,7 +33,7 @@ _Generated:_ 2025-10-28T11:23:29.455Z
 | ui/public/views/by-type.json | 218 B | `f5ca03a1e86d…` | no |
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
 | ui/src/App.jsx | 1011 B | `835983ee2dcc…` | no |
-| ui/src/App.tsx | 1011 B | `835983ee2dcc…` | no |
+| ui/src/App.tsx | 1.3 KB | `9687a343d710…` | no |
 | ui/src/components/Board.tsx | 3.3 KB | `e3ae84bb06d9…` | no |
 | ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no |
 | ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
@@ -41,6 +42,7 @@ _Generated:_ 2025-10-28T11:23:29.455Z
 | ui/src/lib/ontology.ts | 501 B | `fb5e681d8ed3…` | no |
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
 | ui/src/main.tsx | 326 B | `cfd0d979e84a…` | no |
+| ui/src/pages/Cortex.tsx | 1.1 KB | `4ccbbfba3e0c…` | no |
 | ui/src/pages/NewWork.tsx | 2.1 KB | `38ceefaa38e3…` | no |
 | ui/src/pages/WorkDetail.tsx | 4.6 KB | `ec6cec078137…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
@@ -65,7 +67,8 @@ _Generated:_ 2025-10-28T11:23:29.455Z
 ## GitHub Workflows
 | Workflow | Triggers | File |
 | :-- | :-- | :-- |
-| Build Atlas | push, workflow_dispatch | .github/workflows/atlas.yml |
+| Build Atlas | push, workflow_dispatch, workflow_run | .github/workflows/atlas.yml |
+| Federate Cortex | schedule, workflow_dispatch, push | .github/workflows/federate.yml |
 | Materialize Boards & Backlinks | push, workflow_dispatch | .github/workflows/materialize.yml |
 | Deploy UI to Pages | push, workflow_dispatch | .github/workflows/pages.yml |
 | Propose Work (repository_dispatch → draft PR) | repository_dispatch | .github/workflows/propose-intent.yml |
@@ -657,9 +660,65 @@ ${inlined || "_(No files eligible under size cap.)_"}
 main().catch((err) => { console.error(err); process.exit(1); });
 ```
 
+### `tools/federate.mjs`
+_Size:_ 1.2 KB  
+_Hash:_ `be57091c23e07a86198b22696e33d3e02a8fd6a82c133ca8c83963ab16edc6c1`
+
+```js
+#!/usr/bin/env node
+/**
+ * Jiraless Federation Tool
+ * Aggregates multiple Jiraless manifests into one federated view.
+ */
+import fs from "fs/promises";
+import yaml from "js-yaml";
+import path from "path";
+import fetch from "node-fetch";
+
+const CONFIG = ".project/policies/federation.yaml";
+const OUT = ".project/views/federated.json";
+
+async function loadConfig() {
+  try {
+    const raw = await fs.readFile(CONFIG, "utf8");
+    return yaml.load(raw);
+  } catch {
+    return { remotes: [] };
+  }
+}
+
+async function fetchJSON(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(res.statusText);
+    return await res.json();
+  } catch (e) {
+    console.warn(`⚠️ Failed to fetch ${url}: ${e.message}`);
+    return null;
+  }
+}
+
+async function main() {
+  const cfg = await loadConfig();
+  const all = [];
+  for (const remote of cfg.remotes || []) {
+    const manifest = await fetchJSON(remote);
+    if (manifest) all.push(manifest);
+  }
+  await fs.mkdir(path.dirname(OUT), { recursive: true });
+  await fs.writeFile(OUT, JSON.stringify({ updated: new Date().toISOString(), manifests: all }, null, 2));
+  console.log(`Federated ${all.length} manifests`);
+}
+
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
 ### `tools/materialize.mjs`
-_Size:_ 5.5 KB  
-_Hash:_ `04859aa83127f2cf488bc3824bd95cc423376254c23850fbac212b646f83e0d2`
+_Size:_ 6.1 KB  
+_Hash:_ `fe7f9bd71b96a360d1a07ecdbcb9a0b69c53267980dcbdbe890d461846d878da`
 
 ```js
 #!/usr/bin/env node
@@ -718,11 +777,14 @@ function toRepoRel(pth){
   return s;
 }
 
-async function writeJson(p, obj){
-  await ensureDir(path.dirname(p));
-  const json = JSON.stringify(obj, null, 2);
-  await fs.writeFile(p, json, "utf8");
-  return json.length;
+async function writeIfChanged(file, contents) {
+  try {
+    const prev = await fs.readFile(file, 'utf8');
+    if (prev === contents) return false;
+  } catch {}
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  await fs.writeFile(file, contents, 'utf8');
+  return true;
 }
 
 async function mirrorToPublic(relName){
@@ -823,6 +885,21 @@ if (TARGET_PUBLIC){
   await writeJson(path.join(TARGET_PUBLIC, "ontology.json"), ontology);
   await writeJson(path.join(TARGET_PUBLIC, "state-machine.json"), sm);
 }
+
+const MANIFEST = {
+  repo: process.env.GITHUB_REPOSITORY || "local/jiraless",
+  url: `https://${process.env.GITHUB_REPOSITORY?.split('/')[0]}.github.io/${process.env.GITHUB_REPOSITORY?.split('/')[1]}/`,
+  views: {
+    board: "views/board.json",
+    ontology: "ontology.json",
+    state_machine: "state-machine.json"
+  },
+  updated: new Date().toISOString()
+};
+
+await writeIfChanged(".project/views/manifest.json", JSON.stringify(MANIFEST, null, 2));
+await writeIfChanged("ui/public/manifest.json", JSON.stringify(MANIFEST, null, 2));
+console.log("Wrote manifest.json");
 
 console.log(`materialized: ${items.length} items -> board.json, by-type.json, stats.json (repo-relative paths)`);
 ```
