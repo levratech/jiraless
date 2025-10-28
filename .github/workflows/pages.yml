@@ -1,11 +1,8 @@
 name: Deploy UI to Pages
+
 on:
   push:
     branches: [ main ]
-    paths:
-      - "ui/**"
-      - ".project/**"
-      - "tools/**"
     paths-ignore:
       - "docs/ATLAS.md"
   workflow_dispatch:
@@ -15,42 +12,54 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # 1) Materialize canonical views and mirror to ui/public
+      # 1) Materialize views/assets (must be before build)
       - name: Materialize views
-        run: |
-          npm i -D globby gray-matter js-yaml
-          TARGET_PUBLIC=ui/public node tools/materialize.mjs
+        run: node tools/materialize.mjs
 
-      # 2) Bump version + stamp and emit version.ts/version.json
-      - name: Version UI (patch bump)
+      # 2) Version the UI (auto-bump patch; emit version.ts, version.json, health files)
+      - name: Version UI
         run: node tools/version.mjs
         env:
           VERSION_BUMP: patch
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
 
-      # 3) Build the UI (includes ui/public/views/* + ontology.json)
-      - name: Build UI
+      # 3) Build UI
+      - name: Install & build UI
         working-directory: ui
         run: |
           npm ci
           npm run build
 
-      # 3) Upload and deploy
-      - name: Upload Pages artifact
+      # 4) Upload ONLY ui/dist to Pages
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ui/dist
 
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

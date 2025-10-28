@@ -1,0 +1,5 @@
+ok
+version=0.0.2+20251028.1252
+package=0.0.2
+built_utc=20251028.1252
+git_sha=8160ae69af96ecf234b53f5ffd546713865f4d34
