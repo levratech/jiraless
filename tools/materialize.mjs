@@ -160,4 +160,19 @@ if (TARGET_PUBLIC){
   await writeJson(path.join(TARGET_PUBLIC, "state-machine.json"), sm);
 }
 
+const MANIFEST = {
+  repo: process.env.GITHUB_REPOSITORY || "local/jiraless",
+  url: `https://${process.env.GITHUB_REPOSITORY?.split('/')[0]}.github.io/${process.env.GITHUB_REPOSITORY?.split('/')[1]}/`,
+  views: {
+    board: "views/board.json",
+    ontology: "ontology.json",
+    state_machine: "state-machine.json"
+  },
+  updated: new Date().toISOString()
+};
+
+await fs.writeFile(".project/views/manifest.json", JSON.stringify(MANIFEST, null, 2));
+await fs.writeFile("ui/public/manifest.json", JSON.stringify(MANIFEST, null, 2));
+console.log("Wrote manifest.json");
+
 console.log(`materialized: ${items.length} items -> board.json, by-type.json, stats.json (repo-relative paths)`);

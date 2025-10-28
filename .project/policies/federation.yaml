@@ -1,0 +1,4 @@
+# Repositories to federate into the Cortex view
+remotes:
+  - https://levratech.com/jiraless/manifest.json
+  # Add other project URLs here
