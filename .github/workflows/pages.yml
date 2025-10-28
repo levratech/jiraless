@@ -57,6 +57,9 @@ jobs:
           test -f ui/public/state-machine.json || (echo "ui/public/state-machine.json missing" && exit 1)
           test -f .project/views/state-machine.json || (echo ".project/views/state-machine.json missing" && exit 1)
 
+      - name: Version bump and health files
+        run: node tools/version.mjs
+
       - name: Build UI (root base)
         env:
           VITE_BASE: /

@@ -1,7 +1,6 @@
 {
-  "version": "0.0.8+20251028.2335",
-  "package": "0.0.8",
-  "built_utc": "20251028.2335",
-  "git_sha": "c4f2d90b58a2f3bdfb75303821d15ce0e4c6deae",
-  "repository": ""
+  "version": "0.0.9+20251028.2355",
+  "build_time_utc": "2025-10-28T23:55:17.203Z",
+  "git_sha": "ce99561fed545ddbe7a37885d9c832878028f8ab",
+  "repo": ""
 }

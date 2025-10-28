@@ -1,3 +1,5 @@
+import { fetchJson } from './fetch'
+
 type Ontology = { types?: Record<string, { icon?: string; color?: string }>}
 let cache: Ontology | null = null
 
@@ -8,8 +10,7 @@ export function getTypeMeta(t: string){
 export async function loadOntology(){
   if (cache) return cache
   try {
-    const res = await fetch('./ontology.json', { cache: 'no-store' })
-    if (res.ok) cache = await res.json()
+    cache = await fetchJson('ontology.json')
   } catch { /* noop */ }
   return cache
 }
