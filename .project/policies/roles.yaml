@@ -1,8 +1,8 @@
-# Who can do what (human+agent). Usernames are GitHub handles.
+# Role definitions for Jiraless v0.5
 roles:
   owner:
-    users: [keen5336]           # 👈 adjust
-    can_transition: ["*"]       # all transitions
+    users: [keen5336]        # adjust to actual GitHub username(s)
+    can_transition: ["*"]    # all transitions
   maintainer:
     users: []
     can_transition:
@@ -11,12 +11,14 @@ roles:
       - review->done
       - backlog->discarded
   agent:
-    users: [jiraless-bot]       # CI or bot identities you’ll use
+    users: [jiraless-bot]
     can_transition:
       - backlog->in_progress
       - in_progress->review
   viewer:
     users: []
     can_transition: []
-# Optional severity gate: these must include a human owner/maintainer on the PR.
-human_review_required_for_severity: [high, critical]
+
+human_review_required_for_severity:
+  - high
+  - critical

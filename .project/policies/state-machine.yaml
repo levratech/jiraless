@@ -1,7 +1,14 @@
-states: [backlog, in_progress, review, done, discarded]
+# Jiraless v0.5 state machine
+states:
+  - backlog
+  - in_progress
+  - review
+  - done
+  - discarded
+
 transitions:
-  backlog:      [in_progress, discarded]
-  in_progress:  [review, discarded]
-  review:       [done, in_progress]
-  done:         []
-  discarded:    []
+  backlog: [in_progress, discarded]
+  in_progress: [review, discarded]
+  review: [done, in_progress]
+  done: []
+  discarded: []
