@@ -1,5 +1,6 @@
 import { APP_VERSION } from "./version";
 console.info(`[jiraless] v${APP_VERSION} starting…`);
+console.info('[jiraless] assets base =', import.meta.env.BASE_URL);
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'

@@ -40,14 +40,24 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REPOSITORY: ${{ github.repository }}
 
-      # 3) Build UI
-      - name: Install & build UI
+      # 3) Clean build
+      - name: Clean & build UI
         working-directory: ui
         run: |
+          rm -rf dist node_modules
           npm ci
           npm run build
 
-      # 4) Upload ONLY ui/dist to Pages
+      # 4) Guardrail: assert dist has no /jiraless/
+      - name: Assert no '/jiraless/' in built HTML/JS
+        working-directory: ui/dist
+        run: |
+          if grep -R "/jiraless/" -n .; then
+            echo "❌ Found hardcoded /jiraless/ in dist. Fix base and rebuild."
+            exit 1
+          fi
+
+      # 5) Upload ONLY ui/dist to Pages
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
