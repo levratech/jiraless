@@ -1,5 +1,5 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-28T11:56:33.544Z
+_Generated:_ 2025-10-28T12:12:50.823Z
 
 ## Summary
 - Files: **38**
@@ -34,18 +34,18 @@ _Generated:_ 2025-10-28T11:56:33.544Z
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
 | ui/src/App.jsx | 1011 B | `835983ee2dcc…` | no |
 | ui/src/App.tsx | 1.3 KB | `9687a343d710…` | no |
-| ui/src/components/Board.tsx | 3.3 KB | `e3ae84bb06d9…` | no |
+| ui/src/components/Board.tsx | 3.3 KB | `fccf9d8865ed…` | no |
 | ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no |
 | ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
 | ui/src/index.css | 632 B | `696b7714cc1f…` | no |
-| ui/src/lib/asset.ts | 325 B | `d3e20f7dbbe4…` | no |
-| ui/src/lib/fetch.ts | 342 B | `7948ab441d70…` | no |
+| ui/src/lib/asset.ts | 431 B | `27e7e963e15d…` | no |
+| ui/src/lib/fetch.ts | 620 B | `e2389b39b12c…` | no |
 | ui/src/lib/ontology.ts | 501 B | `fb5e681d8ed3…` | no |
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
 | ui/src/main.tsx | 326 B | `cfd0d979e84a…` | no |
-| ui/src/pages/Cortex.tsx | 1.1 KB | `aad62718d35e…` | no |
+| ui/src/pages/Cortex.tsx | 1.1 KB | `d8de283d73a7…` | no |
 | ui/src/pages/NewWork.tsx | 2.1 KB | `38ceefaa38e3…` | no |
-| ui/src/pages/WorkDetail.tsx | 4.8 KB | `5edaade8703e…` | no |
+| ui/src/pages/WorkDetail.tsx | 4.6 KB | `b0a5a176dd34…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
 | ui/vite.config.ts | 154 B | `14cbdd502354…` | no |
 
