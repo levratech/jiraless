@@ -54,11 +54,14 @@ function toRepoRel(pth){
   return s;
 }
 
-async function writeJson(p, obj){
-  await ensureDir(path.dirname(p));
-  const json = JSON.stringify(obj, null, 2);
-  await fs.writeFile(p, json, "utf8");
-  return json.length;
+async function writeIfChanged(file, contents) {
+  try {
+    const prev = await fs.readFile(file, 'utf8');
+    if (prev === contents) return false;
+  } catch {}
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  await fs.writeFile(file, contents, 'utf8');
+  return true;
 }
 
 async function mirrorToPublic(relName){
@@ -171,8 +174,8 @@ const MANIFEST = {
   updated: new Date().toISOString()
 };
 
-await fs.writeFile(".project/views/manifest.json", JSON.stringify(MANIFEST, null, 2));
-await fs.writeFile("ui/public/manifest.json", JSON.stringify(MANIFEST, null, 2));
+await writeIfChanged(".project/views/manifest.json", JSON.stringify(MANIFEST, null, 2));
+await writeIfChanged("ui/public/manifest.json", JSON.stringify(MANIFEST, null, 2));
 console.log("Wrote manifest.json");
 
 console.log(`materialized: ${items.length} items -> board.json, by-type.json, stats.json (repo-relative paths)`);

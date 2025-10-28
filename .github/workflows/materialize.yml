@@ -4,6 +4,8 @@ on:
     branches: [ main ]
     paths:
       - ".project/**"
+    paths-ignore:
+      - "docs/ATLAS.md"
   workflow_dispatch:
 jobs:
   build_views:

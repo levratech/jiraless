@@ -2,29 +2,42 @@ name: Build Atlas
 on:
   push:
     branches: [ main ]
-    paths:
-      - "**/*"
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Federate Cortex
+      - Deploy UI to Pages
+      - Materialize Views
+    types: [completed]
 
 permissions:
   contents: write
 
+concurrency:
+  group: atlas-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   atlas:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - run: npm i globby gray-matter js-yaml ignore
-      - run: node tools/atlas.mjs
+      - name: Build ATLAS
+        run: node tools/atlas.mjs
         env:
           ATLAS_OUT: docs/ATLAS.md
-      - name: Commit Atlas
+      - name: Commit Atlas (skip ci)
         run: |
           git config user.name "jiraless-bot"
           git config user.email "bot@users.noreply.github.com"
           git add docs/ATLAS.md
-          git diff --cached --quiet || git commit -m "atlas: refresh snapshot"
+          git diff --cached --quiet && { echo "No atlas changes"; exit 0; }
+          git commit -m "atlas: refresh snapshot [skip ci]"
           git push

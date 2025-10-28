@@ -6,6 +6,8 @@ on:
       - "ui/**"
       - ".project/**"
       - "tools/**"
+    paths-ignore:
+      - "docs/ATLAS.md"
   workflow_dispatch:
 
 permissions:
