@@ -1,103 +1,115 @@
 # Jiraless Atlas
+
 _Generated:_ 2025-10-29T01:20:55.175Z
 
 ## Summary
+
 - Files: **46**
 - Total size: **84 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
 
 ## File Inventory
-| Path | Size | SHA256 | Inlined |
-| :-- | :-- | :-- | :-- |
-| LICENSE | 1.0 KB | `a40f98f0c091…` | no |
-| package.json | 313 B | `f9f58ce55b8c…` | no |
-| PRODUCT_VERSION | 5 B | `ec17a75580c4…` | no |
-| README.md | 8.9 KB | `d62cb2e9713a…` | yes |
-| tools/atlas.mjs | 7.8 KB | `2715e4c4f3a8…` | yes |
-| tools/federate.mjs | 1.2 KB | `be57091c23e0…` | yes |
-| tools/materialize.mjs | 7.3 KB | `e8be4cd15fbf…` | yes |
-| tools/schemas/adr.schema.json | 726 B | `05c78858158c…` | yes |
-| tools/schemas/doc.schema.json | 721 B | `9468287ecf9e…` | yes |
-| tools/schemas/epic.schema.json | 1.3 KB | `c82696cbc6f7…` | yes |
-| tools/schemas/issue.schema.json | 1.3 KB | `08bac8bb651a…` | yes |
-| tools/schemas/runlog.schema.json | 410 B | `4d898a0c53c3…` | yes |
-| tools/schemas/story.schema.json | 1.3 KB | `58bb8c140002…` | yes |
-| tools/schemas/work.schema.json | 1.3 KB | `e0f486065d9b…` | yes |
-| tools/validate.mjs | 4.3 KB | `79a712057cb9…` | yes |
-| tools/version.mjs | 3.7 KB | `6265cc0f3ed3…` | yes |
-| ui/index.html | 491 B | `9983dbc240f8…` | no |
-| ui/package.json | 845 B | `07320253f8f6…` | no |
-| ui/public/404.html | 1.6 KB | `816f4a2db1b1…` | no |
-| ui/public/CNAME | 22 B | `3909faef9656…` | no |
-| ui/public/config.js | 149 B | `113826305d74…` | no |
-| ui/public/manifest.json | 248 B | `4b5a0944255b…` | no |
-| ui/public/ontology.json | 828 B | `250b630dfbda…` | no |
-| ui/public/state-machine.json | 339 B | `eeb76afa0cff…` | no |
-| ui/public/views/board.json | 303 B | `f9a6f6cbe393…` | no |
-| ui/public/views/by-type.json | 218 B | `f5ca03a1e86d…` | no |
-| ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
-| ui/src/App.jsx | 1014 B | `8b777fe73089…` | no |
-| ui/src/App.tsx | 2.0 KB | `270587987ce4…` | no |
-| ui/src/components/Board.tsx | 9.5 KB | `cd5c09d60be7…` | no |
-| ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no |
-| ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
-| ui/src/index.css | 632 B | `696b7714cc1f…` | no |
-| ui/src/lib/asset.ts | 125 B | `56fce3b8694c…` | no |
-| ui/src/lib/fetch.ts | 645 B | `e229823cbfc8…` | no |
-| ui/src/lib/ontology.ts | 472 B | `6f1e3a1d715d…` | no |
-| ui/src/lib/search.ts | 2.4 KB | `2640c79f07e6…` | no |
-| ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
-| ui/src/main.tsx | 471 B | `84491d401f5d…` | no |
-| ui/src/pages/About.tsx | 2.2 KB | `3b53085b7731…` | no |
-| ui/src/pages/Cortex.tsx | 1.0 KB | `ab789897c40e…` | no |
-| ui/src/pages/NewWork.tsx | 4.6 KB | `96c7a885883c…` | no |
-| ui/src/pages/WorkDetail.tsx | 8.0 KB | `0974833159b3…` | no |
-| ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
-| ui/src/version.ts | 255 B | `0e67bf66090b…` | no |
-| ui/vite.config.ts | 289 B | `7f0078405011…` | no |
+
+| Path                              | Size   | SHA256          | Inlined |
+| :-------------------------------- | :----- | :-------------- | :------ |
+| LICENSE                           | 1.0 KB | `a40f98f0c091…` | no      |
+| package.json                      | 313 B  | `f9f58ce55b8c…` | no      |
+| PRODUCT_VERSION                   | 5 B    | `ec17a75580c4…` | no      |
+| README.md                         | 8.9 KB | `d62cb2e9713a…` | yes     |
+| tools/atlas.mjs                   | 7.8 KB | `2715e4c4f3a8…` | yes     |
+| tools/federate.mjs                | 1.2 KB | `be57091c23e0…` | yes     |
+| tools/materialize.mjs             | 7.3 KB | `e8be4cd15fbf…` | yes     |
+| tools/schemas/adr.schema.json     | 726 B  | `05c78858158c…` | yes     |
+| tools/schemas/doc.schema.json     | 721 B  | `9468287ecf9e…` | yes     |
+| tools/schemas/epic.schema.json    | 1.3 KB | `c82696cbc6f7…` | yes     |
+| tools/schemas/issue.schema.json   | 1.3 KB | `08bac8bb651a…` | yes     |
+| tools/schemas/runlog.schema.json  | 410 B  | `4d898a0c53c3…` | yes     |
+| tools/schemas/story.schema.json   | 1.3 KB | `58bb8c140002…` | yes     |
+| tools/schemas/work.schema.json    | 1.3 KB | `e0f486065d9b…` | yes     |
+| tools/validate.mjs                | 4.3 KB | `79a712057cb9…` | yes     |
+| tools/version.mjs                 | 3.7 KB | `6265cc0f3ed3…` | yes     |
+| ui/index.html                     | 491 B  | `9983dbc240f8…` | no      |
+| ui/package.json                   | 845 B  | `07320253f8f6…` | no      |
+| ui/public/404.html                | 1.6 KB | `816f4a2db1b1…` | no      |
+| ui/public/CNAME                   | 22 B   | `3909faef9656…` | no      |
+| ui/public/config.js               | 149 B  | `113826305d74…` | no      |
+| ui/public/manifest.json           | 248 B  | `4b5a0944255b…` | no      |
+| ui/public/ontology.json           | 828 B  | `250b630dfbda…` | no      |
+| ui/public/state-machine.json      | 339 B  | `eeb76afa0cff…` | no      |
+| ui/public/views/board.json        | 303 B  | `f9a6f6cbe393…` | no      |
+| ui/public/views/by-type.json      | 218 B  | `f5ca03a1e86d…` | no      |
+| ui/public/views/stats.json        | 131 B  | `2605f43071e0…` | no      |
+| ui/src/App.jsx                    | 1014 B | `8b777fe73089…` | no      |
+| ui/src/App.tsx                    | 2.0 KB | `270587987ce4…` | no      |
+| ui/src/components/Board.tsx       | 9.5 KB | `cd5c09d60be7…` | no      |
+| ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no      |
+| ui/src/components/IssuesList.jsx  | 1.2 KB | `0199872983bf…` | no      |
+| ui/src/index.css                  | 632 B  | `696b7714cc1f…` | no      |
+| ui/src/lib/asset.ts               | 125 B  | `56fce3b8694c…` | no      |
+| ui/src/lib/fetch.ts               | 645 B  | `e229823cbfc8…` | no      |
+| ui/src/lib/ontology.ts            | 472 B  | `6f1e3a1d715d…` | no      |
+| ui/src/lib/search.ts              | 2.4 KB | `2640c79f07e6…` | no      |
+| ui/src/main.jsx                   | 213 B  | `b98fad61f7d1…` | no      |
+| ui/src/main.tsx                   | 471 B  | `84491d401f5d…` | no      |
+| ui/src/pages/About.tsx            | 2.2 KB | `3b53085b7731…` | no      |
+| ui/src/pages/Cortex.tsx           | 1.0 KB | `ab789897c40e…` | no      |
+| ui/src/pages/NewWork.tsx          | 4.6 KB | `96c7a885883c…` | no      |
+| ui/src/pages/WorkDetail.tsx       | 8.0 KB | `0974833159b3…` | no      |
+| ui/src/util/gh.ts                 | 579 B  | `ea9f808c423a…` | no      |
+| ui/src/version.ts                 | 255 B  | `0e67bf66090b…` | no      |
+| ui/vite.config.ts                 | 289 B  | `7f0078405011…` | no      |
 
 ## .project Object Stats
+
 ### By Type
-| Type | Count |
-| :-- | :-- |
-| feature | 1 |
+
+| Type    | Count |
+| :------ | :---- |
+| feature | 1     |
 
 ### By Status
-| Status | Count |
-| :-- | :-- |
-| in_progress | 1 |
+
+| Status      | Count |
+| :---------- | :---- |
+| in_progress | 1     |
 
 ### Objects
-| ID | Type | Status | Title | File |
-| :-- | :-- | :-- | :-- | :-- |
+
+| ID      | Type    | Status      | Title                                  | File                                       |
+| :------ | :------ | :---------- | :------------------------------------- | :----------------------------------------- |
 | WK-0001 | feature | in_progress | Implement ontology-driven work objects | .project/objects/issues/ISS-0001.sample.md |
 
 ## GitHub Workflows
-| Workflow | Triggers | File |
-| :-- | :-- | :-- |
-| Build Atlas | workflow_run | .github/workflows/atlas.yml |
-| Federate Cortex | schedule, workflow_dispatch, push | .github/workflows/federate.yml |
-| Materialize Boards & Backlinks | push, workflow_dispatch | .github/workflows/materialize.yml |
-| Pages Watchdog | schedule, workflow_dispatch | .github/workflows/pages-watchdog.yml |
-| Deploy UI to Pages | push, workflow_dispatch | .github/workflows/pages.yml |
-| Propose Work (repository_dispatch → draft PR) | repository_dispatch | .github/workflows/propose-intent.yml |
-| Propose Transition (repository_dispatch → draft PR) | repository_dispatch | .github/workflows/transition-intent.yml |
-| Validate Jiraless Objects | pull_request, push | .github/workflows/validate.yml |
+
+| Workflow                                            | Triggers                          | File                                    |
+| :-------------------------------------------------- | :-------------------------------- | :-------------------------------------- |
+| Build Atlas                                         | workflow_run                      | .github/workflows/atlas.yml             |
+| Federate Cortex                                     | schedule, workflow_dispatch, push | .github/workflows/federate.yml          |
+| Materialize Boards & Backlinks                      | push, workflow_dispatch           | .github/workflows/materialize.yml       |
+| Pages Watchdog                                      | schedule, workflow_dispatch       | .github/workflows/pages-watchdog.yml    |
+| Deploy UI to Pages                                  | push, workflow_dispatch           | .github/workflows/pages.yml             |
+| Propose Work (repository_dispatch → draft PR)       | repository_dispatch               | .github/workflows/propose-intent.yml    |
+| Propose Transition (repository_dispatch → draft PR) | repository_dispatch               | .github/workflows/transition-intent.yml |
+| Validate Jiraless Objects                           | pull_request, push                | .github/workflows/validate.yml          |
 
 ## Inline Source (key files)
+
 ### `README.md`
+
 _Size:_ 8.9 KB  
 _Hash:_ `d62cb2e9713a17c9115f4aef5bd390455fdc6f034fd865a9f736d4a38fa2d315`
 
-```markdown
+`````markdown
 # Jiraless
 
 **Jira, but without the Jira.**  
 Markdown-native work objects in Git. GitHub Pages as the UI. GitHub Actions as the backend. GitHub RBAC as auth. Zero server bill.
 
 ## Why
+
 I wanted Jira’s structure without its gravity—and the things Jira won’t give me:
+
 - Text-first work (Markdown + YAML front-matter)
 - Repo-as-database with perfect audit (PRs)
 - Static UI (Pages), no servers to run
@@ -105,10 +117,43 @@ I wanted Jira’s structure without its gravity—and the things Jira won’t gi
 - Agent-native by design (PR proposals)
 
 ## How it works
+
 - **Data**: `.project/objects/**.md` hold issues, epics, stories, docs, ADRs.
 - **UI**: `/ui` builds to GitHub Pages; reads repo files via GitHub API.
 - **Logic**: `validate.yml` checks schemas + links; `materialize.yml` builds boards/backlinks and commits to `.project/views/`.
 - **Auth/RBAC**: Your GitHub repo’s permissions + optional policy guards in `.project/policies/`.
+
+## v0.8 Features: Signals & Sync
+
+### PR/CI Badges
+
+- **Materializer**: `tools/materialize.mjs` augments board items with PR data from GitHub API
+- **UI**: `Badges.tsx` component shows PR #, state (draft/open/merged/closed), and CI status (success/failure/pending)
+- **Resolution**: Matches work items to PRs by intent URL or branch pattern `proposed/WK-xxxx`
+
+### Watchdog Polling
+
+- **Tool**: `tools/watchdog.mjs` runs every 5 minutes via GitHub Actions
+- **Detection**: Polls GitHub API for PRs updated since last run that touch `.project/objects/**`
+- **Actions**: Triggers `materialize.mjs` and workflow_dispatch to `pages.yml` for auto-deploy
+- **Events**: Records activity in `ui/public/events.json` (capped to 50 entries)
+
+### Notifications
+
+- **Config**: `notifications.yaml` defines Slack/Email routing rules
+- **Workflow**: `notify-intent.yml` handles `repository_dispatch` events for PR updates and transitions
+- **Transport**: Slack webhooks (optional) and email (placeholder for future implementation)
+
+### Filters & Search
+
+- **UI**: Board component supports `has:pr`, `ci:success|failure|pending` filter chips
+- **Persistence**: All filters saved in URL parameters
+- **Counts**: Column headers show filtered item counts
+
+### Minimal API/CLI
+
+- **Events**: `ui/public/events.json` provides recent activity feed
+- **CLI**: `npm run jiraless:board` prints board statistics from `stats.json`
 
 ## Repository layout
 
@@ -123,11 +168,12 @@ policies/
 roles.yaml
 state-machine.yaml
 agent-policies.yaml
-views/                # generated (boards, roadmap, backlink index)
-runs/                 # append-only logs (comments, agent actions)
+views/ # generated (boards, roadmap, backlink index)
+runs/ # append-only logs (comments, agent actions)
 
 ## Front-matter schema (issue)
-```yaml
+
+````yaml
 ---
 id: ISS-0001
 type: issue            # issue|epic|story|doc|decision
@@ -198,6 +244,7 @@ Roadmap
 	•	v0.1: schemas + validator + board materializer + read-only UI.
 	•	v0.2: UI “create issue/transition” → draft PR flow.
 	•	v0.3: policy guardrails; role mapping; agent proposals.
+	•	v0.8: PR/CI badges, watchdog polling, notifications, filters, events API.
 	•	v1.0: multi-repo indexing (Cortex/Conduit).
 
 License
@@ -395,11 +442,14 @@ console.log('Materialized views.');
   },
   "additionalProperties": true
 }
+````
+`````
 
-```
+`````
 
 ### `tools/atlas.mjs`
-_Size:_ 7.8 KB  
+
+_Size:_ 7.8 KB
 _Hash:_ `2715e4c4f3a8681020b7e733d8b6a26113cd8c38f5ba3bf5f84f19f96efd7071`
 
 ```js
@@ -418,239 +468,276 @@ _Hash:_ `2715e4c4f3a8681020b7e733d8b6a26113cd8c38f5ba3bf5f84f19f96efd7071`
  *  ATLAS_DEBUG_IGNORE=1
  */
 
-import fs from "fs/promises";
-import path from "path";
-import crypto from "crypto";
-import { globby } from "globby";
-import matter from "gray-matter";
-import yaml from "js-yaml";
-import ignore from "ignore";
+import fs from 'fs/promises'
+import path from 'path'
+import crypto from 'crypto'
+import { globby } from 'globby'
+import matter from 'gray-matter'
+import yaml from 'js-yaml'
+import ignore from 'ignore'
 
-const OUT = process.env.ATLAS_OUT || "docs/ATLAS.md";
-const MAX_INLINE_BYTES = Number(process.env.ATLAS_MAX_INLINE || 200_000);
-const DEBUG_IGNORE = !!process.env.ATLAS_DEBUG_IGNORE;
+const OUT = process.env.ATLAS_OUT || 'docs/ATLAS.md'
+const MAX_INLINE_BYTES = Number(process.env.ATLAS_MAX_INLINE || 200_000)
+const DEBUG_IGNORE = !!process.env.ATLAS_DEBUG_IGNORE
 
 // Only inline from these locations (keeps Atlas tight)
 const INLINE_ALLOW_DIRS = [
-  "tools/",
-  "tools/schemas/",
-  ".github/workflows/",
-  ".project/policies/",
-];
-const INLINE_ALLOW_FILES = new Set(["README.md"]); // single files allowed anywhere
+	'tools/',
+	'tools/schemas/',
+	'.github/workflows/',
+	'.project/policies/',
+]
+const INLINE_ALLOW_FILES = new Set(['README.md']) // single files allowed anywhere
 
 const INLINE_EXTS = new Set([
-  ".md", ".markdown", ".yml", ".yaml", ".json",
-  ".mjs", ".cjs", ".js", ".ts", ".tsx", ".jsx",
-  ".css", ".html"
-]);
+	'.md',
+	'.markdown',
+	'.yml',
+	'.yaml',
+	'.json',
+	'.mjs',
+	'.cjs',
+	'.js',
+	'.ts',
+	'.tsx',
+	'.jsx',
+	'.css',
+	'.html',
+])
 
 // ---- ignore handling (gitignore-style) ----
 const DEFAULT_IGNORES = [
-  "**/node_modules/**",
-  "**/dist/**",
-  ".git/**",
-  ".next/**",
-  "coverage/**",
-  "**/.DS_Store",
-  OUT,                 // never include the atlas itself
-  `**/${path.basename(OUT)}`,
-  ".project/views/**", // generated; usually noisy
-  "ui/dist/**",        // build output
-];
+	'**/node_modules/**',
+	'**/dist/**',
+	'.git/**',
+	'.next/**',
+	'coverage/**',
+	'**/.DS_Store',
+	OUT, // never include the atlas itself
+	`**/${path.basename(OUT)}`,
+	'.project/views/**', // generated; usually noisy
+	'ui/dist/**', // build output
+]
 
 function normalizeAtlasIgnoreLines(text) {
-  return text
-    .split(/\r?\n/)
-    .map((l) => l.trim())
-    .filter((l) => l && !l.startsWith("#"))
-    .flatMap((p) => {
-      const hasSlash = p.includes("/");
-      const hasGlob = /[*?[\]{}()!]/.test(p);
-      if (!hasSlash && !hasGlob) return [p, `**/${p}`];
-      return [p];
-    });
+	return text
+		.split(/\r?\n/)
+		.map((l) => l.trim())
+		.filter((l) => l && !l.startsWith('#'))
+		.flatMap((p) => {
+			const hasSlash = p.includes('/')
+			const hasGlob = /[*?[\]{}()!]/.test(p)
+			if (!hasSlash && !hasGlob) return [p, `**/${p}`]
+			return [p]
+		})
 }
 
-let userIgnores = [];
+let userIgnores = []
 try {
-  const raw = await fs.readFile(".atlasignore", "utf8");
-  userIgnores = normalizeAtlasIgnoreLines(raw);
-  console.log(`Loaded ${userIgnores.length} patterns from .atlasignore`);
+	const raw = await fs.readFile('.atlasignore', 'utf8')
+	userIgnores = normalizeAtlasIgnoreLines(raw)
+	console.log(`Loaded ${userIgnores.length} patterns from .atlasignore`)
 } catch {
-  console.log("No .atlasignore found; using defaults only.");
+	console.log('No .atlasignore found; using defaults only.')
 }
 
-const ig = ignore().add([...DEFAULT_IGNORES, ...userIgnores]);
+const ig = ignore().add([...DEFAULT_IGNORES, ...userIgnores])
 
 // helpers
-const ext = (p) => path.extname(p).toLowerCase();
-const sha256 = (b) => crypto.createHash("sha256").update(b).digest("hex");
+const ext = (p) => path.extname(p).toLowerCase()
+const sha256 = (b) => crypto.createHash('sha256').update(b).digest('hex')
 const prettyBytes = (n) => {
-  const u = ["B", "KB", "MB", "GB"]; let i = 0; let v = n;
-  while (v >= 1024 && i < u.length - 1) { v /= 1024; i++; }
-  return `${v.toFixed(v < 10 && i > 0 ? 1 : 0)} ${u[i]}`;
-};
+	const u = ['B', 'KB', 'MB', 'GB']
+	let i = 0
+	let v = n
+	while (v >= 1024 && i < u.length - 1) {
+		v /= 1024
+		i++
+	}
+	return `${v.toFixed(v < 10 && i > 0 ? 1 : 0)} ${u[i]}`
+}
 
-async function readSafe(p) { try { return await fs.readFile(p); } catch { return null; } }
+async function readSafe(p) {
+	try {
+		return await fs.readFile(p)
+	} catch {
+		return null
+	}
+}
 
 function codeFenceForExt(e) {
-  if (e === ".md" || e === ".markdown") return "markdown";
-  if (e === ".yml" || e === ".yaml") return "yaml";
-  if (e === ".json") return "json";
-  if (e === ".ts" || e === ".tsx") return "ts";
-  if (e === ".js" || e === ".mjs" || e === ".cjs") return "js";
-  if (e === ".css") return "css";
-  if (e === ".html") return "html";
-  return "";
+	if (e === '.md' || e === '.markdown') return 'markdown'
+	if (e === '.yml' || e === '.yaml') return 'yaml'
+	if (e === '.json') return 'json'
+	if (e === '.ts' || e === '.tsx') return 'ts'
+	if (e === '.js' || e === '.mjs' || e === '.cjs') return 'js'
+	if (e === '.css') return 'css'
+	if (e === '.html') return 'html'
+	return ''
 }
 
 function table(headers, rows) {
-  const head = `| ${headers.join(" | ")} |`;
-  const sep = `| ${headers.map(() => ":--").join(" | ")} |`;
-  const body = rows.map((r) => `| ${r.map((v) => v ?? "").join(" | ")} |`).join("\n");
-  return `${head}\n${sep}\n${body}`;
+	const head = `| ${headers.join(' | ')} |`
+	const sep = `| ${headers.map(() => ':--').join(' | ')} |`
+	const body = rows
+		.map((r) => `| ${r.map((v) => v ?? '').join(' | ')} |`)
+		.join('\n')
+	return `${head}\n${sep}\n${body}`
 }
 
 function debugIgnored(allFiles, keptFiles) {
-  if (!DEBUG_IGNORE) return;
-  const kept = new Set(keptFiles);
-  const ignored = allFiles.filter((f) => !kept.has(f));
-  console.log("\n[atlas] Debug ignore:");
-  console.log(`  Input files: ${allFiles.length}`);
-  console.log(`  Kept files : ${keptFiles.length}`);
-  console.log(`  Ignored    : ${ignored.length}`);
-  if (ignored.length) {
-    console.log(ignored.slice(0, 200).map((f) => `   - ${f}`).join("\n"));
-    if (ignored.length > 200) console.log("   ... (truncated)");
-  }
+	if (!DEBUG_IGNORE) return
+	const kept = new Set(keptFiles)
+	const ignored = allFiles.filter((f) => !kept.has(f))
+	console.log('\n[atlas] Debug ignore:')
+	console.log(`  Input files: ${allFiles.length}`)
+	console.log(`  Kept files : ${keptFiles.length}`)
+	console.log(`  Ignored    : ${ignored.length}`)
+	if (ignored.length) {
+		console.log(
+			ignored
+				.slice(0, 200)
+				.map((f) => `   - ${f}`)
+				.join('\n')
+		)
+		if (ignored.length > 200) console.log('   ... (truncated)')
+	}
 }
 
 async function collectFiles() {
-  const filesAll = await globby(["**/*"], { gitignore: true });
-  const files = ig.filter(filesAll);
-  debugIgnored(filesAll, files);
+	const filesAll = await globby(['**/*'], { gitignore: true })
+	const files = ig.filter(filesAll)
+	debugIgnored(filesAll, files)
 
-  const entries = [];
-  for (const f of files) {
-    const stat = await fs.stat(f).catch(() => null);
-    if (!stat || stat.isDirectory()) continue;
-    const buf = await readSafe(f);
-    const size = buf?.length ?? 0;
-    entries.push({
-      path: f,
-      size,
-      sha256: buf ? sha256(buf) : "",
-      inline: shouldInline(f) && size <= MAX_INLINE_BYTES && INLINE_EXTS.has(ext(f)),
-    });
-  }
-  entries.sort((a, b) => a.path.localeCompare(b.path));
-  return entries;
+	const entries = []
+	for (const f of files) {
+		const stat = await fs.stat(f).catch(() => null)
+		if (!stat || stat.isDirectory()) continue
+		const buf = await readSafe(f)
+		const size = buf?.length ?? 0
+		entries.push({
+			path: f,
+			size,
+			sha256: buf ? sha256(buf) : '',
+			inline:
+				shouldInline(f) && size <= MAX_INLINE_BYTES && INLINE_EXTS.has(ext(f)),
+		})
+	}
+	entries.sort((a, b) => a.path.localeCompare(b.path))
+	return entries
 }
 
 function shouldInline(p) {
-  if (INLINE_ALLOW_FILES.has(p)) return true;
-  return INLINE_ALLOW_DIRS.some((prefix) => p.startsWith(prefix));
+	if (INLINE_ALLOW_FILES.has(p)) return true
+	return INLINE_ALLOW_DIRS.some((prefix) => p.startsWith(prefix))
 }
 
 async function projectStats() {
-  const all = await globby([".project/objects/**/*.{md,markdown}"], { gitignore: true });
-  const objects = ig.filter(all);
-  const byType = new Map(), byStatus = new Map();
-  const rows = [];
+	const all = await globby(['.project/objects/**/*.{md,markdown}'], {
+		gitignore: true,
+	})
+	const objects = ig.filter(all)
+	const byType = new Map(),
+		byStatus = new Map()
+	const rows = []
 
-  for (const p of objects) {
-    const raw = await fs.readFile(p, "utf8");
-    const fm = matter(raw).data || {};
-    const t = (fm.type || "unknown").toString();
-    const s = (fm.status || "unknown").toString();
-    byType.set(t, (byType.get(t) || 0) + 1);
-    byStatus.set(s, (byStatus.get(s) || 0) + 1);
-    rows.push({ id: fm.id, type: t, status: s, title: fm.title, file: p });
-  }
-  return { byType, byStatus, rows };
+	for (const p of objects) {
+		const raw = await fs.readFile(p, 'utf8')
+		const fm = matter(raw).data || {}
+		const t = (fm.type || 'unknown').toString()
+		const s = (fm.status || 'unknown').toString()
+		byType.set(t, (byType.get(t) || 0) + 1)
+		byStatus.set(s, (byStatus.get(s) || 0) + 1)
+		rows.push({ id: fm.id, type: t, status: s, title: fm.title, file: p })
+	}
+	return { byType, byStatus, rows }
 }
 
 async function workflowsSummary() {
-  const all = await globby([".github/workflows/**/*.{yml,yaml}"], { gitignore: true });
-  const files = ig.filter(all);
-  const flows = [];
-  for (const p of files) {
-    const raw = await fs.readFile(p, "utf8");
-    let y; try { y = yaml.load(raw); } catch { y = null; }
-    const name = (y && y.name) || path.basename(p);
-    const on = y && y.on
-      ? (Array.isArray(y.on) ? y.on : Object.keys(y.on))
-      : [];
-    flows.push({ file: p, name, triggers: on });
-  }
-  return flows;
+	const all = await globby(['.github/workflows/**/*.{yml,yaml}'], {
+		gitignore: true,
+	})
+	const files = ig.filter(all)
+	const flows = []
+	for (const p of files) {
+		const raw = await fs.readFile(p, 'utf8')
+		let y
+		try {
+			y = yaml.load(raw)
+		} catch {
+			y = null
+		}
+		const name = (y && y.name) || path.basename(p)
+		const on = y && y.on ? (Array.isArray(y.on) ? y.on : Object.keys(y.on)) : []
+		flows.push({ file: p, name, triggers: on })
+	}
+	return flows
 }
 
 async function inlineSections(entries) {
-  const chunks = [];
-  for (const e of entries) {
-    if (!e.inline) continue;
-    const raw = await fs.readFile(e.path, "utf8");
-    const lang = codeFenceForExt(ext(e.path));
-    chunks.push(
-      `### \`${e.path}\`\n` +
-      `_Size:_ ${prettyBytes(e.size)}  \n_Hash:_ \`${e.sha256}\`\n\n` +
-      `\`\`\`${lang}\n${raw}\n\`\`\`\n`
-    );
-  }
-  return chunks.join("\n");
+	const chunks = []
+	for (const e of entries) {
+		if (!e.inline) continue
+		const raw = await fs.readFile(e.path, 'utf8')
+		const lang = codeFenceForExt(ext(e.path))
+		chunks.push(
+			`### \`${e.path}\`\n` +
+				`_Size:_ ${prettyBytes(e.size)}  \n_Hash:_ \`${e.sha256}\`\n\n` +
+				`\`\`\`${lang}\n${raw}\n\`\`\`\n`
+		)
+	}
+	return chunks.join('\n')
 }
 
 async function main() {
-  const entries = await collectFiles();
+	const entries = await collectFiles()
 
-  const totalSize = entries.reduce((s, e) => s + e.size, 0);
-  const filesTable = table(
-    ["Path", "Size", "SHA256", "Inlined"],
-    entries.map((e) => [
-      e.path,
-      prettyBytes(e.size),
-      `\`${e.sha256.slice(0, 12)}…\``,
-      e.inline ? "yes" : "no",
-    ])
-  );
+	const totalSize = entries.reduce((s, e) => s + e.size, 0)
+	const filesTable = table(
+		['Path', 'Size', 'SHA256', 'Inlined'],
+		entries.map((e) => [
+			e.path,
+			prettyBytes(e.size),
+			`\`${e.sha256.slice(0, 12)}…\``,
+			e.inline ? 'yes' : 'no',
+		])
+	)
 
-  const { byType, byStatus, rows } = await projectStats();
-  const typeRows = [...byType.entries()].map(([k, v]) => [k, String(v)]);
-  const statusRows = [...byStatus.entries()].map(([k, v]) => [k, String(v)]);
-  const objectTable = table(
-    ["ID", "Type", "Status", "Title", "File"],
-    rows.map((r) => [r.id || "", r.type, r.status, r.title || "", r.file])
-  );
+	const { byType, byStatus, rows } = await projectStats()
+	const typeRows = [...byType.entries()].map(([k, v]) => [k, String(v)])
+	const statusRows = [...byStatus.entries()].map(([k, v]) => [k, String(v)])
+	const objectTable = table(
+		['ID', 'Type', 'Status', 'Title', 'File'],
+		rows.map((r) => [r.id || '', r.type, r.status, r.title || '', r.file])
+	)
 
-  const flows = await workflowsSummary();
-  const flowTable = table(
-    ["Workflow", "Triggers", "File"],
-    flows.map((f) => [f.name, (f.triggers || []).join(", "), f.file])
-  );
+	const flows = await workflowsSummary()
+	const flowTable = table(
+		['Workflow', 'Triggers', 'File'],
+		flows.map((f) => [f.name, (f.triggers || []).join(', '), f.file])
+	)
 
-  const inlined = await inlineSections(entries);
+	const inlined = await inlineSections(entries)
 
-  const now = new Date().toISOString();
-  const md = `# Jiraless Atlas
+	const now = new Date().toISOString()
+	const md = `# Jiraless Atlas
 _Generated:_ ${now}
 
 ## Summary
 - Files: **${entries.length}**
 - Total size: **${prettyBytes(totalSize)}**
 - Inlined source cap: **${prettyBytes(MAX_INLINE_BYTES)}** per file
-- Inline allow: ${["README.md", ...INLINE_ALLOW_DIRS].join(", ")}
+- Inline allow: ${['README.md', ...INLINE_ALLOW_DIRS].join(', ')}
 
 ## File Inventory
 ${filesTable}
 
 ## .project Object Stats
 ### By Type
-${table(["Type","Count"], typeRows)}
+${table(['Type', 'Count'], typeRows)}
 
 ### By Status
-${table(["Status","Count"], statusRows)}
+${table(['Status', 'Count'], statusRows)}
 
 ### Objects
 ${objectTable}
@@ -659,19 +746,23 @@ ${objectTable}
 ${flowTable}
 
 ## Inline Source (key files)
-${inlined || "_(No files eligible under size cap.)_"}
-`;
+${inlined || '_(No files eligible under size cap.)_'}
+`
 
-  await fs.mkdir(path.dirname(OUT), { recursive: true });
-  await fs.writeFile(OUT, md, "utf8");
-  console.log(`Wrote ${OUT}`);
+	await fs.mkdir(path.dirname(OUT), { recursive: true })
+	await fs.writeFile(OUT, md, 'utf8')
+	console.log(`Wrote ${OUT}`)
 }
 
-main().catch((err) => { console.error(err); process.exit(1); });
+main().catch((err) => {
+	console.error(err)
+	process.exit(1)
+})
 ```
 
 ### `tools/federate.mjs`
-_Size:_ 1.2 KB  
+
+_Size:_ 1.2 KB
 _Hash:_ `be57091c23e07a86198b22696e33d3e02a8fd6a82c133ca8c83963ab16edc6c1`
 
 ```js
@@ -680,57 +771,65 @@ _Hash:_ `be57091c23e07a86198b22696e33d3e02a8fd6a82c133ca8c83963ab16edc6c1`
  * Jiraless Federation Tool
  * Aggregates multiple Jiraless manifests into one federated view.
  */
-import fs from "fs/promises";
-import yaml from "js-yaml";
-import path from "path";
-import fetch from "node-fetch";
+import fs from 'fs/promises'
+import yaml from 'js-yaml'
+import path from 'path'
+import fetch from 'node-fetch'
 
-const CONFIG = ".project/policies/federation.yaml";
-const OUT = ".project/views/federated.json";
+const CONFIG = '.project/policies/federation.yaml'
+const OUT = '.project/views/federated.json'
 
 async function loadConfig() {
-  try {
-    const raw = await fs.readFile(CONFIG, "utf8");
-    return yaml.load(raw);
-  } catch {
-    return { remotes: [] };
-  }
+	try {
+		const raw = await fs.readFile(CONFIG, 'utf8')
+		return yaml.load(raw)
+	} catch {
+		return { remotes: [] }
+	}
 }
 
 async function fetchJSON(url) {
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(res.statusText);
-    return await res.json();
-  } catch (e) {
-    console.warn(`⚠️ Failed to fetch ${url}: ${e.message}`);
-    return null;
-  }
+	try {
+		const res = await fetch(url)
+		if (!res.ok) throw new Error(res.statusText)
+		return await res.json()
+	} catch (e) {
+		console.warn(`⚠️ Failed to fetch ${url}: ${e.message}`)
+		return null
+	}
 }
 
 async function main() {
-  const cfg = await loadConfig();
-  const all = [];
-  for (const remote of cfg.remotes || []) {
-    const manifest = await fetchJSON(remote);
-    if (manifest) all.push(manifest);
-  }
-  await fs.mkdir(path.dirname(OUT), { recursive: true });
-  await fs.writeFile(OUT, JSON.stringify({ updated: new Date().toISOString(), manifests: all }, null, 2));
-  console.log(`Federated ${all.length} manifests`);
+	const cfg = await loadConfig()
+	const all = []
+	for (const remote of cfg.remotes || []) {
+		const manifest = await fetchJSON(remote)
+		if (manifest) all.push(manifest)
+	}
+	await fs.mkdir(path.dirname(OUT), { recursive: true })
+	await fs.writeFile(
+		OUT,
+		JSON.stringify(
+			{ updated: new Date().toISOString(), manifests: all },
+			null,
+			2
+		)
+	)
+	console.log(`Federated ${all.length} manifests`)
 }
 
-main().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+main().catch((err) => {
+	console.error(err)
+	process.exit(1)
+})
 ```
 
 ### `tools/materialize.mjs`
-_Size:_ 7.3 KB  
+
+_Size:_ 7.3 KB
 _Hash:_ `e8be4cd15fbf71b6cb03afa6db3f5d6785467d53f6af6439460d6e250fd30229`
 
-```js
+````js
 #!/usr/bin/env node
 /**
  * Jiraless v0.4.2 Materializer
@@ -739,504 +838,540 @@ _Hash:_ `e8be4cd15fbf71b6cb03afa6db3f5d6785467d53f6af6439460d6e250fd30229`
  * - Optionally mirrors to ui/public/views and emits ui/public/ontology.json
  */
 
-import fs from "fs/promises";
-import path from "path";
-import { globby } from "globby";
-import matter from "gray-matter";
-import yaml from "js-yaml";
+import fs from 'fs/promises'
+import path from 'path'
+import { globby } from 'globby'
+import matter from 'gray-matter'
+import yaml from 'js-yaml'
 
-const REPO_ROOT = process.cwd();
-const POSIX_ROOT = REPO_ROOT.replace(/\\/g, "/");
+const REPO_ROOT = process.cwd()
+const POSIX_ROOT = REPO_ROOT.replace(/\\/g, '/')
 
-const OBJ_GLOB = ".project/objects/**/*.{md,markdown}";
-const VIEWS_DIR = ".project/views";
-const ONTOLOGY_YAML = ".project/policies/ontology.yaml";
-const SM_YAML = ".project/policies/state-machine.yaml";
-const TARGET_PUBLIC = process.env.TARGET_PUBLIC || ""; // e.g. "ui/public"
-const PUBLIC_VIEWS_DIR = TARGET_PUBLIC ? path.join(TARGET_PUBLIC, "views") : "";
+const OBJ_GLOB = '.project/objects/**/*.{md,markdown}'
+const VIEWS_DIR = '.project/views'
+const ONTOLOGY_YAML = '.project/policies/ontology.yaml'
+const SM_YAML = '.project/policies/state-machine.yaml'
+const TARGET_PUBLIC = process.env.TARGET_PUBLIC || '' // e.g. "ui/public"
+const PUBLIC_VIEWS_DIR = TARGET_PUBLIC ? path.join(TARGET_PUBLIC, 'views') : ''
 
 /** ---------- helpers ---------- */
-async function ensureDir(p){ await fs.mkdir(p, { recursive: true }).catch(()=>{}); }
-function asArray(v){ return Array.isArray(v) ? v : v != null ? [v] : []; }
+async function ensureDir(p) {
+	await fs.mkdir(p, { recursive: true }).catch(() => {})
+}
+function asArray(v) {
+	return Array.isArray(v) ? v : v != null ? [v] : []
+}
 
 // Normalize ANY path to a repo-relative POSIX path, e.g. ".project/objects/x.md"
-function toRepoRel(pth){
-  if (!pth) return "";
-  // decode percent-encoding just in case caller passed a URL param
-  try { pth = decodeURIComponent(pth); } catch {}
-  // normalize slashes
-  let s = pth.replace(/\\/g, "/");
+function toRepoRel(pth) {
+	if (!pth) return ''
+	// decode percent-encoding just in case caller passed a URL param
+	try {
+		pth = decodeURIComponent(pth)
+	} catch {}
+	// normalize slashes
+	let s = pth.replace(/\\/g, '/')
 
-  // If it's absolute and contains the runner checkout prefix, strip it.
-  // Common prefixes:
-  //   /home/runner/work/<repo>/<repo>/
-  //   <REPO_ROOT> (local)
-  if (s.startsWith(POSIX_ROOT + "/")) s = s.slice(POSIX_ROOT.length + 1);
+	// If it's absolute and contains the runner checkout prefix, strip it.
+	// Common prefixes:
+	//   /home/runner/work/<repo>/<repo>/
+	//   <REPO_ROOT> (local)
+	if (s.startsWith(POSIX_ROOT + '/')) s = s.slice(POSIX_ROOT.length + 1)
 
-  // strip common CI prefix pattern (/home/runner/work/<repo>/<repo>/...)
-  const parts = s.split("/");
-  const ix = parts.indexOf(".project");
-  if (ix >= 0) {
-    s = parts.slice(ix).join("/");
-  }
+	// strip common CI prefix pattern (/home/runner/work/<repo>/<repo>/...)
+	const parts = s.split('/')
+	const ix = parts.indexOf('.project')
+	if (ix >= 0) {
+		s = parts.slice(ix).join('/')
+	}
 
-  // remove leading "./"
-  if (s.startsWith("./")) s = s.slice(2);
-  // ensure we never escape repo
-  if (s.startsWith("/")) s = s.replace(/^\/+/, "");
-  return s;
+	// remove leading "./"
+	if (s.startsWith('./')) s = s.slice(2)
+	// ensure we never escape repo
+	if (s.startsWith('/')) s = s.replace(/^\/+/, '')
+	return s
 }
 
 // Strip markdown formatting for plain text search
 function stripMarkdown(text) {
-  return text
-    .replace(/#{1,6}\s+/g, '') // headers
-    .replace(/\*\*(.*?)\*\*/g, '$1') // bold
-    .replace(/\*(.*?)\*/g, '$1') // italic
-    .replace(/`(.*?)`/g, '$1') // inline code
-    .replace(/```[\s\S]*?```/g, '') // code blocks
-    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // links
-    .replace(/^\s*[-*+]\s+/gm, '') // list items
-    .replace(/^\s*\d+\.\s+/gm, '') // numbered lists
-    .replace(/\n+/g, ' ') // multiple newlines to space
-    .trim();
+	return text
+		.replace(/#{1,6}\s+/g, '') // headers
+		.replace(/\*\*(.*?)\*\*/g, '$1') // bold
+		.replace(/\*(.*?)\*/g, '$1') // italic
+		.replace(/`(.*?)`/g, '$1') // inline code
+		.replace(/```[\s\S]*?```/g, '') // code blocks
+		.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // links
+		.replace(/^\s*[-*+]\s+/gm, '') // list items
+		.replace(/^\s*\d+\.\s+/gm, '') // numbered lists
+		.replace(/\n+/g, ' ') // multiple newlines to space
+		.trim()
 }
 
 async function writeIfChanged(file, contents) {
-  try {
-    const prev = await fs.readFile(file, 'utf8');
-    if (prev === contents) return false;
-  } catch {}
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, contents, 'utf8');
-  return true;
+	try {
+		const prev = await fs.readFile(file, 'utf8')
+		if (prev === contents) return false
+	} catch {}
+	await fs.mkdir(path.dirname(file), { recursive: true })
+	await fs.writeFile(file, contents, 'utf8')
+	return true
 }
 
 async function writeJson(file, obj) {
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, JSON.stringify(obj, null, 2), 'utf8');
+	await fs.mkdir(path.dirname(file), { recursive: true })
+	await fs.writeFile(file, JSON.stringify(obj, null, 2), 'utf8')
 }
 
-async function mirrorToPublic(relName){
-  if (!TARGET_PUBLIC) return;
-  const src = path.join(VIEWS_DIR, relName);
-  const dst = path.join(PUBLIC_VIEWS_DIR, relName);
-  await ensureDir(path.dirname(dst));
-  await fs.copyFile(src, dst);
-  console.log(`mirrored -> ${dst}`);
+async function mirrorToPublic(relName) {
+	if (!TARGET_PUBLIC) return
+	const src = path.join(VIEWS_DIR, relName)
+	const dst = path.join(PUBLIC_VIEWS_DIR, relName)
+	await ensureDir(path.dirname(dst))
+	await fs.copyFile(src, dst)
+	console.log(`mirrored -> ${dst}`)
 }
 
 /** ---------- load objects ---------- */
-const files = await globby(OBJ_GLOB);
-const items = [];
-for (const f of files){
-  const raw = await fs.readFile(f, "utf8");
-  const { data, content } = matter(raw);
-  const id = data.id || path.basename(f).replace(/\.[^.]+$/, "");
-  const type = data.type ?? "work";
-  items.push({
-    id,
-    title: data.title || id,
-    status: data.status || "backlog",
-    type: asArray(type),
-    priority: data.priority || null,
-    severity: data.severity || null,
-    size: data.size || null,
-    intent: data.intent || null,
-    scope: data.scope || null,
-    assignees: data.assignees || [],
-    labels: data.labels || [],
-    created: data.created || null,
-    updated: data.updated || null,
-    links: data.links || [],
-    content: content,                    // store full content for search
-    file: toRepoRel(f),                // ✅ repo-relative
-    excerpt: content.split("\n").slice(0, 12).join("\n")
-  });
+const files = await globby(OBJ_GLOB)
+const items = []
+for (const f of files) {
+	const raw = await fs.readFile(f, 'utf8')
+	const { data, content } = matter(raw)
+	const id = data.id || path.basename(f).replace(/\.[^.]+$/, '')
+	const type = data.type ?? 'work'
+	items.push({
+		id,
+		title: data.title || id,
+		status: data.status || 'backlog',
+		type: asArray(type),
+		priority: data.priority || null,
+		severity: data.severity || null,
+		size: data.size || null,
+		intent: data.intent || null,
+		scope: data.scope || null,
+		assignees: data.assignees || [],
+		labels: data.labels || [],
+		created: data.created || null,
+		updated: data.updated || null,
+		links: data.links || [],
+		content: content, // store full content for search
+		file: toRepoRel(f), // ✅ repo-relative
+		excerpt: content.split('\n').slice(0, 12).join('\n'),
+	})
 }
 
 /** ---------- board.json (by status) ---------- */
-const board = {};
-for (const it of items){
-  const status = it.status;
-  if (!board[status]) board[status] = [];
-  const plainContent = stripMarkdown(it.title + ' ' + it.content);
-  const searchBlob = plainContent.slice(0, 200);
-  board[status].push({
-    id: it.id,
-    title: it.title,
-    type: it.type,
-    priority: it.priority,
-    assignees: it.assignees,
-    labels: it.labels,
-    search_blob: searchBlob,
-    file: toRepoRel(it.file)           // ✅ enforce repo-relative again
-  });
+const board = {}
+for (const it of items) {
+	const status = it.status
+	if (!board[status]) board[status] = []
+	const plainContent = stripMarkdown(it.title + ' ' + it.content)
+	const searchBlob = plainContent.slice(0, 200)
+	board[status].push({
+		id: it.id,
+		title: it.title,
+		type: it.type,
+		priority: it.priority,
+		assignees: it.assignees,
+		labels: it.labels,
+		search_blob: searchBlob,
+		file: toRepoRel(it.file), // ✅ enforce repo-relative again
+	})
 }
-for (const col of Object.keys(board)){
-  board[col].sort((a,b)=>a.id.localeCompare(b.id));
+for (const col of Object.keys(board)) {
+	board[col].sort((a, b) => a.id.localeCompare(b.id))
 }
 
 /** ---------- by-type.json ---------- */
-const byType = {};
-for (const it of items){
-  for (const t of it.type){
-    if (!byType[t]) byType[t] = [];
-    byType[t].push({ id: it.id, title: it.title, status: it.status, file: toRepoRel(it.file) });
-  }
+const byType = {}
+for (const it of items) {
+	for (const t of it.type) {
+		if (!byType[t]) byType[t] = []
+		byType[t].push({
+			id: it.id,
+			title: it.title,
+			status: it.status,
+			file: toRepoRel(it.file),
+		})
+	}
 }
-for (const t of Object.keys(byType)){
-  byType[t].sort((a,b)=>a.id.localeCompare(b.id));
+for (const t of Object.keys(byType)) {
+	byType[t].sort((a, b) => a.id.localeCompare(b.id))
 }
 
 /** ---------- stats.json ---------- */
-const stats = { count: items.length, byStatus: {}, byType: {}, byAssignee: {} };
-for (const it of items){
-  stats.byStatus[it.status] = (stats.byStatus[it.status]||0)+1;
-  for (const t of it.type) stats.byType[t] = (stats.byType[t]||0)+1;
-  for (const a of it.assignees) stats.byAssignee[a] = (stats.byAssignee[a]||0)+1;
+const stats = { count: items.length, byStatus: {}, byType: {}, byAssignee: {} }
+for (const it of items) {
+	stats.byStatus[it.status] = (stats.byStatus[it.status] || 0) + 1
+	for (const t of it.type) stats.byType[t] = (stats.byType[t] || 0) + 1
+	for (const a of it.assignees)
+		stats.byAssignee[a] = (stats.byAssignee[a] || 0) + 1
 }
 
 /** ---------- ontology.json for UI ---------- */
-let ontology = { types: {}, facets: {} };
-try { ontology = yaml.load(await fs.readFile(ONTOLOGY_YAML, "utf8")) || ontology; }
-catch { console.warn(`[warn] ontology not found at ${ONTOLOGY_YAML}`); }
+let ontology = { types: {}, facets: {} }
+try {
+	ontology = yaml.load(await fs.readFile(ONTOLOGY_YAML, 'utf8')) || ontology
+} catch {
+	console.warn(`[warn] ontology not found at ${ONTOLOGY_YAML}`)
+}
 
-let sm = {};
-try { sm = yaml.load(await fs.readFile(SM_YAML, "utf8")) || {}; }
-catch { console.warn(`[warn] state-machine not found at ${SM_YAML}`); }
+let sm = {}
+try {
+	sm = yaml.load(await fs.readFile(SM_YAML, 'utf8')) || {}
+} catch {
+	console.warn(`[warn] state-machine not found at ${SM_YAML}`)
+}
 
 // Write state-machine.json to both views and ui/public for Pages deployment
-const smJson = JSON.stringify(sm, null, 2);
-await writeIfChanged(".project/views/state-machine.json", smJson);
-await writeIfChanged("ui/public/state-machine.json", smJson);
-console.log("state-machine.json materialized to views/ and ui/public/");
+const smJson = JSON.stringify(sm, null, 2)
+await writeIfChanged('.project/views/state-machine.json', smJson)
+await writeIfChanged('ui/public/state-machine.json', smJson)
+console.log('state-machine.json materialized to views/ and ui/public/')
 
 /** ---------- write ---------- */
-await ensureDir(VIEWS_DIR);
-await writeJson(path.join(VIEWS_DIR, "board.json"), board);
-await writeJson(path.join(VIEWS_DIR, "by-type.json"), byType);
-await writeJson(path.join(VIEWS_DIR, "stats.json"), stats);
+await ensureDir(VIEWS_DIR)
+await writeJson(path.join(VIEWS_DIR, 'board.json'), board)
+await writeJson(path.join(VIEWS_DIR, 'by-type.json'), byType)
+await writeJson(path.join(VIEWS_DIR, 'stats.json'), stats)
 
-if (TARGET_PUBLIC){
-  await ensureDir(PUBLIC_VIEWS_DIR);
-  await mirrorToPublic("board.json");
-  await mirrorToPublic("by-type.json");
-  await mirrorToPublic("stats.json");
-  await writeJson(path.join(TARGET_PUBLIC, "ontology.json"), ontology);
+if (TARGET_PUBLIC) {
+	await ensureDir(PUBLIC_VIEWS_DIR)
+	await mirrorToPublic('board.json')
+	await mirrorToPublic('by-type.json')
+	await mirrorToPublic('stats.json')
+	await writeJson(path.join(TARGET_PUBLIC, 'ontology.json'), ontology)
 }
 
 const MANIFEST = {
-  repo: process.env.GITHUB_REPOSITORY || "local/jiraless",
-  url: `https://${process.env.GITHUB_REPOSITORY?.split('/')[0]}.github.io/${process.env.GITHUB_REPOSITORY?.split('/')[1]}/`,
-  views: {
-    board: "views/board.json",
-    ontology: "ontology.json",
-    state_machine: "state-machine.json"
-  },
-  updated: new Date().toISOString()
-};
+	repo: process.env.GITHUB_REPOSITORY || 'local/jiraless',
+	url: `https://${process.env.GITHUB_REPOSITORY?.split('/')[0]}.github.io/${
+		process.env.GITHUB_REPOSITORY?.split('/')[1]
+	}/`,
+	views: {
+		board: 'views/board.json',
+		ontology: 'ontology.json',
+		state_machine: 'state-machine.json',
+	},
+	updated: new Date().toISOString(),
+}
 
-await writeIfChanged(".project/views/manifest.json", JSON.stringify(MANIFEST, null, 2));
-await writeIfChanged("ui/public/manifest.json", JSON.stringify(MANIFEST, null, 2));
-console.log("Wrote manifest.json");
+await writeIfChanged(
+	'.project/views/manifest.json',
+	JSON.stringify(MANIFEST, null, 2)
+)
+await writeIfChanged(
+	'ui/public/manifest.json',
+	JSON.stringify(MANIFEST, null, 2)
+)
+console.log('Wrote manifest.json')
 
-console.log(`materialized: ${items.length} items -> board.json, by-type.json, stats.json (repo-relative paths)`);
-```
+console.log(
+	`materialized: ${items.length} items -> board.json, by-type.json, stats.json (repo-relative paths)`
+)
+`````
 
 ### `tools/schemas/adr.schema.json`
+
 _Size:_ 726 B  
 _Hash:_ `05c78858158c1b1f0d230656cce3819e68e02f5cc4e4ce7678b2fbdf315ee1f2`
 
 ```json
 {
-  "$id": "adr",
-  "type": "object",
-  "required": ["id","type","title","created","updated"],
-  "properties": {
-    "id": { "type": "string", "pattern": "^ADR-\\d{4,}$" },
-    "type": { "const": "decision" },
-    "title": { "type": "string", "minLength": 3 },
-    "created": { "type": "string", "format": "date-time" },
-    "updated": { "type": "string", "format": "date-time" },
-    "labels": { "type": "array", "items": { "type": "string" } },
-    "links": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["target"],
-        "properties": {
-          "type": { "type": "string" },
-          "target": { "type": "string" }
-        }
-      }
-    }
-  },
-  "additionalProperties": true
+	"$id": "adr",
+	"type": "object",
+	"required": ["id", "type", "title", "created", "updated"],
+	"properties": {
+		"id": { "type": "string", "pattern": "^ADR-\\d{4,}$" },
+		"type": { "const": "decision" },
+		"title": { "type": "string", "minLength": 3 },
+		"created": { "type": "string", "format": "date-time" },
+		"updated": { "type": "string", "format": "date-time" },
+		"labels": { "type": "array", "items": { "type": "string" } },
+		"links": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["target"],
+				"properties": {
+					"type": { "type": "string" },
+					"target": { "type": "string" }
+				}
+			}
+		}
+	},
+	"additionalProperties": true
 }
 ```
 
 ### `tools/schemas/doc.schema.json`
+
 _Size:_ 721 B  
 _Hash:_ `9468287ecf9ef17cc3c4649fa51ed9cf36ac396b52247fdc926167c23de9946f`
 
 ```json
 {
-  "$id": "doc",
-  "type": "object",
-  "required": ["id","type","title","created","updated"],
-  "properties": {
-    "id": { "type": "string", "pattern": "^DOC-\\d{4,}$" },
-    "type": { "const": "doc" },
-    "title": { "type": "string", "minLength": 3 },
-    "created": { "type": "string", "format": "date-time" },
-    "updated": { "type": "string", "format": "date-time" },
-    "labels": { "type": "array", "items": { "type": "string" } },
-    "links": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["target"],
-        "properties": {
-          "type": { "type": "string" },
-          "target": { "type": "string" }
-        }
-      }
-    }
-  },
-  "additionalProperties": true
+	"$id": "doc",
+	"type": "object",
+	"required": ["id", "type", "title", "created", "updated"],
+	"properties": {
+		"id": { "type": "string", "pattern": "^DOC-\\d{4,}$" },
+		"type": { "const": "doc" },
+		"title": { "type": "string", "minLength": 3 },
+		"created": { "type": "string", "format": "date-time" },
+		"updated": { "type": "string", "format": "date-time" },
+		"labels": { "type": "array", "items": { "type": "string" } },
+		"links": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["target"],
+				"properties": {
+					"type": { "type": "string" },
+					"target": { "type": "string" }
+				}
+			}
+		}
+	},
+	"additionalProperties": true
 }
 ```
 
 ### `tools/schemas/epic.schema.json`
+
 _Size:_ 1.3 KB  
 _Hash:_ `c82696cbc6f70ecf91f15be43b7d3d645db69af3e21849689e232f33ff22c472`
 
 ```json
 {
-  "$id": "epic",
-  "type": "object",
-  "required": ["id","type","title","status","created","updated"],
-  "properties": {
-    "id": { "type": "string", "pattern": "^EPC-\\d{4,}$" },
-    "type": { "const": "epic" },
-    "title": { "type": "string", "minLength": 3 },
-    "status": { "type": "string" },
-    "priority": { "type": "string", "enum": ["p0","p1","p2","p3"] },
-    "assignees": { "type": "array", "items": { "type": "string" } },
-    "labels": { "type": "array", "items": { "type": "string" } },
-    "created": { "type": "string", "format": "date-time" },
-    "updated": { "type": "string", "format": "date-time" },
-    "links": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["target"],
-        "properties": {
-          "type": { "type": "string" },
-          "target": { "type": "string" }
-        }
-      }
-    },
-    "acceptance": { "type": "array", "items": { "type": "string" } },
-    "code": {
-      "type": "object",
-      "properties": {
-        "refs": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "path": { "type": "string" },
-              "lines": { "type": "string" }
-            },
-            "required": ["path"]
-          }
-        }
-      }
-    }
-  },
-  "additionalProperties": true
+	"$id": "epic",
+	"type": "object",
+	"required": ["id", "type", "title", "status", "created", "updated"],
+	"properties": {
+		"id": { "type": "string", "pattern": "^EPC-\\d{4,}$" },
+		"type": { "const": "epic" },
+		"title": { "type": "string", "minLength": 3 },
+		"status": { "type": "string" },
+		"priority": { "type": "string", "enum": ["p0", "p1", "p2", "p3"] },
+		"assignees": { "type": "array", "items": { "type": "string" } },
+		"labels": { "type": "array", "items": { "type": "string" } },
+		"created": { "type": "string", "format": "date-time" },
+		"updated": { "type": "string", "format": "date-time" },
+		"links": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["target"],
+				"properties": {
+					"type": { "type": "string" },
+					"target": { "type": "string" }
+				}
+			}
+		},
+		"acceptance": { "type": "array", "items": { "type": "string" } },
+		"code": {
+			"type": "object",
+			"properties": {
+				"refs": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"path": { "type": "string" },
+							"lines": { "type": "string" }
+						},
+						"required": ["path"]
+					}
+				}
+			}
+		}
+	},
+	"additionalProperties": true
 }
 ```
 
 ### `tools/schemas/issue.schema.json`
+
 _Size:_ 1.3 KB  
 _Hash:_ `08bac8bb651a57930fade401d56d97df1022652d2f7103c582319e19de6aa6b2`
 
 ```json
 {
-  "$id": "issue",
-  "type": "object",
-  "required": ["id","type","title","status","created","updated"],
-  "properties": {
-    "id": { "type": "string", "pattern": "^ISS-\\d{4,}$" },
-    "type": { "const": "issue" },
-    "title": { "type": "string", "minLength": 3 },
-    "status": { "type": "string" },
-    "priority": { "type": "string", "enum": ["p0","p1","p2","p3"] },
-    "assignees": { "type": "array", "items": { "type": "string" } },
-    "labels": { "type": "array", "items": { "type": "string" } },
-    "created": { "type": "string", "format": "date-time" },
-    "updated": { "type": "string", "format": "date-time" },
-    "links": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["target"],
-        "properties": {
-          "type": { "type": "string" },
-          "target": { "type": "string" }
-        }
-      }
-    },
-    "acceptance": { "type": "array", "items": { "type": "string" } },
-    "code": {
-      "type": "object",
-      "properties": {
-        "refs": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "path": { "type": "string" },
-              "lines": { "type": "string" }
-            },
-            "required": ["path"]
-          }
-        }
-      }
-    }
-  },
-  "additionalProperties": true
+	"$id": "issue",
+	"type": "object",
+	"required": ["id", "type", "title", "status", "created", "updated"],
+	"properties": {
+		"id": { "type": "string", "pattern": "^ISS-\\d{4,}$" },
+		"type": { "const": "issue" },
+		"title": { "type": "string", "minLength": 3 },
+		"status": { "type": "string" },
+		"priority": { "type": "string", "enum": ["p0", "p1", "p2", "p3"] },
+		"assignees": { "type": "array", "items": { "type": "string" } },
+		"labels": { "type": "array", "items": { "type": "string" } },
+		"created": { "type": "string", "format": "date-time" },
+		"updated": { "type": "string", "format": "date-time" },
+		"links": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["target"],
+				"properties": {
+					"type": { "type": "string" },
+					"target": { "type": "string" }
+				}
+			}
+		},
+		"acceptance": { "type": "array", "items": { "type": "string" } },
+		"code": {
+			"type": "object",
+			"properties": {
+				"refs": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"path": { "type": "string" },
+							"lines": { "type": "string" }
+						},
+						"required": ["path"]
+					}
+				}
+			}
+		}
+	},
+	"additionalProperties": true
 }
 ```
 
 ### `tools/schemas/runlog.schema.json`
+
 _Size:_ 410 B  
 _Hash:_ `4d898a0c53c34c23b3bcaef2c0b8efad45daa321540a6de5d5f4a8dbc3da1bcb`
 
 ```json
 {
-  "$id": "runlog",
-  "type": "object",
-  "required": ["id","type","action","timestamp"],
-  "properties": {
-    "id": { "type": "string", "pattern": "^RUN-\\d{4,}$" },
-    "type": { "const": "runlog" },
-    "action": { "type": "string" },
-    "timestamp": { "type": "string", "format": "date-time" },
-    "agent": { "type": "string" },
-    "details": { "type": "object" }
-  },
-  "additionalProperties": true
+	"$id": "runlog",
+	"type": "object",
+	"required": ["id", "type", "action", "timestamp"],
+	"properties": {
+		"id": { "type": "string", "pattern": "^RUN-\\d{4,}$" },
+		"type": { "const": "runlog" },
+		"action": { "type": "string" },
+		"timestamp": { "type": "string", "format": "date-time" },
+		"agent": { "type": "string" },
+		"details": { "type": "object" }
+	},
+	"additionalProperties": true
 }
 ```
 
 ### `tools/schemas/story.schema.json`
+
 _Size:_ 1.3 KB  
 _Hash:_ `58bb8c14000296fb6e02482f470e46553d506a6cd26136fd269f397bdd473dfe`
 
 ```json
 {
-  "$id": "story",
-  "type": "object",
-  "required": ["id","type","title","status","created","updated"],
-  "properties": {
-    "id": { "type": "string", "pattern": "^STR-\\d{4,}$" },
-    "type": { "const": "story" },
-    "title": { "type": "string", "minLength": 3 },
-    "status": { "type": "string" },
-    "priority": { "type": "string", "enum": ["p0","p1","p2","p3"] },
-    "assignees": { "type": "array", "items": { "type": "string" } },
-    "labels": { "type": "array", "items": { "type": "string" } },
-    "created": { "type": "string", "format": "date-time" },
-    "updated": { "type": "string", "format": "date-time" },
-    "links": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["target"],
-        "properties": {
-          "type": { "type": "string" },
-          "target": { "type": "string" }
-        }
-      }
-    },
-    "acceptance": { "type": "array", "items": { "type": "string" } },
-    "code": {
-      "type": "object",
-      "properties": {
-        "refs": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "path": { "type": "string" },
-              "lines": { "type": "string" }
-            },
-            "required": ["path"]
-          }
-        }
-      }
-    }
-  },
-  "additionalProperties": true
+	"$id": "story",
+	"type": "object",
+	"required": ["id", "type", "title", "status", "created", "updated"],
+	"properties": {
+		"id": { "type": "string", "pattern": "^STR-\\d{4,}$" },
+		"type": { "const": "story" },
+		"title": { "type": "string", "minLength": 3 },
+		"status": { "type": "string" },
+		"priority": { "type": "string", "enum": ["p0", "p1", "p2", "p3"] },
+		"assignees": { "type": "array", "items": { "type": "string" } },
+		"labels": { "type": "array", "items": { "type": "string" } },
+		"created": { "type": "string", "format": "date-time" },
+		"updated": { "type": "string", "format": "date-time" },
+		"links": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["target"],
+				"properties": {
+					"type": { "type": "string" },
+					"target": { "type": "string" }
+				}
+			}
+		},
+		"acceptance": { "type": "array", "items": { "type": "string" } },
+		"code": {
+			"type": "object",
+			"properties": {
+				"refs": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"path": { "type": "string" },
+							"lines": { "type": "string" }
+						},
+						"required": ["path"]
+					}
+				}
+			}
+		}
+	},
+	"additionalProperties": true
 }
 ```
 
 ### `tools/schemas/work.schema.json`
+
 _Size:_ 1.3 KB  
 _Hash:_ `e0f486065d9be3b0dfcfcf3d0518d6fcde93429c55496d4c2e8ccb67c1e32343`
 
 ```json
 {
-  "$id": "work",
-  "type": "object",
-  "required": ["id", "type", "title", "status", "created", "updated"],
-  "properties": {
-    "id": { "type": "string", "pattern": "^WK-\\d{4,}$" },
-    "type": {
-      "oneOf": [
-        { "type": "string", "minLength": 1 },
-        {
-          "type": "array",
-          "items": { "type": "string", "minLength": 1 },
-          "minItems": 1
-        }
-      ],
-      "description": "types-as-labels — validated against ontology.types keys by validator"
-    },
-    "title": { "type": "string", "minLength": 3 },
-    "status": { "type": "string" },
-    "priority": { "type": "string" },
-    "severity": { "type": "string" },
-    "size": { "type": "string" },
-    "intent": { "type": "string" },
-    "scope": { "type": "string" },
-    "assignees": { "type": "array", "items": { "type": "string" } },
-    "labels": { "type": "array", "items": { "type": "string" } },
-    "aliases": { "type": "array", "items": { "type": "string" } },
-    "created": { "type": "string" },
-    "updated": { "type": "string" },
-    "links": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["target"],
-        "properties": {
-          "type": { "type": "string" },
-          "target": { "type": "string" }
-        },
-        "additionalProperties": false
-      }
-    }
-  },
-  "additionalProperties": true
+	"$id": "work",
+	"type": "object",
+	"required": ["id", "type", "title", "status", "created", "updated"],
+	"properties": {
+		"id": { "type": "string", "pattern": "^WK-\\d{4,}$" },
+		"type": {
+			"oneOf": [
+				{ "type": "string", "minLength": 1 },
+				{
+					"type": "array",
+					"items": { "type": "string", "minLength": 1 },
+					"minItems": 1
+				}
+			],
+			"description": "types-as-labels — validated against ontology.types keys by validator"
+		},
+		"title": { "type": "string", "minLength": 3 },
+		"status": { "type": "string" },
+		"priority": { "type": "string" },
+		"severity": { "type": "string" },
+		"size": { "type": "string" },
+		"intent": { "type": "string" },
+		"scope": { "type": "string" },
+		"assignees": { "type": "array", "items": { "type": "string" } },
+		"labels": { "type": "array", "items": { "type": "string" } },
+		"aliases": { "type": "array", "items": { "type": "string" } },
+		"created": { "type": "string" },
+		"updated": { "type": "string" },
+		"links": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["target"],
+				"properties": {
+					"type": { "type": "string" },
+					"target": { "type": "string" }
+				},
+				"additionalProperties": false
+			}
+		}
+	},
+	"additionalProperties": true
 }
 ```
 
 ### `tools/validate.mjs`
+
 _Size:_ 4.3 KB  
 _Hash:_ `79a712057cb9e1f51f9eefb1e475cd445d0743774ce903b179bc6499f3418e8f`
 
@@ -1247,121 +1382,157 @@ _Hash:_ `79a712057cb9e1f51f9eefb1e475cd445d0743774ce903b179bc6499f3418e8f`
  * - schema + ontology checks (existing behavior)
  * - transition enforcement with roles
  */
-import fs from "fs/promises";
-import path from "path";
-import { globby } from "globby";
-import matter from "gray-matter";
-import yaml from "js-yaml";
-import cp from "child_process";
+import fs from 'fs/promises'
+import path from 'path'
+import { globby } from 'globby'
+import matter from 'gray-matter'
+import yaml from 'js-yaml'
+import cp from 'child_process'
 
-const exec = (cmd)=>cp.execSync(cmd,{encoding:"utf8"});
+const exec = (cmd) => cp.execSync(cmd, { encoding: 'utf8' })
 
-const SCHEMA = "tools/schemas/work.schema.json";
-const ONTOLOGY = ".project/policies/ontology.yaml";
-const ROLES = ".project/policies/roles.yaml";
-const SM = ".project/policies/state-machine.yaml";
+const SCHEMA = 'tools/schemas/work.schema.json'
+const ONTOLOGY = '.project/policies/ontology.yaml'
+const ROLES = '.project/policies/roles.yaml'
+const SM = '.project/policies/state-machine.yaml'
 
-function asArr(v){ return Array.isArray(v) ? v : v!=null ? [v] : []; }
-
-function loadYaml(p){ try{ return yaml.load(exec(`cat ${p}`)) || {}; } catch{ return {}; } }
-function readFile(p){ return exec(`cat ${p}`); }
-function gitChanged(pattern){
-  try {
-    const base = exec("git merge-base HEAD origin/main").trim();
-    const out = exec(`git diff --name-only ${base}...HEAD -- ${pattern}`);
-    return out.split("\n").filter(Boolean);
-  } catch {
-    // Fallback to last commit range
-    const out = exec(`git diff --name-only HEAD~1..HEAD -- ${pattern}`);
-    return out.split("\n").filter(Boolean);
-  }
-}
-function frontmatterOf(p){
-  const txt = readFile(p);
-  return matter(txt).data || {};
-}
-function prevFrontmatterOf(p){
-  try{
-    const base = exec("git merge-base HEAD origin/main").trim();
-    const prev = exec(`git show ${base}:${p}`);
-    return matter(prev).data || {};
-  }catch{ return {}; }
+function asArr(v) {
+	return Array.isArray(v) ? v : v != null ? [v] : []
 }
 
-function actor(){
-  return process.env.GITHUB_ACTOR || process.env.ACTOR || "unknown";
+function loadYaml(p) {
+	try {
+		return yaml.load(exec(`cat ${p}`)) || {}
+	} catch {
+		return {}
+	}
+}
+function readFile(p) {
+	return exec(`cat ${p}`)
+}
+function gitChanged(pattern) {
+	try {
+		const base = exec('git merge-base HEAD origin/main').trim()
+		const out = exec(`git diff --name-only ${base}...HEAD -- ${pattern}`)
+		return out.split('\n').filter(Boolean)
+	} catch {
+		// Fallback to last commit range
+		const out = exec(`git diff --name-only HEAD~1..HEAD -- ${pattern}`)
+		return out.split('\n').filter(Boolean)
+	}
+}
+function frontmatterOf(p) {
+	const txt = readFile(p)
+	return matter(txt).data || {}
+}
+function prevFrontmatterOf(p) {
+	try {
+		const base = exec('git merge-base HEAD origin/main').trim()
+		const prev = exec(`git show ${base}:${p}`)
+		return matter(prev).data || {}
+	} catch {
+		return {}
+	}
 }
 
-function ensure(cond,msg){ if(!cond){ console.error(`❌ ${msg}`); process.exit(1); } }
+function actor() {
+	return process.env.GITHUB_ACTOR || process.env.ACTOR || 'unknown'
+}
 
-(async ()=>{
-  const roles = loadYaml(ROLES);
-  const sm = loadYaml(SM);
-  const ontology = loadYaml(ONTOLOGY);
+function ensure(cond, msg) {
+	if (!cond) {
+		console.error(`❌ ${msg}`)
+		process.exit(1)
+	}
+}
 
-  // Basic ontology presence
-  ensure(Array.isArray(sm.states), "state-machine.yaml missing states");
-  ensure(sm.transitions && typeof sm.transitions==="object", "state-machine.yaml missing transitions");
+;(async () => {
+	const roles = loadYaml(ROLES)
+	const sm = loadYaml(SM)
+	const ontology = loadYaml(ONTOLOGY)
 
-  // Validate objects exist (light check)
-  const objects = await globby(".project/objects/**/*.{md,markdown}");
-  for (const f of objects){
-    const fm = frontmatterOf(f);
-    ensure(fm.id, `${f}: missing id`);
-    ensure(fm.status, `${f}: missing status`);
-    // Optional: types exist in ontology if ontology.types defined
-    if (ontology?.types && Array.isArray(asArr(fm.type))){
-      for (const t of asArr(fm.type)){
-        ensure(ontology.types[t] !== undefined, `${f}: type '${t}' not in ontology.types`);
-      }
-    }
-  }
+	// Basic ontology presence
+	ensure(Array.isArray(sm.states), 'state-machine.yaml missing states')
+	ensure(
+		sm.transitions && typeof sm.transitions === 'object',
+		'state-machine.yaml missing transitions'
+	)
 
-  /** PR transition enforcement **/
-  const changed = gitChanged(".project/objects/**/*.{md,markdown}");
-  if (changed.length){
-    const who = actor();
-    // Map user->role
-    let roleName = Object.entries(roles.roles||{}).find(([,r])=>asArr(r.users).includes(who))?.[0] || "viewer";
-    const allowed = new Set(asArr(roles.roles?.[roleName]?.can_transition||[]));
+	// Validate objects exist (light check)
+	const objects = await globby('.project/objects/**/*.{md,markdown}')
+	for (const f of objects) {
+		const fm = frontmatterOf(f)
+		ensure(fm.id, `${f}: missing id`)
+		ensure(fm.status, `${f}: missing status`)
+		// Optional: types exist in ontology if ontology.types defined
+		if (ontology?.types && Array.isArray(asArr(fm.type))) {
+			for (const t of asArr(fm.type)) {
+				ensure(
+					ontology.types[t] !== undefined,
+					`${f}: type '${t}' not in ontology.types`
+				)
+			}
+		}
+	}
 
-    for (const f of changed){
-      const before = prevFrontmatterOf(f);
-      const after = frontmatterOf(f);
+	/** PR transition enforcement **/
+	const changed = gitChanged('.project/objects/**/*.{md,markdown}')
+	if (changed.length) {
+		const who = actor()
+		// Map user->role
+		let roleName =
+			Object.entries(roles.roles || {}).find(([, r]) =>
+				asArr(r.users).includes(who)
+			)?.[0] || 'viewer'
+		const allowed = new Set(
+			asArr(roles.roles?.[roleName]?.can_transition || [])
+		)
 
-      // If status changed, check transition
-      if (before.status && after.status && before.status !== after.status){
-        const from = before.status;
-        const to = after.status;
-        const legit = asArr(sm.transitions[from]||[]).includes(to);
-        ensure(legit, `${f}: illegal transition ${from} -> ${to}`);
+		for (const f of changed) {
+			const before = prevFrontmatterOf(f)
+			const after = frontmatterOf(f)
 
-        // Role check
-        const token = `${from}->${to}`;
-        const okRole = allowed.has("*") || allowed.has(token);
-        ensure(okRole, `${f}: actor '${who}' (role=${roleName}) not allowed to perform ${token}`);
+			// If status changed, check transition
+			if (before.status && after.status && before.status !== after.status) {
+				const from = before.status
+				const to = after.status
+				const legit = asArr(sm.transitions[from] || []).includes(to)
+				ensure(legit, `${f}: illegal transition ${from} -> ${to}`)
 
-        // Severity gate needs human in PR reviewers (owner|maintainer)
-        const needHumanFor = asArr(roles.human_review_required_for_severity||[]);
-        const sev = after.severity || before.severity;
-        if (needHumanFor.includes(sev)){
-          // best-effort: require label or reviewer marker file
-          // allow either a CODEOWNERS ownership or a REVIEWERS file change marker
-          try{
-            const prFiles = exec("git diff --name-only --cached").split("\n");
-            // no robust GH API in CI token scope here; keep it simple
-            console.log(`[info] severity '${sev}' requires human review; enforce via branch protection/required reviewers in repo settings.`);
-          }catch{}
-        }
-      }
-    }
-  }
+				// Role check
+				const token = `${from}->${to}`
+				const okRole = allowed.has('*') || allowed.has(token)
+				ensure(
+					okRole,
+					`${f}: actor '${who}' (role=${roleName}) not allowed to perform ${token}`
+				)
 
-  console.log("All good ✔ — validation + transition checks passed");
-})();
+				// Severity gate needs human in PR reviewers (owner|maintainer)
+				const needHumanFor = asArr(
+					roles.human_review_required_for_severity || []
+				)
+				const sev = after.severity || before.severity
+				if (needHumanFor.includes(sev)) {
+					// best-effort: require label or reviewer marker file
+					// allow either a CODEOWNERS ownership or a REVIEWERS file change marker
+					try {
+						const prFiles = exec('git diff --name-only --cached').split('\n')
+						// no robust GH API in CI token scope here; keep it simple
+						console.log(
+							`[info] severity '${sev}' requires human review; enforce via branch protection/required reviewers in repo settings.`
+						)
+					} catch {}
+				}
+			}
+		}
+	}
+
+	console.log('All good ✔ — validation + transition checks passed')
+})()
 ```
 
 ### `tools/version.mjs`
+
 _Size:_ 3.7 KB  
 _Hash:_ `6265cc0f3ed324f7aeda320d97124fd18e7b55d6a2ebbb5fa5133d14af37041f`
 
@@ -1374,119 +1545,134 @@ _Hash:_ `6265cc0f3ed324f7aeda320d97124fd18e7b55d6a2ebbb5fa5133d14af37041f`
  * - Writes ui/public/version.json
  * - Writes ui/public/health.txt and ui/public/health.json
  */
-import fs from "fs/promises";
-import fsSync from "fs";
-import path from "path";
-import { execSync } from "child_process";
+import fs from 'fs/promises'
+import fsSync from 'fs'
+import path from 'path'
+import { execSync } from 'child_process'
 
-const UI_DIR = "ui";
-const PKG = path.join(UI_DIR, "package.json");
-const VERSION_TS = path.join(UI_DIR, "src/version.ts");
-const VERSION_JSON = path.join(UI_DIR, "public/version.json");
-const HEALTH_TXT = path.join(UI_DIR, "public/health.txt");
-const HEALTH_JSON = path.join(UI_DIR, "public/health.json");
+const UI_DIR = 'ui'
+const PKG = path.join(UI_DIR, 'package.json')
+const VERSION_TS = path.join(UI_DIR, 'src/version.ts')
+const VERSION_JSON = path.join(UI_DIR, 'public/version.json')
+const HEALTH_TXT = path.join(UI_DIR, 'public/health.txt')
+const HEALTH_JSON = path.join(UI_DIR, 'public/health.json')
 
 function stampUTC() {
-  const d = new Date();
-  const pad = (n) => String(n).padStart(2, "0");
-  return (
-    d.getUTCFullYear() +
-    pad(d.getUTCMonth() + 1) +
-    pad(d.getUTCDate()) +
-    "." +
-    pad(d.getUTCHours()) +
-    pad(d.getUTCMinutes())
-  );
+	const d = new Date()
+	const pad = (n) => String(n).padStart(2, '0')
+	return (
+		d.getUTCFullYear() +
+		pad(d.getUTCMonth() + 1) +
+		pad(d.getUTCDate()) +
+		'.' +
+		pad(d.getUTCHours()) +
+		pad(d.getUTCMinutes())
+	)
 }
 
 function buildTimeUTC() {
-  return new Date().toISOString();
+	return new Date().toISOString()
 }
 function bumpPatch(v) {
-  const core = v.split("-")[0].split("+")[0];
-  const [maj, min, pat] = core.split(".").map((x) => parseInt(x, 10) || 0);
-  return `${maj}.${min}.${(pat ?? 0) + 1}`;
+	const core = v.split('-')[0].split('+')[0]
+	const [maj, min, pat] = core.split('.').map((x) => parseInt(x, 10) || 0)
+	return `${maj}.${min}.${(pat ?? 0) + 1}`
 }
 async function writeIfChanged(file, content) {
-  try {
-    const prev = await fs.readFile(file, "utf8");
-    if (prev === content) return false;
-  } catch {}
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, content, "utf8");
-  return true;
+	try {
+		const prev = await fs.readFile(file, 'utf8')
+		if (prev === content) return false
+	} catch {}
+	await fs.mkdir(path.dirname(file), { recursive: true })
+	await fs.writeFile(file, content, 'utf8')
+	return true
 }
 
 function gitSha() {
-  try {
-    return process.env.GITHUB_SHA || execSync("git rev-parse HEAD").toString().trim();
-  } catch {
-    return "unknown";
-  }
+	try {
+		return (
+			process.env.GITHUB_SHA || execSync('git rev-parse HEAD').toString().trim()
+		)
+	} catch {
+		return 'unknown'
+	}
 }
 
 async function readProductVersion() {
-  try {
-    const content = await fs.readFile("PRODUCT_VERSION", "utf8");
-    return content.trim();
-  } catch {
-    return "";
-  }
+	try {
+		const content = await fs.readFile('PRODUCT_VERSION', 'utf8')
+		return content.trim()
+	} catch {
+		return ''
+	}
 }
 
 async function main() {
-  const bumpMode = process.env.VERSION_BUMP || "patch"; // 'patch' | 'none'
-  const repo = process.env.GITHUB_REPOSITORY || "";
+	const bumpMode = process.env.VERSION_BUMP || 'patch' // 'patch' | 'none'
+	const repo = process.env.GITHUB_REPOSITORY || ''
 
-  const pkg = JSON.parse(await fs.readFile(PKG, "utf8"));
-  let newVersion = pkg.version || "0.0.0";
-  if (bumpMode !== "none") {
-    newVersion = bumpPatch(newVersion);
-    pkg.version = newVersion;
-    await fs.writeFile(PKG, JSON.stringify(pkg, null, 2) + "\n", "utf8");
-    console.log("Bumped ui/package.json version to", newVersion);
-  } else {
-    console.log("VERSION_BUMP=none → not bumping ui/package.json; using", newVersion);
-  }
+	const pkg = JSON.parse(await fs.readFile(PKG, 'utf8'))
+	let newVersion = pkg.version || '0.0.0'
+	if (bumpMode !== 'none') {
+		newVersion = bumpPatch(newVersion)
+		pkg.version = newVersion
+		await fs.writeFile(PKG, JSON.stringify(pkg, null, 2) + '\n', 'utf8')
+		console.log('Bumped ui/package.json version to', newVersion)
+	} else {
+		console.log(
+			'VERSION_BUMP=none → not bumping ui/package.json; using',
+			newVersion
+		)
+	}
 
-  const stamp = stampUTC();
-  const buildTimeIso = buildTimeUTC();
-  const sha = gitSha();
-  const productVersion = await readProductVersion();
-  const appVersion = `${newVersion}+${stamp}`;
+	const stamp = stampUTC()
+	const buildTimeIso = buildTimeUTC()
+	const sha = gitSha()
+	const productVersion = await readProductVersion()
+	const appVersion = `${newVersion}+${stamp}`
 
-  const ts = `// Auto-generated by tools/version.mjs
+	const ts = `// Auto-generated by tools/version.mjs
 export const APP_VERSION = ${JSON.stringify(appVersion)};
 export const BUILD_TIME_UTC = ${JSON.stringify(buildTimeIso)};
 export const GIT_SHA = ${JSON.stringify(sha)};
 export const PRODUCT_VERSION = ${JSON.stringify(productVersion)};
-`;
-  await writeIfChanged(VERSION_TS, ts);
+`
+	await writeIfChanged(VERSION_TS, ts)
 
-  const vjsonObj = { 
-    app_version: appVersion, 
-    build_time_utc: buildTimeIso, 
-    git_sha: sha, 
-    repo: repo,
-    product_version: productVersion || undefined
-  };
-  // Remove undefined values
-  Object.keys(vjsonObj).forEach(key => vjsonObj[key] === undefined && delete vjsonObj[key]);
-  await writeIfChanged(VERSION_JSON, JSON.stringify(vjsonObj, null, 2));
+	const vjsonObj = {
+		app_version: appVersion,
+		build_time_utc: buildTimeIso,
+		git_sha: sha,
+		repo: repo,
+		product_version: productVersion || undefined,
+	}
+	// Remove undefined values
+	Object.keys(vjsonObj).forEach(
+		(key) => vjsonObj[key] === undefined && delete vjsonObj[key]
+	)
+	await writeIfChanged(VERSION_JSON, JSON.stringify(vjsonObj, null, 2))
 
-  const healthTxt = [
-    "ok",
-    `version=${appVersion}`,
-    `package=${newVersion}`,
-    `built_utc=${stamp}`,
-    `git_sha=${sha}`,
-    repo ? `repo=${repo}` : null,
-  ].filter(Boolean).join("\n") + "\n";
-  await writeIfChanged(HEALTH_TXT, healthTxt);
-  await writeIfChanged(HEALTH_JSON, JSON.stringify({ status: "ok", ...vjsonObj }, null, 2));
+	const healthTxt =
+		[
+			'ok',
+			`version=${appVersion}`,
+			`package=${newVersion}`,
+			`built_utc=${stamp}`,
+			`git_sha=${sha}`,
+			repo ? `repo=${repo}` : null,
+		]
+			.filter(Boolean)
+			.join('\n') + '\n'
+	await writeIfChanged(HEALTH_TXT, healthTxt)
+	await writeIfChanged(
+		HEALTH_JSON,
+		JSON.stringify({ status: 'ok', ...vjsonObj }, null, 2)
+	)
 
-  console.log("Wrote", VERSION_TS, VERSION_JSON, HEALTH_TXT, HEALTH_JSON);
+	console.log('Wrote', VERSION_TS, VERSION_JSON, HEALTH_TXT, HEALTH_JSON)
 }
-main().catch((e) => { console.error(e); process.exit(1); });
+main().catch((e) => {
+	console.error(e)
+	process.exit(1)
+})
 ```
-

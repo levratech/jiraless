@@ -1,0 +1,50 @@
+name: Notify Intent
+on:
+  repository_dispatch:
+    types: [jiraless.notify.transition, jiraless.notify.pr]
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse payload
+        id: parse
+        run: |
+          echo "event_type=${{ github.event.action }}" >> $GITHUB_OUTPUT
+          echo "payload=${{ toJson(github.event.client_payload) }}" >> $GITHUB_OUTPUT
+
+      - name: Send Slack notification
+        if: env.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+            echo "SLACK_WEBHOOK_URL not configured, skipping Slack notification"
+            exit 0
+          fi
+
+          # Determine message based on event type
+          if [ "${{ github.event.action }}" = "jiraless.notify.pr" ]; then
+            MESSAGE="🚀 PR Update: <https://github.com/${{ github.repository }}/pull/${{ fromJson(steps.parse.outputs.payload).pr_number }}|#${{ fromJson(steps.parse.outputs.payload).pr_number }}> - ${{ fromJson(steps.parse.outputs.payload).pr_state }}
+          Work: ${{ fromJson(steps.parse.outputs.payload).work_id }}
+          Updated: ${{ fromJson(steps.parse.outputs.payload).updated_at }}"
+          elif [ "${{ github.event.action }}" = "jiraless.notify.transition" ]; then
+            MESSAGE="🔄 Work Transition: <${{ fromJson(steps.parse.outputs.payload).work_url }}|${{ fromJson(steps.parse.outputs.payload).work_id }}> moved to \`${{ fromJson(steps.parse.outputs.payload).new_status }}\`
+          ${{ fromJson(steps.parse.outputs.payload).description }}"
+          else
+            MESSAGE="Unknown notification type: ${{ github.event.action }}"
+          fi
+
+          # Send to Slack
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"$MESSAGE\"}" \
+            $SLACK_WEBHOOK_URL
+
+      - name: Log dry-run
+        if: env.SLACK_WEBHOOK_URL == ''
+        run: |
+          echo "DRY RUN: Would send notification for ${{ github.event.action }}"
+          echo "Payload: ${{ steps.parse.outputs.payload }}"

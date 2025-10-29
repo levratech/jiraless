@@ -1,0 +1,49 @@
+# Jiraless Notifications Configuration
+# Define notification rules for different events
+
+notifications:
+  # PR state changes
+  pr:
+    slack:
+      enabled: true
+      webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+      channel: '#jiraless-updates'
+      message_template: |
+        🚀 PR Update: <https://github.com/${{ github.repository }}/pull/${{ payload.pr_number }}|#${{ payload.pr_number }}> - ${{ payload.pr_state }}
+        Work: ${{ payload.work_id }}
+        Updated: ${{ payload.updated_at }}
+
+    email:
+      enabled: false
+      address_book:
+        - alerts@jiraless.levratech.com
+      subject_template: 'Jiraless PR Update: #${{ payload.pr_number }} - ${{ payload.pr_state }}'
+      body_template: |
+        PR Update Notification
+
+        PR: https://github.com/${{ github.repository }}/pull/${{ payload.pr_number }}
+        State: ${{ payload.pr_state }}
+        Work: ${{ payload.work_id }}
+        Updated: ${{ payload.updated_at }}
+
+  # Work state transitions
+  transition:
+    slack:
+      enabled: true
+      webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+      channel: '#jiraless-updates'
+      message_template: |
+        🔄 Work Transition: <${{ payload.work_url }}|${{ payload.work_id }}> moved to `${{ payload.new_status }}`
+        ${{ payload.description }}
+
+    email:
+      enabled: false
+      address_book:
+        - alerts@jiraless.levratech.com
+      subject_template: 'Jiraless Work Transition: ${{ payload.work_id }} → ${{ payload.new_status }}'
+      body_template: |
+        Work Transition Notification
+
+        Work: ${{ payload.work_url }}
+        New Status: ${{ payload.new_status }}
+        Description: ${{ payload.description }}

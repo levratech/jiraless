@@ -6,206 +6,345 @@
  * - Optionally mirrors to ui/public/views and emits ui/public/ontology.json
  */
 
-import fs from "fs/promises";
-import path from "path";
-import { globby } from "globby";
-import matter from "gray-matter";
-import yaml from "js-yaml";
+import fs from 'fs/promises'
+import path from 'path'
+import { globby } from 'globby'
+import matter from 'gray-matter'
+import yaml from 'js-yaml'
+import fetch from 'node-fetch'
 
-const REPO_ROOT = process.cwd();
-const POSIX_ROOT = REPO_ROOT.replace(/\\/g, "/");
+const REPO_ROOT = process.cwd()
+const POSIX_ROOT = REPO_ROOT.replace(/\\/g, '/')
 
-const OBJ_GLOB = ".project/objects/**/*.{md,markdown}";
-const VIEWS_DIR = ".project/views";
-const ONTOLOGY_YAML = ".project/policies/ontology.yaml";
-const SM_YAML = ".project/policies/state-machine.yaml";
-const TARGET_PUBLIC = process.env.TARGET_PUBLIC || ""; // e.g. "ui/public"
-const PUBLIC_VIEWS_DIR = TARGET_PUBLIC ? path.join(TARGET_PUBLIC, "views") : "";
+const OBJ_GLOB = '.project/objects/**/*.{md,markdown}'
+const VIEWS_DIR = '.project/views'
+const ONTOLOGY_YAML = '.project/policies/ontology.yaml'
+const SM_YAML = '.project/policies/state-machine.yaml'
+const TARGET_PUBLIC = process.env.TARGET_PUBLIC || '' // e.g. "ui/public"
+const PUBLIC_VIEWS_DIR = TARGET_PUBLIC ? path.join(TARGET_PUBLIC, 'views') : ''
 
 /** ---------- helpers ---------- */
-async function ensureDir(p){ await fs.mkdir(p, { recursive: true }).catch(()=>{}); }
-function asArray(v){ return Array.isArray(v) ? v : v != null ? [v] : []; }
+async function ensureDir(p) {
+	await fs.mkdir(p, { recursive: true }).catch(() => {})
+}
+function asArray(v) {
+	return Array.isArray(v) ? v : v != null ? [v] : []
+}
 
 // Normalize ANY path to a repo-relative POSIX path, e.g. ".project/objects/x.md"
-function toRepoRel(pth){
-  if (!pth) return "";
-  // decode percent-encoding just in case caller passed a URL param
-  try { pth = decodeURIComponent(pth); } catch {}
-  // normalize slashes
-  let s = pth.replace(/\\/g, "/");
+function toRepoRel(pth) {
+	if (!pth) return ''
+	// decode percent-encoding just in case caller passed a URL param
+	try {
+		pth = decodeURIComponent(pth)
+	} catch {}
+	// normalize slashes
+	let s = pth.replace(/\\/g, '/')
 
-  // If it's absolute and contains the runner checkout prefix, strip it.
-  // Common prefixes:
-  //   /home/runner/work/<repo>/<repo>/
-  //   <REPO_ROOT> (local)
-  if (s.startsWith(POSIX_ROOT + "/")) s = s.slice(POSIX_ROOT.length + 1);
+	// If it's absolute and contains the runner checkout prefix, strip it.
+	// Common prefixes:
+	//   /home/runner/work/<repo>/<repo>/
+	//   <REPO_ROOT> (local)
+	if (s.startsWith(POSIX_ROOT + '/')) s = s.slice(POSIX_ROOT.length + 1)
 
-  // strip common CI prefix pattern (/home/runner/work/<repo>/<repo>/...)
-  const parts = s.split("/");
-  const ix = parts.indexOf(".project");
-  if (ix >= 0) {
-    s = parts.slice(ix).join("/");
-  }
+	// strip common CI prefix pattern (/home/runner/work/<repo>/<repo>/...)
+	const parts = s.split('/')
+	const ix = parts.indexOf('.project')
+	if (ix >= 0) {
+		s = parts.slice(ix).join('/')
+	}
 
-  // remove leading "./"
-  if (s.startsWith("./")) s = s.slice(2);
-  // ensure we never escape repo
-  if (s.startsWith("/")) s = s.replace(/^\/+/, "");
-  return s;
+	// remove leading "./"
+	if (s.startsWith('./')) s = s.slice(2)
+	// ensure we never escape repo
+	if (s.startsWith('/')) s = s.replace(/^\/+/, '')
+	return s
 }
 
 // Strip markdown formatting for plain text search
 function stripMarkdown(text) {
-  return text
-    .replace(/#{1,6}\s+/g, '') // headers
-    .replace(/\*\*(.*?)\*\*/g, '$1') // bold
-    .replace(/\*(.*?)\*/g, '$1') // italic
-    .replace(/`(.*?)`/g, '$1') // inline code
-    .replace(/```[\s\S]*?```/g, '') // code blocks
-    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // links
-    .replace(/^\s*[-*+]\s+/gm, '') // list items
-    .replace(/^\s*\d+\.\s+/gm, '') // numbered lists
-    .replace(/\n+/g, ' ') // multiple newlines to space
-    .trim();
+	return text
+		.replace(/#{1,6}\s+/g, '') // headers
+		.replace(/\*\*(.*?)\*\*/g, '$1') // bold
+		.replace(/\*(.*?)\*/g, '$1') // italic
+		.replace(/`(.*?)`/g, '$1') // inline code
+		.replace(/```[\s\S]*?```/g, '') // code blocks
+		.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // links
+		.replace(/^\s*[-*+]\s+/gm, '') // list items
+		.replace(/^\s*\d+\.\s+/gm, '') // numbered lists
+		.replace(/\n+/g, ' ') // multiple newlines to space
+		.trim()
 }
 
 async function writeIfChanged(file, contents) {
-  try {
-    const prev = await fs.readFile(file, 'utf8');
-    if (prev === contents) return false;
-  } catch {}
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, contents, 'utf8');
-  return true;
+	try {
+		const prev = await fs.readFile(file, 'utf8')
+		if (prev === contents) return false
+	} catch {}
+	await fs.mkdir(path.dirname(file), { recursive: true })
+	await fs.writeFile(file, contents, 'utf8')
+	return true
 }
 
 async function writeJson(file, obj) {
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, JSON.stringify(obj, null, 2), 'utf8');
+	await fs.mkdir(path.dirname(file), { recursive: true })
+	await fs.writeFile(file, JSON.stringify(obj, null, 2), 'utf8')
 }
 
-async function mirrorToPublic(relName){
-  if (!TARGET_PUBLIC) return;
-  const src = path.join(VIEWS_DIR, relName);
-  const dst = path.join(PUBLIC_VIEWS_DIR, relName);
-  await ensureDir(path.dirname(dst));
-  await fs.copyFile(src, dst);
-  console.log(`mirrored -> ${dst}`);
+async function mirrorToPublic(relName) {
+	if (!TARGET_PUBLIC) return
+	const src = path.join(VIEWS_DIR, relName)
+	const dst = path.join(PUBLIC_VIEWS_DIR, relName)
+	await ensureDir(path.dirname(dst))
+	await fs.copyFile(src, dst)
+	console.log(`mirrored -> ${dst}`)
+}
+
+/** ---------- GitHub API helpers ---------- */
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN
+const GITHUB_REPO = process.env.GITHUB_REPOSITORY || 'levratech/jiraless'
+
+async function githubFetch(endpoint, options = {}) {
+	const url = `https://api.github.com/repos/${GITHUB_REPO}${endpoint}`
+	const headers = {
+		Authorization: GITHUB_TOKEN ? `token ${GITHUB_TOKEN}` : undefined,
+		Accept: 'application/vnd.github.v3+json',
+		'User-Agent': 'jiraless-materialize/0.8',
+	}
+
+	const response = await fetch(url, { ...options, headers })
+	if (!response.ok) {
+		if (response.status === 404) return null
+		throw new Error(
+			`GitHub API error: ${response.status} ${response.statusText}`
+		)
+	}
+	return response.json()
+}
+
+async function findPRForWork(workItem) {
+	// First, check if intent contains PR URL
+	if (workItem.intent) {
+		const prMatch = workItem.intent.match(
+			/github\.com\/[^\/]+\/[^\/]+\/pull\/(\d+)/
+		)
+		if (prMatch) {
+			const prNumber = parseInt(prMatch[1])
+			const pr = await githubFetch(`/pulls/${prNumber}`)
+			if (pr) return pr
+		}
+	}
+
+	// Fallback: search by branch name 'proposed/WK-xxxx'
+	const branchMatch = workItem.id.match(/^WK-(\d+)$/)
+	if (branchMatch) {
+		const branchName = `proposed/WK-${branchMatch[1]}`
+		try {
+			const prs = await githubFetch(
+				`/pulls?head=${GITHUB_REPO.split('/')[0]}:${branchName}&state=all`
+			)
+			if (prs && prs.length > 0) return prs[0]
+		} catch (e) {
+			// Branch might not exist, continue
+		}
+	}
+
+	return null
+}
+
+async function getPRChecksState(pr) {
+	if (!pr) return null
+
+	try {
+		// Get combined status for the PR head SHA
+		const status = await githubFetch(`/commits/${pr.head.sha}/status`)
+		if (status && status.state !== 'pending') {
+			return status.state // success, failure, error
+		}
+
+		// Fallback to check suites
+		const checkSuites = await githubFetch(
+			`/commits/${pr.head.sha}/check-suites`
+		)
+		if (checkSuites && checkSuites.check_suites.length > 0) {
+			const states = checkSuites.check_suites.map(
+				(suite) => suite.conclusion || suite.status
+			)
+			if (states.includes('failure') || states.includes('error'))
+				return 'failure'
+			if (states.includes('success')) return 'success'
+			if (states.includes('in_progress') || states.includes('queued'))
+				return 'pending'
+		}
+
+		return status?.state || 'pending'
+	} catch (e) {
+		console.warn(`Failed to get checks for PR ${pr.number}:`, e.message)
+		return 'pending'
+	}
+}
+
+async function augmentWithPRData(workItem) {
+	const pr = await findPRForWork(workItem)
+	if (!pr) return workItem
+
+	const checksState = await getPRChecksState(pr)
+
+	return {
+		...workItem,
+		pr_number: pr.number,
+		pr_state:
+			pr.state === 'open'
+				? pr.draft
+					? 'draft'
+					: 'open'
+				: pr.merged
+				? 'merged'
+				: 'closed',
+		checks_state: checksState,
+		updated_at: pr.updated_at,
+	}
 }
 
 /** ---------- load objects ---------- */
-const files = await globby(OBJ_GLOB);
-const items = [];
-for (const f of files){
-  const raw = await fs.readFile(f, "utf8");
-  const { data, content } = matter(raw);
-  const id = data.id || path.basename(f).replace(/\.[^.]+$/, "");
-  const type = data.type ?? "work";
-  items.push({
-    id,
-    title: data.title || id,
-    status: data.status || "backlog",
-    type: asArray(type),
-    priority: data.priority || null,
-    severity: data.severity || null,
-    size: data.size || null,
-    intent: data.intent || null,
-    scope: data.scope || null,
-    assignees: data.assignees || [],
-    labels: data.labels || [],
-    created: data.created || null,
-    updated: data.updated || null,
-    links: data.links || [],
-    content: content,                    // store full content for search
-    file: toRepoRel(f),                // ✅ repo-relative
-    excerpt: content.split("\n").slice(0, 12).join("\n")
-  });
+const files = await globby(OBJ_GLOB)
+const items = []
+for (const f of files) {
+	const raw = await fs.readFile(f, 'utf8')
+	const { data, content } = matter(raw)
+	const id = data.id || path.basename(f).replace(/\.[^.]+$/, '')
+	const type = data.type ?? 'work'
+	items.push({
+		id,
+		title: data.title || id,
+		status: data.status || 'backlog',
+		type: asArray(type),
+		priority: data.priority || null,
+		severity: data.severity || null,
+		size: data.size || null,
+		intent: data.intent || null,
+		scope: data.scope || null,
+		assignees: data.assignees || [],
+		labels: data.labels || [],
+		created: data.created || null,
+		updated: data.updated || null,
+		links: data.links || [],
+		content: content, // store full content for search
+		file: toRepoRel(f), // ✅ repo-relative
+		excerpt: content.split('\n').slice(0, 12).join('\n'),
+	})
 }
 
 /** ---------- board.json (by status) ---------- */
-const board = {};
-for (const it of items){
-  const status = it.status;
-  if (!board[status]) board[status] = [];
-  const plainContent = stripMarkdown(it.title + ' ' + it.content);
-  const searchBlob = plainContent.slice(0, 200);
-  board[status].push({
-    id: it.id,
-    title: it.title,
-    type: it.type,
-    priority: it.priority,
-    assignees: it.assignees,
-    labels: it.labels,
-    search_blob: searchBlob,
-    file: toRepoRel(it.file)           // ✅ enforce repo-relative again
-  });
+const board = {}
+for (const it of items) {
+	const status = it.status
+	if (!board[status]) board[status] = []
+	const plainContent = stripMarkdown(it.title + ' ' + it.content)
+	const searchBlob = plainContent.slice(0, 200)
+
+	// Augment with PR data
+	const augmentedItem = await augmentWithPRData({
+		id: it.id,
+		title: it.title,
+		type: it.type,
+		priority: it.priority,
+		assignees: it.assignees,
+		labels: it.labels,
+		search_blob: searchBlob,
+		file: toRepoRel(it.file),
+	})
+
+	board[status].push(augmentedItem)
 }
-for (const col of Object.keys(board)){
-  board[col].sort((a,b)=>a.id.localeCompare(b.id));
+for (const col of Object.keys(board)) {
+	board[col].sort((a, b) => a.id.localeCompare(b.id))
 }
 
 /** ---------- by-type.json ---------- */
-const byType = {};
-for (const it of items){
-  for (const t of it.type){
-    if (!byType[t]) byType[t] = [];
-    byType[t].push({ id: it.id, title: it.title, status: it.status, file: toRepoRel(it.file) });
-  }
+const byType = {}
+for (const it of items) {
+	for (const t of it.type) {
+		if (!byType[t]) byType[t] = []
+		byType[t].push({
+			id: it.id,
+			title: it.title,
+			status: it.status,
+			file: toRepoRel(it.file),
+		})
+	}
 }
-for (const t of Object.keys(byType)){
-  byType[t].sort((a,b)=>a.id.localeCompare(b.id));
+for (const t of Object.keys(byType)) {
+	byType[t].sort((a, b) => a.id.localeCompare(b.id))
 }
 
 /** ---------- stats.json ---------- */
-const stats = { count: items.length, byStatus: {}, byType: {}, byAssignee: {} };
-for (const it of items){
-  stats.byStatus[it.status] = (stats.byStatus[it.status]||0)+1;
-  for (const t of it.type) stats.byType[t] = (stats.byType[t]||0)+1;
-  for (const a of it.assignees) stats.byAssignee[a] = (stats.byAssignee[a]||0)+1;
+const stats = { count: items.length, byStatus: {}, byType: {}, byAssignee: {} }
+for (const it of items) {
+	stats.byStatus[it.status] = (stats.byStatus[it.status] || 0) + 1
+	for (const t of it.type) stats.byType[t] = (stats.byType[t] || 0) + 1
+	for (const a of it.assignees)
+		stats.byAssignee[a] = (stats.byAssignee[a] || 0) + 1
 }
 
 /** ---------- ontology.json for UI ---------- */
-let ontology = { types: {}, facets: {} };
-try { ontology = yaml.load(await fs.readFile(ONTOLOGY_YAML, "utf8")) || ontology; }
-catch { console.warn(`[warn] ontology not found at ${ONTOLOGY_YAML}`); }
+let ontology = { types: {}, facets: {} }
+try {
+	ontology = yaml.load(await fs.readFile(ONTOLOGY_YAML, 'utf8')) || ontology
+} catch {
+	console.warn(`[warn] ontology not found at ${ONTOLOGY_YAML}`)
+}
 
-let sm = {};
-try { sm = yaml.load(await fs.readFile(SM_YAML, "utf8")) || {}; }
-catch { console.warn(`[warn] state-machine not found at ${SM_YAML}`); }
+let sm = {}
+try {
+	sm = yaml.load(await fs.readFile(SM_YAML, 'utf8')) || {}
+} catch {
+	console.warn(`[warn] state-machine not found at ${SM_YAML}`)
+}
 
 // Write state-machine.json to both views and ui/public for Pages deployment
-const smJson = JSON.stringify(sm, null, 2);
-await writeIfChanged(".project/views/state-machine.json", smJson);
-await writeIfChanged("ui/public/state-machine.json", smJson);
-console.log("state-machine.json materialized to views/ and ui/public/");
+const smJson = JSON.stringify(sm, null, 2)
+await writeIfChanged('.project/views/state-machine.json', smJson)
+await writeIfChanged('ui/public/state-machine.json', smJson)
+console.log('state-machine.json materialized to views/ and ui/public/')
 
 /** ---------- write ---------- */
-await ensureDir(VIEWS_DIR);
-await writeJson(path.join(VIEWS_DIR, "board.json"), board);
-await writeJson(path.join(VIEWS_DIR, "by-type.json"), byType);
-await writeJson(path.join(VIEWS_DIR, "stats.json"), stats);
+await ensureDir(VIEWS_DIR)
+await writeJson(path.join(VIEWS_DIR, 'board.json'), board)
+await writeJson(path.join(VIEWS_DIR, 'by-type.json'), byType)
+await writeJson(path.join(VIEWS_DIR, 'stats.json'), stats)
 
-if (TARGET_PUBLIC){
-  await ensureDir(PUBLIC_VIEWS_DIR);
-  await mirrorToPublic("board.json");
-  await mirrorToPublic("by-type.json");
-  await mirrorToPublic("stats.json");
-  await writeJson(path.join(TARGET_PUBLIC, "ontology.json"), ontology);
+if (TARGET_PUBLIC) {
+	await ensureDir(PUBLIC_VIEWS_DIR)
+	await mirrorToPublic('board.json')
+	await mirrorToPublic('by-type.json')
+	await mirrorToPublic('stats.json')
+	await writeJson(path.join(TARGET_PUBLIC, 'ontology.json'), ontology)
 }
 
 const MANIFEST = {
-  repo: process.env.GITHUB_REPOSITORY || "local/jiraless",
-  url: `https://${process.env.GITHUB_REPOSITORY?.split('/')[0]}.github.io/${process.env.GITHUB_REPOSITORY?.split('/')[1]}/`,
-  views: {
-    board: "views/board.json",
-    ontology: "ontology.json",
-    state_machine: "state-machine.json"
-  },
-  updated: new Date().toISOString()
-};
+	repo: process.env.GITHUB_REPOSITORY || 'local/jiraless',
+	url: `https://${process.env.GITHUB_REPOSITORY?.split('/')[0]}.github.io/${
+		process.env.GITHUB_REPOSITORY?.split('/')[1]
+	}/`,
+	views: {
+		board: 'views/board.json',
+		ontology: 'ontology.json',
+		state_machine: 'state-machine.json',
+	},
+	updated: new Date().toISOString(),
+}
 
-await writeIfChanged(".project/views/manifest.json", JSON.stringify(MANIFEST, null, 2));
-await writeIfChanged("ui/public/manifest.json", JSON.stringify(MANIFEST, null, 2));
-console.log("Wrote manifest.json");
+await writeIfChanged(
+	'.project/views/manifest.json',
+	JSON.stringify(MANIFEST, null, 2)
+)
+await writeIfChanged(
+	'ui/public/manifest.json',
+	JSON.stringify(MANIFEST, null, 2)
+)
+console.log('Wrote manifest.json')
 
-console.log(`materialized: ${items.length} items -> board.json, by-type.json, stats.json (repo-relative paths)`);
+console.log(
+	`materialized: ${items.length} items -> board.json, by-type.json, stats.json (repo-relative paths)`
+)
