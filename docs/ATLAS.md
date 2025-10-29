@@ -1,8 +1,8 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-28T23:59:48.909Z
+_Generated:_ 2025-10-29T00:59:44.928Z
 
 ## Summary
-- Files: **49**
+- Files: **46**
 - Total size: **84 KB**
 - Inlined source cap: **195 KB** per file
 - Inline allow: README.md, tools/, tools/schemas/, .github/workflows/, .project/policies/
@@ -12,6 +12,7 @@ _Generated:_ 2025-10-28T23:59:48.909Z
 | :-- | :-- | :-- | :-- |
 | LICENSE | 1.0 KB | `a40f98f0c091…` | no |
 | package.json | 285 B | `3da93b3cef93…` | no |
+| PRODUCT_VERSION | 5 B | `ec17a75580c4…` | no |
 | README.md | 8.9 KB | `d62cb2e9713a…` | yes |
 | tools/atlas.mjs | 7.8 KB | `2715e4c4f3a8…` | yes |
 | tools/federate.mjs | 1.2 KB | `be57091c23e0…` | yes |
@@ -24,24 +25,20 @@ _Generated:_ 2025-10-28T23:59:48.909Z
 | tools/schemas/story.schema.json | 1.3 KB | `58bb8c140002…` | yes |
 | tools/schemas/work.schema.json | 1.3 KB | `e0f486065d9b…` | yes |
 | tools/validate.mjs | 4.3 KB | `79a712057cb9…` | yes |
-| tools/version.mjs | 3.3 KB | `0730e6cc5413…` | yes |
+| tools/version.mjs | 3.7 KB | `6265cc0f3ed3…` | yes |
 | ui/index.html | 491 B | `9983dbc240f8…` | no |
-| ui/package.json | 844 B | `f142383a1aff…` | no |
+| ui/package.json | 845 B | `07320253f8f6…` | no |
 | ui/public/404.html | 1.6 KB | `816f4a2db1b1…` | no |
 | ui/public/CNAME | 22 B | `3909faef9656…` | no |
 | ui/public/config.js | 149 B | `113826305d74…` | no |
-| ui/public/health-lite.json | 89 B | `691cecefd6d4…` | no |
-| ui/public/health.json | 175 B | `b3eb63c378b8…` | no |
-| ui/public/health.txt | 118 B | `1c378402efd1…` | no |
 | ui/public/manifest.json | 248 B | `4b5a0944255b…` | no |
 | ui/public/ontology.json | 828 B | `250b630dfbda…` | no |
 | ui/public/state-machine.json | 339 B | `eeb76afa0cff…` | no |
-| ui/public/version.json | 157 B | `1c7a3984c02f…` | no |
 | ui/public/views/board.json | 303 B | `f9a6f6cbe393…` | no |
 | ui/public/views/by-type.json | 218 B | `f5ca03a1e86d…` | no |
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
 | ui/src/App.jsx | 1011 B | `835983ee2dcc…` | no |
-| ui/src/App.tsx | 1.9 KB | `1c53e4b18b3d…` | no |
+| ui/src/App.tsx | 2.0 KB | `270587987ce4…` | no |
 | ui/src/components/Board.tsx | 9.5 KB | `cd5c09d60be7…` | no |
 | ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no |
 | ui/src/components/IssuesList.jsx | 1.2 KB | `0199872983bf…` | no |
@@ -52,12 +49,12 @@ _Generated:_ 2025-10-28T23:59:48.909Z
 | ui/src/lib/search.ts | 2.4 KB | `2640c79f07e6…` | no |
 | ui/src/main.jsx | 213 B | `b98fad61f7d1…` | no |
 | ui/src/main.tsx | 471 B | `84491d401f5d…` | no |
-| ui/src/pages/About.tsx | 2.1 KB | `39389d47503d…` | no |
+| ui/src/pages/About.tsx | 2.2 KB | `3b53085b7731…` | no |
 | ui/src/pages/Cortex.tsx | 1.0 KB | `ab789897c40e…` | no |
 | ui/src/pages/NewWork.tsx | 4.6 KB | `96c7a885883c…` | no |
 | ui/src/pages/WorkDetail.tsx | 8.0 KB | `0974833159b3…` | no |
 | ui/src/util/gh.ts | 579 B | `ea9f808c423a…` | no |
-| ui/src/version.ts | 214 B | `c0bcb217b0fc…` | no |
+| ui/src/version.ts | 255 B | `0e67bf66090b…` | no |
 | ui/vite.config.ts | 289 B | `7f0078405011…` | no |
 
 ## .project Object Stats
@@ -79,7 +76,7 @@ _Generated:_ 2025-10-28T23:59:48.909Z
 ## GitHub Workflows
 | Workflow | Triggers | File |
 | :-- | :-- | :-- |
-| Build Atlas | push, workflow_dispatch, workflow_run | .github/workflows/atlas.yml |
+| Build Atlas | workflow_run | .github/workflows/atlas.yml |
 | Federate Cortex | schedule, workflow_dispatch, push | .github/workflows/federate.yml |
 | Materialize Boards & Backlinks | push, workflow_dispatch | .github/workflows/materialize.yml |
 | Pages Watchdog | schedule, workflow_dispatch | .github/workflows/pages-watchdog.yml |
@@ -1365,8 +1362,8 @@ function ensure(cond,msg){ if(!cond){ console.error(`❌ ${msg}`); process.exit(
 ```
 
 ### `tools/version.mjs`
-_Size:_ 3.3 KB  
-_Hash:_ `0730e6cc5413de27c89f115fe1afb1affb5e2f7c1630604cd1d86b6aded8cc81`
+_Size:_ 3.7 KB  
+_Hash:_ `6265cc0f3ed324f7aeda320d97124fd18e7b55d6a2ebbb5fa5133d14af37041f`
 
 ```js
 #!/usr/bin/env node
@@ -1378,6 +1375,7 @@ _Hash:_ `0730e6cc5413de27c89f115fe1afb1affb5e2f7c1630604cd1d86b6aded8cc81`
  * - Writes ui/public/health.txt and ui/public/health.json
  */
 import fs from "fs/promises";
+import fsSync from "fs";
 import path from "path";
 import { execSync } from "child_process";
 
@@ -1427,6 +1425,15 @@ function gitSha() {
   }
 }
 
+async function readProductVersion() {
+  try {
+    const content = await fs.readFile("PRODUCT_VERSION", "utf8");
+    return content.trim();
+  } catch {
+    return "";
+  }
+}
+
 async function main() {
   const bumpMode = process.env.VERSION_BUMP || "patch"; // 'patch' | 'none'
   const repo = process.env.GITHUB_REPOSITORY || "";
@@ -1445,21 +1452,26 @@ async function main() {
   const stamp = stampUTC();
   const buildTimeIso = buildTimeUTC();
   const sha = gitSha();
+  const productVersion = await readProductVersion();
   const appVersion = `${newVersion}+${stamp}`;
 
   const ts = `// Auto-generated by tools/version.mjs
 export const APP_VERSION = ${JSON.stringify(appVersion)};
 export const BUILD_TIME_UTC = ${JSON.stringify(buildTimeIso)};
 export const GIT_SHA = ${JSON.stringify(sha)};
+export const PRODUCT_VERSION = ${JSON.stringify(productVersion)};
 `;
   await writeIfChanged(VERSION_TS, ts);
 
   const vjsonObj = { 
-    version: appVersion, 
+    app_version: appVersion, 
     build_time_utc: buildTimeIso, 
     git_sha: sha, 
-    repo: repo 
+    repo: repo,
+    product_version: productVersion || undefined
   };
+  // Remove undefined values
+  Object.keys(vjsonObj).forEach(key => vjsonObj[key] === undefined && delete vjsonObj[key]);
   await writeIfChanged(VERSION_JSON, JSON.stringify(vjsonObj, null, 2));
 
   const healthTxt = [
