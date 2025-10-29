@@ -2,22 +2,23 @@ name: Materialize Boards & Backlinks
 on:
   push:
     branches: [ main ]
-    paths:
-      - ".project/**"
     paths-ignore:
-      - "docs/ATLAS.md"
+      - 'docs/ATLAS.md'
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
-  build_views:
+  materialize:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
-      - run: npm i gray-matter js-yaml globby marked
+      - run: npm ci
       - run: node tools/materialize.mjs
+      # No commits here (artifact-only strategy)
       - name: Commit view updates
         run: |
           git config user.name "jiraless-bot"
