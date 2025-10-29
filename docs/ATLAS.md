@@ -1,5 +1,5 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-29T00:59:44.928Z
+_Generated:_ 2025-10-29T01:17:57.581Z
 
 ## Summary
 - Files: **46**
@@ -11,7 +11,7 @@ _Generated:_ 2025-10-29T00:59:44.928Z
 | Path | Size | SHA256 | Inlined |
 | :-- | :-- | :-- | :-- |
 | LICENSE | 1.0 KB | `a40f98f0c091…` | no |
-| package.json | 285 B | `3da93b3cef93…` | no |
+| package.json | 313 B | `f9f58ce55b8c…` | no |
 | PRODUCT_VERSION | 5 B | `ec17a75580c4…` | no |
 | README.md | 8.9 KB | `d62cb2e9713a…` | yes |
 | tools/atlas.mjs | 7.8 KB | `2715e4c4f3a8…` | yes |
