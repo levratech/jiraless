@@ -3,8 +3,6 @@ name: Deploy UI to Pages
 on:
   push:
     branches: [ main ]
-    paths-ignore:
-      - 'docs/ATLAS.md'
   workflow_dispatch:
 
 permissions:
@@ -29,25 +27,12 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install
+      - name: Install root deps
         run: npm ci
 
-      # If UI is in a subfolder with its own package.json, install & build there
-      - name: Detect UI dir
-        id: detect
-        run: |
-          if [ -f ui/package.json ]; then
-            echo "ui_dir=ui" >> $GITHUB_OUTPUT
-          else
-            echo "ui_dir=." >> $GITHUB_OUTPUT
-          fi
-
-      - name: Install UI deps (if any)
-        if: steps.detect.outputs.ui_dir == 'ui'
-        run: |
-          set -euxo pipefail
-          cd ui
-          npm ci || true
+      - name: Install UI deps
+        working-directory: ui
+        run: npm ci
 
       - name: Materialize views (boards, backlinks, state-machine)
         run: node tools/materialize.mjs
@@ -61,27 +46,25 @@ jobs:
         run: node tools/version.mjs
 
       - name: Build UI (root base)
+        working-directory: ui
         env:
           VITE_BASE: /
         run: |
-          set -euxo pipefail
-          cd ${{ steps.detect.outputs.ui_dir }}
+          echo "Building UI..."
           npm run build
           echo "Built files:"
-          ls -lah dist || true
-
-      - name: Assert dist exists
-        run: |
-          test -d ${{ steps.detect.outputs.ui_dir }}/dist || (echo "::error::dist not found" && exit 1)
+          ls -lah dist
+          du -sh dist
+          echo "APP_VERSION: $(cat src/version.ts | grep APP_VERSION | cut -d'"' -f2)"
+          echo "PRODUCT_VERSION: $(cat src/version.ts | grep PRODUCT_VERSION | cut -d'"' -f2)"
 
       - name: Add CNAME
-        run: |
-          echo "jiraless.levratech.com" > ${{ steps.detect.outputs.ui_dir }}/dist/CNAME
+        run: echo "jiraless.levratech.com" > ui/dist/CNAME
 
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ steps.detect.outputs.ui_dir }}/dist
+          path: ui/dist
 
   deploy:
     needs: build

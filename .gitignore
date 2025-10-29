@@ -142,3 +142,13 @@ node_modules
 dist
 .DS_Store
 docs/ATLAS.md
+
+# Generated build outputs
+ui/dist/
+ui/public/version.json
+ui/public/health.json
+ui/public/health.txt
+ui/public/health-lite.json
+
+# Generated view files
+.project/views/*.json
