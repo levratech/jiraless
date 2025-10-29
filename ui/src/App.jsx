@@ -10,7 +10,7 @@ export function App() {
       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
         <div>
           <h1 style={{ margin:0 }}>Jiraless</h1>
-          <div style={{ color:'#666' }}>Repo-native board (v0.4)</div>
+          <div style={{ color:'#666' }}>Repo-native board not v0.4)</div>
         </div>
         <Link to="/new" style={{
           textDecoration:'none', background:'#111827', color:'white',
