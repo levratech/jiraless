@@ -1,8 +1,8 @@
 {
   "status": "ok",
-  "app_version": "0.0.14+20251029.0018",
-  "build_time_utc": "2025-10-29T00:18:02.805Z",
-  "git_sha": "4570bbd6562c69868569d6293d9ead03d6f09a2f",
+  "app_version": "0.0.15+20251029.0055",
+  "build_time_utc": "2025-10-29T00:55:05.809Z",
+  "git_sha": "f1581090cbc44cb742afa5b21215577c1e79ba53",
   "repo": "",
   "product_version": "0.7.1"
 }
