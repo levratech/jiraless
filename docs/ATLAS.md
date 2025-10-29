@@ -1,5 +1,5 @@
 # Jiraless Atlas
-_Generated:_ 2025-10-29T01:17:57.581Z
+_Generated:_ 2025-10-29T01:20:55.175Z
 
 ## Summary
 - Files: **46**
@@ -37,7 +37,7 @@ _Generated:_ 2025-10-29T01:17:57.581Z
 | ui/public/views/board.json | 303 B | `f9a6f6cbe393…` | no |
 | ui/public/views/by-type.json | 218 B | `f5ca03a1e86d…` | no |
 | ui/public/views/stats.json | 131 B | `2605f43071e0…` | no |
-| ui/src/App.jsx | 1011 B | `835983ee2dcc…` | no |
+| ui/src/App.jsx | 1014 B | `8b777fe73089…` | no |
 | ui/src/App.tsx | 2.0 KB | `270587987ce4…` | no |
 | ui/src/components/Board.tsx | 9.5 KB | `cd5c09d60be7…` | no |
 | ui/src/components/IssueDetail.jsx | 1.9 KB | `f5a2447ef3cb…` | no |
