@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-29T01:13:58.372Z",
+  "updated": "2025-10-29T21:11:53.846Z",
   "manifests": [
     {
       "repo": "levratech/jiraless",
@@ -9,7 +9,7 @@
         "ontology": "ontology.json",
         "state_machine": "state-machine.json"
       },
-      "updated": "2025-10-29T00:59:10.123Z"
+      "updated": "2025-10-29T17:32:15.531Z"
     }
   ]
 }
