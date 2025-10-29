@@ -1,13 +1,8 @@
 name: Build Atlas
 on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
   workflow_run:
     workflows:
-      - Federate Cortex
       - Deploy UI to Pages
-      - Materialize Views
     types: [completed]
 
 permissions:

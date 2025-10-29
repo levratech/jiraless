@@ -1,5 +1,5 @@
 import React from 'react'
-import { APP_VERSION, BUILD_TIME_UTC, GIT_SHA } from '../version'
+import { APP_VERSION, BUILD_TIME_UTC, GIT_SHA, PRODUCT_VERSION } from '../version'
 
 export function About() {
   const repo = 'levratech/jiraless' // Could be made dynamic if needed
@@ -12,7 +12,10 @@ export function About() {
       <div style={{ marginTop: 20, marginBottom: 30 }}>
         <h2>Build Information</h2>
         <dl style={{ display: 'grid', gridTemplateColumns: 'max-content 1fr', gap: '8px 16px', alignItems: 'baseline' }}>
-          <dt>Version:</dt>
+          <dt>Product Version:</dt>
+          <dd>{PRODUCT_VERSION || 'Not set'}</dd>
+
+          <dt>App Version:</dt>
           <dd>{APP_VERSION}</dd>
 
           <dt>Build Time:</dt>

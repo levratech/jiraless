@@ -5,16 +5,18 @@ import { WorkDetail } from './pages/WorkDetail'
 import { NewWork } from './pages/NewWork'
 import { About } from './pages/About'
 import Cortex from './pages/Cortex'
-import { APP_VERSION } from "./version";
+import { APP_VERSION, PRODUCT_VERSION } from "./version";
 
 export function App() {
+  const display = PRODUCT_VERSION ? `v${PRODUCT_VERSION}` : `v${APP_VERSION}`;
+  
   return (
     <div style={{ fontFamily: 'system-ui, Segoe UI, Inter, sans-serif', padding: 16 }}>
       <header className="px-4 py-3">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h1 className="text-2xl font-bold">Jiraless</h1>
-            <div className="text-xs text-gray-500">Repo-native board (v{APP_VERSION})</div>
+            <div className="text-xs text-gray-500">Repo-native board ({display})</div>
           </div>
           <Link to="/about" style={{
             textDecoration:'none', color:'#6b7280',
